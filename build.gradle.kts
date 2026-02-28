@@ -4,7 +4,7 @@ import xyz.webmc.wlib.PluginBuildConstants
 
 
 val PLUGIN_DEPS = listOf("Caramel")
-val PLUGIN_SDEP = emptyList<String>()
+val PLUGIN_SDEP = listOf("GriefPrevention")
 
 
 
