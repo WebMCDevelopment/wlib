@@ -10,6 +10,9 @@ val PLUGIN_SDEP = listOf("GriefPrevention")
 
 val ARTIFACT = "${PluginBuildConstants.PLUGIN_NAME}-${PluginBuildConstants.PLUGIN_VERS}"
 
+group = PluginBuildConstants.PLUGIN_PCKG
+version = PluginBuildConstants.PLUGIN_VERS
+
 plugins {
   id("java")
   id("maven-publish")
