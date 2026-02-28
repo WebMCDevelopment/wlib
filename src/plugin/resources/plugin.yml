@@ -1,0 +1,8 @@
+name: ${plugin_name}
+version: ${plugin_vers}
+main: ${plugin_pckg}.${plugin_name}BukkitPlugin
+authors: ["${plugin_athr}"]
+depend: ${plugin_deps}
+softdepend: ${plugin_sdep}
+folia-supported: true
+load: STARTUP

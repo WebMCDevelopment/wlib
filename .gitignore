@@ -1,0 +1,10 @@
+/.vscode/
+/run/
+
+**/.gradle/
+**/build/
+**/bin/
+
+/gradle/wrapper/gradle-wrapper.jar
+/gradlew
+/gradlew.bat
