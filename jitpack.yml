@@ -1,4 +1,4 @@
 jdk:
   - openjdk21
 install:
-  - gradle --no-daemon clean publishToMavenLocal
+  - ./gradlew --no-daemon clean publishToMavenLocal
