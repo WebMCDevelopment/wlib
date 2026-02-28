@@ -12,6 +12,7 @@ val ARTIFACT = "${PluginBuildConstants.PLUGIN_NAME}-${PluginBuildConstants.PLUGI
 
 plugins {
   id("java")
+  id("maven-publish")
   id("com.gradleup.shadow") version "9.3.2"
 }
 
@@ -38,6 +39,18 @@ sourceSets {
     )
 		resources.srcDir("./src/plugin/resources")
 	}
+}
+
+publishing {
+  publications {
+    create<MavenPublication>("maven") {
+      artifact(tasks.named("shadowJar"))
+    }
+  }
+}
+
+tasks.named("publishToMavenLocal") {
+  dependsOn(tasks.named("shadowJar"))
 }
 
 tasks.named<JavaCompile>("compileJava") {
