@@ -11,12 +11,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
 public final class Scheduler {
-
   private static FoliaLib lib;
   private static PlatformScheduler sch;
-
-  private Scheduler() {
-  }
 
   public static final void init(final Plugin plugin) {
     lib = new FoliaLib(plugin);

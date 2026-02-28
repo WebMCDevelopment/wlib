@@ -8,7 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class WLIBBukkitPlugin extends JavaPlugin {
   @Override
   public final void onEnable() {
-    Scheduler.init(this);
     EventManager.init(this);
+    Scheduler.init(this);
   }
 }
