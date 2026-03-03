@@ -1,7 +1,7 @@
 package xyz.webmc.wlib.util;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
 import com.tcoded.folialib.FoliaLib;
 import com.tcoded.folialib.impl.PlatformScheduler;
@@ -31,59 +31,59 @@ public final class Scheduler {
     sch.cancelAllTasks();
   }
 
-  public static final void runNextTick(final Consumer<WrappedTask> task) {
-    sch.runNextTick(task);
+  public static final CompletableFuture<Void> runNextTick(final Runnable task) {
+    return sch.runNextTick(t -> task.run());
   }
 
-  public static final void runLater(final Consumer<WrappedTask> task, final long delayTicks) {
-    sch.runLater(task, delayTicks);
+  public static final WrappedTask runLater(final Runnable task, final long delayTicks) {
+    return sch.runLater(task, delayTicks);
   }
 
-  public static final void runTimer(final Consumer<WrappedTask> task, final long delayTicks, final long periodTicks) {
-    sch.runTimer(task, delayTicks, periodTicks);
+  public static final WrappedTask runTimer(final Runnable task, final long delayTicks, final long periodTicks) {
+    return sch.runTimer(task, delayTicks, periodTicks);
   }
 
-  public static final void runAsync(final Consumer<WrappedTask> task) {
-    sch.runAsync(task);
+  public static final CompletableFuture<Void> runAsync(final Runnable task) {
+    return sch.runAsync(t -> task.run());
   }
 
-  public static final void runLaterAsync(final Consumer<WrappedTask> task, final long delayTicks) {
-    sch.runLaterAsync(task, delayTicks);
+  public static final WrappedTask runLaterAsync(final Runnable task, final long delayTicks) {
+    return sch.runLaterAsync(task, delayTicks);
   }
 
-  public static final void runLaterAsync(final Consumer<WrappedTask> task, final long delay, final TimeUnit unit) {
-    sch.runLaterAsync(task, delay, unit);
+  public static final WrappedTask runLaterAsync(final Runnable task, final long delay, final TimeUnit unit) {
+    return sch.runLaterAsync(task, delay, unit);
   }
 
-  public static final void runTimerAsync(final Consumer<WrappedTask> task, final long delayTicks, final long periodTicks) {
-    sch.runTimerAsync(task, delayTicks, periodTicks);
+  public static final WrappedTask runTimerAsync(final Runnable task, final long delayTicks, final long periodTicks) {
+    return sch.runTimerAsync(task, delayTicks, periodTicks);
   }
 
-  public static final void runTimerAsync(final Consumer<WrappedTask> task, final long delay, final long period, final TimeUnit unit) {
-    sch.runTimerAsync(task, delay, period, unit);
+  public static final WrappedTask runTimerAsync(final Runnable task, final long delay, final long period, final TimeUnit unit) {
+    return sch.runTimerAsync(task, delay, period, unit);
   }
 
-  public static final void runAtLocation(final Location loc, final Consumer<WrappedTask> task) {
-    sch.runAtLocation(loc, task);
+  public static final CompletableFuture<Void> runAtLocation(final Location loc, final Runnable task) {
+    return sch.runAtLocation(loc, t -> task.run());
   }
 
-  public static final void runAtLocationLater(final Location loc, final Consumer<WrappedTask> task, final long delayTicks) {
-    sch.runAtLocationLater(loc, task, delayTicks);
+  public static final WrappedTask runAtLocationLater(final Location loc, final Runnable task, final long delayTicks) {
+    return sch.runAtLocationLater(loc, task, delayTicks);
   }
 
-  public static final void runAtLocationTimer(final Location loc, final Consumer<WrappedTask> task, final long delayTicks, final long periodTicks) {
-    sch.runAtLocationTimer(loc, task, delayTicks, periodTicks);
+  public static final WrappedTask runAtLocationTimer(final Location loc, final Runnable task, final long delayTicks, final long periodTicks) {
+    return sch.runAtLocationTimer(loc, task, delayTicks, periodTicks);
   }
 
-  public static final void runAtEntity(final Entity ent, final Consumer<WrappedTask> task) {
-    sch.runAtEntity(ent, task);
+  public static final CompletableFuture<?> runAtEntity(final Entity ent, final Runnable task) {
+    return sch.runAtEntity(ent, t -> task.run());
   }
 
-  public static final void runAtEntityLater(final Entity ent, final Consumer<WrappedTask> task, final long delayTicks) {
-    sch.runAtEntityLater(ent, task, delayTicks);
+  public static final WrappedTask runAtEntityLater(final Entity ent, final Runnable task, final long delayTicks) {
+    return sch.runAtEntityLater(ent, task, delayTicks);
   }
 
-  public static final void runAtEntityTimer(final Entity ent, final Consumer<WrappedTask> task, final long delayTicks, final long periodTicks) {
-    sch.runAtEntityTimer(ent, task, delayTicks, periodTicks);
+  public static final WrappedTask runAtEntityTimer(final Entity ent, final Runnable task, final long delayTicks, final long periodTicks) {
+    return sch.runAtEntityTimer(ent, task, delayTicks, periodTicks);
   }
 }
