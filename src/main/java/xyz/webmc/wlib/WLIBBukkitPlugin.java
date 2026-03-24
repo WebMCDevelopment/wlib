@@ -11,6 +11,7 @@ public final class WLIBBukkitPlugin extends JavaPlugin {
   public final void onEnable() {
     CommandUtil.init(this);
     EventUtil.init(this);
+    PluginUtil.init(this);
     SchedulerUtil.init(this);
   }
 }
