@@ -2,6 +2,7 @@ package xyz.webmc.wlib;
 
 import xyz.webmc.wlib.util.CommandUtil;
 import xyz.webmc.wlib.util.EventUtil;
+import xyz.webmc.wlib.util.PluginUtil;
 import xyz.webmc.wlib.util.SchedulerUtil;
 
 import org.bukkit.plugin.java.JavaPlugin;
