@@ -62,7 +62,8 @@
               <goal>shade</goal>
             </goals>
             <configuration>
-              <createDependencyReducedPom>false</createDependencyReducedPom>
+              <shadedArtifactAttached>false</shadedArtifactAttached>
+              <createDependencyReducedPom>true</createDependencyReducedPom>
               <relocations>
                 <relocation>
                   <pattern>dev.colbster937.reflect</pattern>
