@@ -1,0 +1,5 @@
+name: ${plugin.name}
+version: ${plugin.vers}
+main: ${plugin.pckg}.${plugin.name}BukkitPlugin
+folia-supported: true
+load: STARTUP
