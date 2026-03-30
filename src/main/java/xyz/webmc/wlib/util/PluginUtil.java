@@ -10,11 +10,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.UnknownDependencyException;
 
 public final class PluginUtil {
-  private static PluginManager pm;
-
-  public static final void init(final Plugin plugin) {
-    pm = Bukkit.getPluginManager();
-  }
+  private static final PluginManager pm = Bukkit.getPluginManager();
 
   public static final Plugin getPlugin(final String name) {
     return pm.getPlugin(name);

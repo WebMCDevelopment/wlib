@@ -9,11 +9,10 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 public final class EventUtil {
-  private static PluginManager pm;
+  private static final PluginManager pm = Bukkit.getPluginManager();
   private static Plugin plugin;
 
   public static final void init(final Plugin plugin) {
-    pm = Bukkit.getPluginManager();
     EventUtil.plugin = plugin;
   }
 
