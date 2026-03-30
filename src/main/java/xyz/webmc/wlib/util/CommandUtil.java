@@ -3,6 +3,7 @@ package xyz.webmc.wlib.util;
 import java.util.Map;
 
 import dev.colbster937.reflect.Mirror;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;

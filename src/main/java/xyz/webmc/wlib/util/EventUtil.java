@@ -1,5 +1,6 @@
 package xyz.webmc.wlib.util;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -12,7 +13,7 @@ public final class EventUtil {
   private static Plugin plugin;
 
   public static final void init(final Plugin plugin) {
-    pm = plugin.getServer().getPluginManager();
+    pm = Bukkit.getPluginManager();
     EventUtil.plugin = plugin;
   }
 
