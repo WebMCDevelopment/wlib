@@ -1,8 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0">
   <modelVersion>4.0.0</modelVersion>
   <groupId>xyz.webmc</groupId>
   <artifactId>wlib</artifactId>
   <version>1.1.0-SNAPSHOT</version>
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <url>https://maven.pkg.github.com/WebMCDevelopment/wlib/</url>
+    </repository>
+  </distributionManagement>
   <properties>
     <plugin.name>WLIB</plugin.name>
     <plugin.vers>${project.version}</plugin.vers>
@@ -12,10 +19,9 @@
   </properties>
   <dependencies>
     <dependency>
-      <groupId>org.bukkit</groupId>
-      <artifactId>bukkit</artifactId>
-      <version>1.8-R0.1-SNAPSHOT</version>
-      <scope>provided</scope>
+      <groupId>com.tcoded</groupId>
+      <artifactId>FoliaLib</artifactId>
+      <version>0.5.1</version>
     </dependency>
     <dependency>
       <groupId>dev.colbster937</groupId>
@@ -23,9 +29,10 @@
       <version>1.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>com.tcoded</groupId>
-      <artifactId>FoliaLib</artifactId>
-      <version>0.5.1</version>
+      <groupId>org.bukkit</groupId>
+      <artifactId>bukkit</artifactId>
+      <version>1.8-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
   <repositories>
@@ -46,8 +53,8 @@
     <finalName>${project.artifactId}-${project.version}</finalName>
     <resources>
       <resource>
-        <directory>src/main/resources</directory>
         <filtering>true</filtering>
+        <directory>src/main/resources</directory>
       </resource>
     </resources>
     <plugins>
@@ -57,10 +64,10 @@
         <version>3.6.2</version>
         <executions>
           <execution>
-            <phase>package</phase>
             <goals>
               <goal>shade</goal>
             </goals>
+            <phase>package</phase>
             <configuration>
               <shadedArtifactAttached>false</shadedArtifactAttached>
               <createDependencyReducedPom>true</createDependencyReducedPom>
@@ -78,12 +85,24 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>net.revelc.code</groupId>
+        <artifactId>impsort-maven-plugin</artifactId>
+        <version>1.13.0</version>
+        <executions>
+          <execution>
+            <id>sort-imports</id>
+            <goals>
+              <goal>sort</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <removeUnused>true</removeUnused>
+          <staticAfter>true</staticAfter>
+          <groups>xyz.webmc.,java.,javax.</groups>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
-  <distributionManagement>
-    <repository>
-      <id>github</id>
-      <url>https://maven.pkg.github.com/WebMCDevelopment/wlib/</url>
-    </repository>
-  </distributionManagement>
 </project>

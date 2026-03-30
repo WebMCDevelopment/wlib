@@ -15,4 +15,9 @@ public final class WLIBBukkitPlugin extends JavaPlugin {
     PluginUtil.init(this);
     SchedulerUtil.init(this);
   }
+
+  @Override
+  public final void onDisable() {
+    SchedulerUtil.cancelAllTasks();
+  }
 }
