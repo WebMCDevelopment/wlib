@@ -2,6 +2,7 @@ package xyz.webmc.wlib.util;
 
 import java.io.File;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
@@ -12,7 +13,7 @@ public final class PluginUtil {
   private static PluginManager pm;
 
   public static final void init(final Plugin plugin) {
-    pm = plugin.getServer().getPluginManager();
+    pm = Bukkit.getPluginManager();
   }
 
   public static final Plugin getPlugin(final String name) {
