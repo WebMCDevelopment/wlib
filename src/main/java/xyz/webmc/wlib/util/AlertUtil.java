@@ -14,6 +14,7 @@ public final class AlertUtil {
     final String str = ChatColor.DARK_GREEN + "[" + ChatColor.GREEN + "DEV" + ChatColor.DARK_GREEN + "] ["
         + ChatColor.GREEN + clazz.getSimpleName() + ChatColor.DARK_GREEN + "] " + ChatColor.RESET
         + String.join(" ", msg);
+
     for (final Player p : Bukkit.getOnlinePlayers()) {
       if (p.hasPermission("wlib.dev-alert")) {
         p.sendMessage(str);

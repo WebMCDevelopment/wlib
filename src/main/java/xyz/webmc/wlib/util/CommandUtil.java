@@ -1,14 +1,15 @@
 package xyz.webmc.wlib.util;
 
+import java.util.List;
 import java.util.Map;
 
-import dev.colbster937.reflect.Mirror;
-
+import dev.colbster937.reflect.MirrorSafe;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandMap;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 
 public final class CommandUtil {
   private static Plugin plugin;
@@ -18,7 +19,7 @@ public final class CommandUtil {
   }
 
   public static final void registerCommand(final Plugin plugin, final Command command) {
-    commandMap().register(plugin.getName(), command);
+    getCommandMap().register(plugin.getName(), command);
     syncCommands();
   }
 
@@ -26,43 +27,52 @@ public final class CommandUtil {
     registerCommand(plugin, command);
   }
 
+  public static final void registerCommands(final Plugin plugin, final List<Command> commands) {
+    getCommandMap().registerAll(plugin.getName(), commands);
+    syncCommands();
+  }
+
+  public static final void registerCommands(final List<Command> commands) {
+    registerCommands(plugin, commands);
+  }
+
   public static final void unregisterCommand(final String commandStr) {
-    try {
-      final Command command = knownCommands().remove(commandStr);
-      if (command != null) {
-        command.unregister(commandMap());
-      }
-      syncCommands();
-    } catch (final ReflectiveOperationException ex) {
-      throw new RuntimeException(ex);
-    }
-  }
+    final Command command = getKnownCommands().remove(commandStr);
 
-  private static final CommandMap commandMap() {
-    final CommandMap commandMap;
-
-    try {
-      final PluginManager pm = Bukkit.getPluginManager();
-      commandMap = Mirror.getFieldValue(pm, "commandMap");
-    } catch (final ReflectiveOperationException ex) {
-      throw new RuntimeException(ex);
+    if (command != null) {
+      command.unregister(getCommandMap());
     }
 
-    return commandMap;
+    syncCommands();
   }
 
-  private static final Map<String, Command> knownCommands()
-      throws ReflectiveOperationException {
-    return Mirror.getFieldValue(commandMap(), "knownCommands");
+  public static final boolean dispatch(final CommandSender sender, final String cmd) throws CommandException {
+    return getCommandMap().dispatch(sender, cmd);
   }
 
-  private static final void syncCommands() {
-    SchedulerUtil.runAsync(() -> {
-      try {
-        Mirror.invokeMethod(Bukkit.getServer(), "syncCommands");
-      } catch (final ReflectiveOperationException ex) {
-        throw new RuntimeException(ex);
-      }
-    });
+  public static final List<String> tabComplete(final CommandSender sender, final String cmd) throws IllegalArgumentException {
+    return getCommandMap().tabComplete(sender, cmd);
+  }
+
+  public static final Command getCommand(final String cmd) {
+    return getCommandMap().getCommand(cmd);
+  }
+
+  public static final void sendUnknownCommandString(final CommandSender sender) {
+    final Class<?> clazz = MirrorSafe.getClass("org.spigotmc.SpigotConfig");
+    final String msg = MirrorSafe.getFieldValue(clazz, "unknownCommandMessage");
+    sender.sendMessage(msg);
+  }
+
+  private static CommandMap getCommandMap() {
+    return MirrorSafe.getFieldValue(Bukkit.getPluginManager(), "commandMap");
+  }
+
+  private static Map<String, Command> getKnownCommands() {
+    return MirrorSafe.getFieldValue(getCommandMap(), "knownCommands");
+  }
+
+  private static void syncCommands() {
+    MirrorSafe.invokeMethod(Bukkit.getServer(), "syncCommands");
   }
 }

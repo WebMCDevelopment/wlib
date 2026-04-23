@@ -1,13 +1,13 @@
 package xyz.webmc.wlib.util;
 
+
+import dev.colbster937.reflect.Mirror;
+import dev.colbster937.reflect.MirrorSafe;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-
-import dev.colbster937.reflect.Mirror;
-import dev.colbster937.reflect.MirrorSafe;
 
 @SuppressWarnings({ "deprecation" })
 public final class MagicUtil {
@@ -17,9 +17,11 @@ public final class MagicUtil {
 
     for (final Player plr : wrld.getPlayers()) {
       boolean sent = true;
+
       if (Mirror.hasMethod(plr.getClass(), "isChunkSent", Chunk.class)) {
         sent = MirrorSafe.invokeMethod(plr, "isChunkSent", chnk);
       }
+
       if (sent) {
         plr.sendBlockChange(loc, mat.getId(), dat);
       }
