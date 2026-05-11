@@ -1,0 +1,57 @@
+on:
+  push:
+    paths:
+      - 'src/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+          server-id: github
+          server-username: GITHUB_ACTOR
+          server-password: GITHUB_TOKEN
+      - run: mvn -B -DskipTests deploy
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - id: vars
+        run: |
+          echo "HASH=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          echo "VERS=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> "$GITHUB_OUTPUT"
+          echo "AFCT=$(mvn help:evaluate -Dexpression=project.build.finalName -q -DforceStdout)" >> "$GITHUB_OUTPUT"
+      - id: dist
+        run: |
+          echo "REL_NAME=${{ format('v{0}+{1}', steps.vars.outputs.VERS, steps.vars.outputs.HASH) }}" >> "$GITHUB_OUTPUT"
+          echo "JAR_NAME=${{ format('{0}+{1}.jar', steps.vars.outputs.AFCT, steps.vars.outputs.HASH) }}" >> "$GITHUB_OUTPUT"
+      - run: |
+          mkdir -p dist
+          cp target/${{ steps.vars.outputs.AFCT }}.jar dist/${{ steps.dist.outputs.JAR_NAME }}
+      - id: mrtoken
+        run: |
+          echo "STATUS=$([ -n "${{ secrets.MODRINTH_TOKEN }}" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+      - id: mrinfo
+        if: ${{ steps.mrtoken.outputs.STATUS == 'true' }}
+        run: |
+          echo "PROJECT_ID=$(curl -s "https://api.modrinth.com/v2/project/wlib" -H "Authorization: Bearer ${{ secrets.MODRINTH_TOKEN }}" | jq -r '.id')" >> "$GITHUB_OUTPUT"
+      - if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.mrtoken.outputs.STATUS == 'true'
+        uses: cloudnode-pro/modrinth-publish@v2
+        with:
+          token: ${{ secrets.MODRINTH_TOKEN }}
+          project: ${{ steps.mrinfo.outputs.PROJECT_ID }}
+          version: ${{ steps.dist.outputs.REL_NAME }}
+          loaders: '["bukkit", "spigot", "paper", "purpur", "folia"]'
+          game-versions: '["1.8.x", "1.9.x", "1.10.x", "1.11.x", "1.12.x", "1.13.x", "1.14.x", "1.15.x", "1.16.x", "1.17.x", "1.18.x", "1.19.x", "1.20.x", "1.21.x", "26.x"]'
+          files: dist/${{ steps.dist.outputs.JAR_NAME }}
+          primary-file: ${{ steps.dist.outputs.JAR_NAME }}
+          name: ${{ steps.dist.outputs.REL_NAME }}
+          channel: 'beta'
