@@ -1,6 +1,5 @@
 package xyz.webmc.wlib.util;
 
-
 import dev.colbster937.reflect.Mirror;
 import dev.colbster937.reflect.MirrorSafe;
 import org.bukkit.Chunk;
