@@ -20,13 +20,13 @@ public final class WLIBUtil {
   }
 
   public static final List<String> getWLIBPluginNames() {
-    final List<String> plugins = new ArrayList<>();
+    final List<String> ret = new ArrayList<>();
 
     for (final Plugin plugin : getWLIBPlugins()) {
-      plugins.add(plugin.getName());
+      ret.add(plugin.getName());
     }
 
-    return plugins;
+    return ret;
   }
 
   public static final void sendStringCountMessage(final CommandSender sender, final String name, final List<String> lst) {
