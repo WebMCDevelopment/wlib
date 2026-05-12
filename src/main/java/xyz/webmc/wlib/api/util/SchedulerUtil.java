@@ -3,12 +3,13 @@ package xyz.webmc.wlib.api.util;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-import com.tcoded.folialib.FoliaLib;
-import com.tcoded.folialib.impl.PlatformScheduler;
-import com.tcoded.folialib.wrapper.task.WrappedTask;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
+
+import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.impl.PlatformScheduler;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 
 public final class SchedulerUtil {
   private static FoliaLib lib;
@@ -85,5 +86,9 @@ public final class SchedulerUtil {
 
   public static final WrappedTask runAtEntityTimer(final Entity ent, final Runnable task, final long delayTicks, final long periodTicks) {
     return sch.runAtEntityTimer(ent, task, delayTicks, periodTicks);
+  }
+
+  public static final void teleportAsync(final Entity ent, final Location loc) {
+    sch.teleportAsync(ent, loc);
   }
 }

@@ -1,5 +1,12 @@
 package xyz.webmc.wlib;
 
+import org.bukkit.command.CommandSender;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.server.ServerCommandEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import xyz.webmc.wlib.api.util.CommandUtil;
 import xyz.webmc.wlib.api.util.EventUtil;
 import xyz.webmc.wlib.api.util.PermissionUtil;
@@ -8,13 +15,6 @@ import xyz.webmc.wlib.api.util.SchedulerUtil;
 import xyz.webmc.wlib.api.util.WLIBUtil;
 import xyz.webmc.wlib.command.WLIBBlankCommand;
 import xyz.webmc.wlib.command.WLIBCommand;
-
-import org.bukkit.command.CommandSender;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.server.ServerCommandEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
   @Override
@@ -49,6 +49,10 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
     try {
       Class.forName("io.papermc.paper.command.PaperPluginsCommand");
       final String[] split = cmdLine.split("\\s+", 2)[0].split(":", 2);
+
+      if (split[0].startsWith("/")) {
+        split[0] = split[0].substring(1);
+      }
 
       final String ctx;
       final String cmd;
