@@ -1,12 +1,5 @@
 package xyz.webmc.wlib;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.server.ServerCommandEvent;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import xyz.webmc.wlib.api.util.CommandUtil;
 import xyz.webmc.wlib.api.util.EventUtil;
 import xyz.webmc.wlib.api.util.PermissionUtil;
@@ -15,6 +8,13 @@ import xyz.webmc.wlib.api.util.SchedulerUtil;
 import xyz.webmc.wlib.api.util.WLIBUtil;
 import xyz.webmc.wlib.command.WLIBBlankCommand;
 import xyz.webmc.wlib.command.WLIBCommand;
+
+import org.bukkit.command.CommandSender;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.server.ServerCommandEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
   @Override
@@ -28,6 +28,8 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
     CommandUtil.registerCommand(new WLIBCommand());
     CommandUtil.registerCommand(new WLIBBlankCommand());
     EventUtil.registerEvents(this);
+
+    PermissionUtil.setGroupPermission("default", "wlib.dev-alert.muted.*", false);
   }
 
   @Override

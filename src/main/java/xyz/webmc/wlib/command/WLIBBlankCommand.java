@@ -1,11 +1,11 @@
 package xyz.webmc.wlib.command;
 
+import xyz.webmc.wlib.api.util.RandomUtil;
+
 import java.util.List;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-
-import xyz.webmc.wlib.api.util.RandomUtil;
 
 public final class WLIBBlankCommand extends Command {
   private static final String name = RandomUtil.randomStringLowercaseAZ(16);

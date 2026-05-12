@@ -14,9 +14,6 @@ public final class PermissionUtil extends AbstractPluginRequiredUtil {
 
   public static final void init() {
     bool = check("LuckPerms");
-    if (bool) {
-      LPUtil.setGroupPermission("default", "wlib.dev-alert.muted.*", false);
-    }
   }
 
   public static final boolean hasPermission(final UUID uuid, final String node) {

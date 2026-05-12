@@ -3,13 +3,12 @@ package xyz.webmc.wlib.api.util;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.plugin.Plugin;
-
 import com.tcoded.folialib.FoliaLib;
 import com.tcoded.folialib.impl.PlatformScheduler;
 import com.tcoded.folialib.wrapper.task.WrappedTask;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.plugin.Plugin;
 
 public final class SchedulerUtil {
   private static FoliaLib lib;
