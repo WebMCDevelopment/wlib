@@ -1,4 +1,4 @@
-package xyz.webmc.wlib.util;
+package xyz.webmc.wlib.api.util;
 
 import java.io.File;
 

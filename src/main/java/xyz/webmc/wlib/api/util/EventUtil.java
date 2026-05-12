@@ -1,4 +1,4 @@
-package xyz.webmc.wlib.util;
+package xyz.webmc.wlib.api.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;

@@ -1,4 +1,4 @@
-package xyz.webmc.wlib.util;
+package xyz.webmc.wlib.api.util;
 
 import dev.colbster937.reflect.Mirror;
 import dev.colbster937.reflect.MirrorSafe;

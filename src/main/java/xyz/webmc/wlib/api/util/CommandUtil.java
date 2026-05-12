@@ -1,4 +1,4 @@
-package xyz.webmc.wlib.util;
+package xyz.webmc.wlib.api.util;
 
 import java.util.List;
 import java.util.Map;

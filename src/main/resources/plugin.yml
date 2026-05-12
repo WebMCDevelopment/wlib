@@ -1,6 +1,7 @@
 name: ${plugin.name}
 version: ${plugin.vers}
 main: ${plugin.pckg}.${plugin.name}BukkitPlugin
+softdepend: ${plugin.sdep}
 folia-supported: true
 api-version: 1.13
 load: STARTUP
