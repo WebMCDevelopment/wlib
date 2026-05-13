@@ -15,7 +15,7 @@ public final class AlertUtil {
     final String str = ChatColor.DARK_GREEN + "[" + ChatColor.GREEN + "DEV" + ChatColor.RESET + " - " + ChatColor.GREEN + ChatColor.DARK_GREEN + ctx + "] " + ChatColor.RESET + String.join(" ", txt);
 
     for (final Player p : Bukkit.getOnlinePlayers()) {
-      if (p.hasPermission("wlib.dev-alert") && !p.hasPermission("wlib.dev-alert.muted." + ctx)) {
+      if (p.hasPermission("wlib.alerts.dev") && !p.hasPermission("wlib.alerts.dev.muted." + ctx)) {
         p.sendMessage(str);
       }
     }

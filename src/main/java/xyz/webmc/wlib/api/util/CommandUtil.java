@@ -58,12 +58,6 @@ public final class CommandUtil {
     return getCommandMap().getCommand(cmd);
   }
 
-  public static final void sendUnknownCommandString(final CommandSender sender) {
-    final Class<?> clazz = MirrorSafe.getClass("org.spigotmc.SpigotConfig");
-    final String msg = MirrorSafe.getFieldValue(clazz, "unknownCommandMessage");
-    sender.sendMessage(msg);
-  }
-
   private static CommandMap getCommandMap() {
     return MirrorSafe.getFieldValue(Bukkit.getPluginManager(), "commandMap");
   }

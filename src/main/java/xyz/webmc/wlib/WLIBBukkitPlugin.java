@@ -29,7 +29,7 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
     CommandUtil.registerCommand(new WLIBBlankCommand());
     EventUtil.registerEvents(this);
 
-    PermissionUtil.setGroupPermission("default", "wlib.dev-alert.muted.*", false);
+    PermissionUtil.setGroupPermission("default", "wlib.alerts.dev.muted.*", false);
   }
 
   @Override
@@ -48,30 +48,32 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
   }
 
   private void handleCommandEvent(final CommandSender sender, final String cmdLine) {
-    try {
-      Class.forName("io.papermc.paper.command.PaperPluginsCommand");
-      final String[] split = cmdLine.split("\\s+", 2)[0].split(":", 2);
+    if (sender.hasPermission("bukkit.command.plugins")) {
+      try {
+        Class.forName("io.papermc.paper.command.PaperPluginsCommand");
+        final String[] split = cmdLine.split("\\s+", 2)[0].split(":", 2);
 
-      if (split[0].startsWith("/")) {
-        split[0] = split[0].substring(1);
-      }
+        if (split[0].startsWith("/")) {
+          split[0] = split[0].substring(1);
+        }
 
-      final String ctx;
-      final String cmd;
+        final String ctx;
+        final String cmd;
 
-      if (split.length == 1) {
-        ctx = "bukkit".trim();
-        cmd = split[0].trim();
-      } else {
-        ctx = split[0].trim();
-        cmd = split[1].trim();
-      }
+        if (split.length == 1) {
+          ctx = "bukkit".trim();
+          cmd = split[0].trim();
+        } else {
+          ctx = split[0].trim();
+          cmd = split[1].trim();
+        }
 
-      if (ctx.equals("bukkit") && (cmd.equals("plugins") || cmd.equals("pl"))) {
-        SchedulerUtil.runNextTick(() -> {
-          WLIBUtil.sendStringListMessageType2(sender, "WLIB Plugins", WLIBUtil.getWLIBPluginNames());
-        });
-      }
-    } catch (final ClassNotFoundException ex) {}
+        if (ctx.equals("bukkit") && (cmd.equals("plugins") || cmd.equals("pl"))) {
+          SchedulerUtil.runNextTick(() -> {
+            WLIBUtil.sendStringListMessageType2(sender, "WLIB Plugins", WLIBUtil.getWLIBPluginNames());
+          });
+        }
+      } catch (final ClassNotFoundException ex) {}
+    }
   }
 }

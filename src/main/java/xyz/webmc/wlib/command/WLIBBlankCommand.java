@@ -1,30 +1,30 @@
 package xyz.webmc.wlib.command;
 
-import xyz.webmc.wlib.api.util.RandomUtil;
+import xyz.webmc.wlib.api.command.WCommand;
+import xyz.webmc.wlib.api.util.RNGUtil;
 
 import java.util.List;
 
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-public final class WLIBBlankCommand extends Command {
-  private static final String name = RandomUtil.randomStringLowercaseAZ(16);
+public final class WLIBBlankCommand extends WCommand {
+  private static final String NAME = RNGUtil.randomStringLowercaseAZ(16);
 
   public WLIBBlankCommand() {
-    super(name);
+    super(NAME);
   }
 
   public static final String getBlankCommandName() {
-    return name;
+    return NAME;
   }
 
   @Override
-  public final boolean execute(final CommandSender sender, final String label, final String[] args) {
+  public final boolean run(final CommandSender sender, final String label, final String[] args) {
     return true;
   }
 
   @Override
-  public final List<String> tabComplete(final CommandSender sender, final String label, final String[] args) {
+  public final List<String> tab(final CommandSender sender, final String label, final String[] args) {
     return List.of();
   }
 }

@@ -1,6 +1,6 @@
 package xyz.webmc.wlib.api.util;
 
-public final class RandomUtil {
+public final class RNGUtil {
   public static final String randomString(final String chars, final int len) {
     final StringBuilder sb = new StringBuilder();
 

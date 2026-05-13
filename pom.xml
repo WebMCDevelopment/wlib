@@ -31,6 +31,11 @@
       <version>1.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
+      <groupId>dev.colbster937</groupId>
+      <artifactId>java-util</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
       <groupId>com.tcoded</groupId>
       <artifactId>FoliaLib</artifactId>
       <version>0.5.1</version>
@@ -56,6 +61,10 @@
     <repository>
       <id>java-mirror</id>
       <url>https://maven.colbster937.dev/colbster937/java-mirror/</url>
+    </repository>
+    <repository>
+      <id>java-util</id>
+      <url>https://maven.colbster937.dev/colbster937/java-util/</url>
     </repository>
     <repository>
       <id>tcoded</id>
@@ -92,6 +101,10 @@
                 <relocation>
                   <pattern>dev.colbster937.reflect</pattern>
                   <shadedPattern>${plugin.pckg}.lib.mirror</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>dev.colbster937.util</pattern>
+                  <shadedPattern>${plugin.pckg}.lib.jutil</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>com.tcoded.folialib</pattern>
