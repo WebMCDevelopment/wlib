@@ -3,13 +3,14 @@ package xyz.webmc.wlib.api.command;
 import java.util.List;
 import java.util.logging.Level;
 
-import dev.colbster937.reflect.MirrorSafe;
-import dev.colbster937.util.ExceptionStacker;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import dev.colbster937.reflect.MirrorSafe;
+import dev.colbster937.util.ExceptionStacker;
 
 public abstract class WCommand extends Command {
   private static final String PERMISSION_MSG = ChatColor.RED + "You don't have permission to use this command.";
@@ -19,7 +20,10 @@ public abstract class WCommand extends Command {
   }
 
   protected abstract boolean run(final CommandSender sender, final String label, final String[] args) throws Throwable;
-  protected abstract List<String> tab(final CommandSender sender, final String label, final String[] args) throws Throwable;
+
+  protected List<String> tab(final CommandSender sender, final String label, final String[] args) throws Throwable {
+    return List.of();
+  }
 
   @Override
   public final boolean execute(final CommandSender sender, final String label, final String[] args) {
