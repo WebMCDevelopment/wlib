@@ -1,7 +1,7 @@
 package xyz.webmc.wlib.api.util;
 
-import xyz.webmc.wlib.internal.AbstractPluginRequiredUtil;
-import xyz.webmc.wlib.internal.LPUtil;
+import xyz.webmc.wlib.internal.util.AbstractPluginRequiredUtil;
+import xyz.webmc.wlib.internal.util.LPUtil;
 
 import java.util.UUID;
 

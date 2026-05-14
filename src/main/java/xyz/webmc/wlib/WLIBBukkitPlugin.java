@@ -6,8 +6,8 @@ import xyz.webmc.wlib.api.util.PermissionUtil;
 import xyz.webmc.wlib.api.util.PlaceholderUtil;
 import xyz.webmc.wlib.api.util.SchedulerUtil;
 import xyz.webmc.wlib.api.util.WLIBUtil;
-import xyz.webmc.wlib.command.WLIBBlankCommand;
-import xyz.webmc.wlib.command.WLIBCommand;
+import xyz.webmc.wlib.internal.command.WLIBBlankCommand;
+import xyz.webmc.wlib.internal.command.WLIBCommand;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;

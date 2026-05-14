@@ -1,4 +1,4 @@
-package xyz.webmc.wlib.command;
+package xyz.webmc.wlib.internal.command;
 
 import xyz.webmc.wlib.api.command.WCommand;
 import xyz.webmc.wlib.api.util.RNGUtil;

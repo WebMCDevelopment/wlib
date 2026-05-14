@@ -1,15 +1,20 @@
-package xyz.webmc.wlib.command;
+package xyz.webmc.wlib.internal.command;
 
 import xyz.webmc.wlib.api.command.WCommand;
+import xyz.webmc.wlib.api.structure.AbstractBaseStructure;
 import xyz.webmc.wlib.api.util.PermissionUtil;
+import xyz.webmc.wlib.api.util.SchedulerUtil;
 import xyz.webmc.wlib.api.util.WLIBUtil;
+import xyz.webmc.wlib.internal.structure.HerobrineShrineTestStructure;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public final class WLIBCommand extends WCommand {
   public WLIBCommand() {
@@ -44,6 +49,15 @@ public final class WLIBCommand extends WCommand {
           final String act = args[1].trim();
           if (act.equals("throw")) {
             throw new CommandException();
+          } else if (sender instanceof Player plr) {
+            if (act.equals("shrine")) {
+              final AbstractBaseStructure structure = HerobrineShrineTestStructure.INSTANCE;
+              final Location loc = plr.getLocation();
+              structure.place(loc.clone());
+              SchedulerUtil.teleportAsync(plr, loc.clone().add(1, 1, 0).getBlock().getLocation().clone().add(0.5D, 0, 0.5D));
+              sender.sendMessage(ChatColor.GREEN + "Placed structure " + structure.getName());
+              bool = false;
+            }
           }
         }
       }
@@ -74,6 +88,7 @@ public final class WLIBCommand extends WCommand {
       } else if (args.length == 2) {
         if (args[0].equals("debug") && sender.hasPermission("wlib.debug")) {
           ret.add("throw");
+          ret.add("shrine");
         }
       }
 

@@ -1,6 +1,6 @@
 package xyz.webmc.wlib.api.util;
 
-import xyz.webmc.wlib.internal.AbstractPluginRequiredUtil;
+import xyz.webmc.wlib.internal.util.AbstractPluginRequiredUtil;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;

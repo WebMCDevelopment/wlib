@@ -1,4 +1,4 @@
-package xyz.webmc.wlib.internal;
+package xyz.webmc.wlib.internal.util;
 
 import java.util.UUID;
 
