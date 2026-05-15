@@ -14,7 +14,7 @@
     <plugin.name>WLIB</plugin.name>
     <plugin.vers>${project.version}</plugin.vers>
     <plugin.pckg>${project.groupId}.${project.artifactId}</plugin.pckg>
-    <plugin.sdep>["PlaceholderAPI","LuckPerms"]</plugin.sdep>
+    <plugin.sdep>["PlaceholderAPI","LuckPerms","EaglercraftXServer"]</plugin.sdep>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>17</maven.compiler.release>
   </properties>
@@ -57,6 +57,12 @@
       <version>5.5</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>net.lax1dude.eaglercraft.backend</groupId>
+      <artifactId>api-bukkit</artifactId>
+      <version>1.1.0</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
   <repositories>
     <repository>
@@ -78,6 +84,10 @@
     <repository>
       <id>placeholderapi</id>
       <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+    </repository>
+    <repository>
+      <id>lax1dude</id>
+      <url>https://repo.lax1dude.net/repository/releases/</url>
     </repository>
   </repositories>
   <build>
