@@ -9,6 +9,7 @@ import org.bukkit.block.Block;
 
 @SuppressWarnings({ "deprecation" })
 public final class BlockRelative {
+
   private final int x;
   private final int y;
   private final int z;
@@ -75,5 +76,25 @@ public final class BlockRelative {
     } catch (final ClassNotFoundException ex) {
       return false;
     }
+  }
+
+  public int getX() {
+    return x;
+  }
+
+  public int getY() {
+    return y;
+  }
+
+  public int getZ() {
+    return z;
+  }
+
+  public Material getMaterial() {
+    return mat.parseMaterial();
+  }
+
+  public String getDataModern() {
+    return dataModern;
   }
 }
