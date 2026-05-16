@@ -4,7 +4,7 @@ import java.util.Map;
 
 public final class HTTPRequest extends AbstractHTTPObject {
   private static final String DEFAULT_METHOD = "GET";
-  
+
   private final String method;
   private final String path;
   private final String query;

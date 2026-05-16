@@ -51,7 +51,7 @@ public final class HTTPResponse extends AbstractHTTPObject {
   public final int getCode() {
     return this.code;
   }
-  
+
   private static Map<String, String> addTypeHeader(final Map<String, String> map, final String type) {
     final Map<String, String> ret = new HashMap<>(map);
     ret.put("Content-Type", type);
