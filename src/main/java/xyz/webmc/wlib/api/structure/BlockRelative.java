@@ -90,11 +90,19 @@ public final class BlockRelative {
     return z;
   }
 
-  public Material getMaterial() {
+  public XMaterial getMaterial() {
+    return mat;
+  }
+
+  public Material getBukkitMaterial() {
     return mat.parseMaterial();
   }
 
   public String getDataModern() {
     return dataModern;
+  }
+
+  public byte getDataLegacy() {
+    return dataLegacy;
   }
 }
