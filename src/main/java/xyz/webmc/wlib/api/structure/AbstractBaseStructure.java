@@ -1,5 +1,7 @@
 package xyz.webmc.wlib.api.structure;
 
+import xyz.webmc.wlib.api.util.SchemUtil;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -9,14 +11,11 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Location;
-
 import com.cryptomorin.xseries.XMaterial;
-
 import dev.zerite.craftlib.commons.world.Block;
 import dev.zerite.craftlib.schematic.Schematic;
 import dev.zerite.craftlib.schematic.SchematicMaterials;
-import xyz.webmc.wlib.api.util.SchemUtil;
+import org.bukkit.Location;
 
 public abstract class AbstractBaseStructure {
   private final List<BlockRelative> blocks = new ArrayList<>();

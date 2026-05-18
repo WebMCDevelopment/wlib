@@ -1,5 +1,17 @@
 package xyz.webmc.wlib;
 
+import java.util.List;
+
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.server.ServerCommandEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import dev.colbster937.reflect.MirrorSafe;
+import xyz.webmc.wlib.api.misc.CaptureSender;
 import xyz.webmc.wlib.api.util.CommandUtil;
 import xyz.webmc.wlib.api.util.EventUtil;
 import xyz.webmc.wlib.api.util.PermissionUtil;
@@ -9,13 +21,7 @@ import xyz.webmc.wlib.api.util.WLIBUtil;
 import xyz.webmc.wlib.internal.command.WLIBBlankCommand;
 import xyz.webmc.wlib.internal.command.WLIBCommand;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.server.ServerCommandEvent;
-import org.bukkit.plugin.java.JavaPlugin;
-
+@SuppressWarnings({ "unused" })
 public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
   @Override
   public final void onEnable() {
@@ -25,9 +31,11 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
     PlaceholderUtil.init();
     SchedulerUtil.init(this);
     WLIBUtil.registerPlugin(this);
-    CommandUtil.registerCommand(new WLIBCommand());
+    CommandUtil.registerCommand(new WLIBCommand(this));
     CommandUtil.registerCommand(new WLIBBlankCommand());
     EventUtil.registerEvents(this);
+
+    CommandUtil.registerCommandAliases("wlib:wlib plugins", "wplugins", "wpl");
 
     PermissionUtil.setGroupPermission("default", "wlib.alerts.dev.muted.*", false);
   }
@@ -39,41 +47,58 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
 
   @EventHandler
   public final void onCommand(final ServerCommandEvent ev) {
-    this.handleCommandEvent(ev.getSender(), ev.getCommand());
+    if (handleCommandEvent(ev.getSender(), ev.getCommand())) {
+      ev.setCommand(WLIBBlankCommand.getBlankRandomCommandKey());
+    }
   }
 
   @EventHandler
   public final void onCommand(final PlayerCommandPreprocessEvent ev) {
-    this.handleCommandEvent(ev.getPlayer(), ev.getMessage());
+    if (handleCommandEvent(ev.getPlayer(), ev.getMessage())) {
+      ev.setCancelled(true);
+    }
   }
 
-  private void handleCommandEvent(final CommandSender sender, final String cmdLine) {
-    if (sender.hasPermission("bukkit.command.plugins")) {
-      try {
-        Class.forName("io.papermc.paper.command.PaperPluginsCommand");
-        final String[] split = cmdLine.split("\\s+", 2)[0].split(":", 2);
+  private static boolean handleCommandEvent(final CommandSender sender, final String cmdLine) {
+    String commandStr = cmdLine;
 
-        if (split[0].startsWith("/")) {
-          split[0] = split[0].substring(1);
-        }
-
-        final String ctx;
-        final String cmd;
-
-        if (split.length == 1) {
-          ctx = "bukkit".trim();
-          cmd = split[0].trim();
-        } else {
-          ctx = split[0].trim();
-          cmd = split[1].trim();
-        }
-
-        if (ctx.equals("bukkit") && (cmd.equals("plugins") || cmd.equals("pl"))) {
-          SchedulerUtil.runNextTick(() -> {
-            WLIBUtil.sendStringListMessageType2(sender, "WLIB Plugins", WLIBUtil.getWLIBPluginNames());
-          });
-        }
-      } catch (final ClassNotFoundException ex) {}
+    if (commandStr.startsWith("/")) {
+      commandStr = commandStr.substring(1);
     }
+
+    if (sender.hasPermission("bukkit.command.plugins")) {
+      final String[] split = commandStr.split("\\s+", 2)[0].split(":", 2);
+
+      final String ctx;
+      final String cmd;
+
+      if (split.length == 1) {
+        ctx = "bukkit".trim();
+        cmd = split[0].trim();
+      } else {
+        ctx = split[0].trim();
+        cmd = split[1].trim();
+      }
+
+      if (ctx.equals("bukkit") && (cmd.equals("plugins") || cmd.equals("pl"))) {
+        final String name = "WLIB Plugins";
+        final List<String> plugins = WLIBUtil.getWLIBPluginNames();
+        if (MirrorSafe.getClass("io.papermc.paper.command.PaperPluginsCommand") != null) {
+          SchedulerUtil.runNextTick(() -> {
+            WLIBUtil.sendStringListMessageType2(sender, name, plugins);
+          });
+        } else if (false) {
+          final CaptureSender capture = new CaptureSender(sender);
+          CommandUtil.dispatch(capture, commandStr);
+          final String[] msg = capture.getMessages().get(0).split(": ");
+          sender.sendMessage(ChatColor.GOLD + "Bukkit " + msg[0] + ":");
+          sender.sendMessage(ChatColor.DARK_GRAY + " - " +  msg[1]);
+          WLIBUtil.sendStringListMessageType3(sender, name, plugins);
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 }

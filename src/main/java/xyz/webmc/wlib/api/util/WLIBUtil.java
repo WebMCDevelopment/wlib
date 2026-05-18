@@ -29,6 +29,16 @@ public final class WLIBUtil {
     return ret;
   }
 
+  public static final String serializeExceptionStackString(final String stack) {
+    return stack
+      .replaceAll("\t", "    ")
+      .replaceAll("[\\p{Cntrl}&&[^\\r\\n]]", "");
+  }
+
+  public static final String[] serializeExceptionStackStringMultiline(final String stack) {
+    return serializeExceptionStackString(stack).split("\\R");
+  }
+
   public static final void sendStringListMessageType1(final CommandSender sender, final String name, final List<String> lst) {
     sender.sendMessage(name + " (" + lst.size() + "): " + getStringListMessage(lst));
   }
@@ -42,8 +52,12 @@ public final class WLIBUtil {
     sendStringListMessageType2(sender, name + " (" + lst.size() + ")", lst);
   }
 
-  private static String getStringListMessage(final List<String> lst) {
+  public static final String getStringListMessage(final ChatColor color, final List<String> lst) {
     Collections.sort(lst, String.CASE_INSENSITIVE_ORDER);
-    return ChatColor.GREEN + String.join(ChatColor.RESET + ", " + ChatColor.GREEN, lst);
+    return color + String.join(ChatColor.RESET + ", " + color, lst);
+  }
+
+  public static final String getStringListMessage(final List<String> lst) {
+    return getStringListMessage(ChatColor.GREEN, lst);
   }
 }

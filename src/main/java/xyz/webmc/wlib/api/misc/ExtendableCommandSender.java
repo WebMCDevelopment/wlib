@@ -97,7 +97,7 @@ public abstract class ExtendableCommandSender implements CommandSender {
   }
 
   @Override
-  public String getName() {
+  public final String getName() {
     return this.getClass().getSimpleName();
   }
 }

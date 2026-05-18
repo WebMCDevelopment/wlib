@@ -1,5 +1,8 @@
 package xyz.webmc.wlib.api.util;
 
+import xyz.webmc.wlib.internal.command.AliasCommand;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +47,20 @@ public final class CommandUtil {
     }
 
     syncCommands();
+  }
+
+  public static final void registerCommandAliases(final Plugin plugin, final String cmd, final String ...aliases) {
+    final List<Command> commands = new ArrayList<>();
+
+    for (final String alias : aliases) {
+      commands.add(new AliasCommand(cmd, alias));
+    }
+
+    registerCommands(plugin, commands);
+  }
+
+  public static final void registerCommandAliases(final String cmd, final String ...aliases) {
+    registerCommandAliases(plugin, cmd, aliases);
   }
 
   public static final boolean dispatch(final CommandSender sender, final String cmd) throws CommandException {

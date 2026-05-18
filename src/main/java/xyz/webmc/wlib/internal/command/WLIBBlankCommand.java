@@ -14,8 +14,12 @@ public final class WLIBBlankCommand extends WCommand {
     super(NAME);
   }
 
-  public static final String getBlankCommandName() {
+  public static final String getBlankRandomCommandName() {
     return NAME;
+  }
+
+  public static final String getBlankRandomCommandKey() {
+    return "wlib:" + getBlankRandomCommandName();
   }
 
   @Override
