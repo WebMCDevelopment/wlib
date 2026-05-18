@@ -1,17 +1,22 @@
 package xyz.webmc.wlib.api.structure;
 
-import xyz.webmc.wlib.api.util.SchemUtil;
-
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Location;
+
 import com.cryptomorin.xseries.XMaterial;
+
 import dev.zerite.craftlib.commons.world.Block;
 import dev.zerite.craftlib.schematic.Schematic;
 import dev.zerite.craftlib.schematic.SchematicMaterials;
-import org.bukkit.Location;
+import xyz.webmc.wlib.api.util.SchemUtil;
 
 public abstract class AbstractBaseStructure {
   private final List<BlockRelative> blocks = new ArrayList<>();
@@ -35,13 +40,17 @@ public abstract class AbstractBaseStructure {
     return this.name;
   }
 
-  public final void saveSchematic(final File file) throws IOException {
+  public final void saveSchematic(final OutputStream os) throws IOException {
     final Schematic schematic = createSchematic();
-    SchemUtil.writeSchematicFile(schematic, file);
+    SchemUtil.writeSchematic(schematic, os);
   }
 
-  public final void loadSchematic(final File file) throws IOException {
-    final Schematic schematic = SchemUtil.readSchematicFile(file);
+  public final void saveSchematic(final File file) throws IOException {
+    saveSchematic(new FileOutputStream(file));
+  }
+
+  public final void loadSchematic(final InputStream is) throws IOException {
+    final Schematic schematic = SchemUtil.readSchematic(is);
 
     final int width = schematic.getWidth();
     final int height = schematic.getHeight();
@@ -66,7 +75,11 @@ public abstract class AbstractBaseStructure {
     }
   }
 
-  private Schematic createSchematic() {
+  public final void loadSchematic(final File file) throws IOException {
+    loadSchematic(new FileInputStream(file));
+  }
+
+  public final Schematic createSchematic() {
     if (!this.blocks.isEmpty()) {
       int minX = Integer.MAX_VALUE;
       int minY = Integer.MAX_VALUE;
