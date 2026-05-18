@@ -134,6 +134,10 @@
                   <pattern>com.cryptomorin.xseries</pattern>
                   <shadedPattern>${plugin.pckg}.lib.xseries</shadedPattern>
                 </relocation>
+                <relocation>
+                  <pattern>dev.zerite.craftlib</pattern>
+                  <shadedPattern>${plugin.pckg}.lib.craftlib</shadedPattern>
+                </relocation>
               </relocations>
             </configuration>
           </execution>
