@@ -5,10 +5,9 @@ import xyz.webmc.wlib.api.util.RNGUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Location;
-
 import dev.colbster937.reflect.MirrorSafe;
 import dev.colbster937.util.WeightedObjectTable;
+import org.bukkit.Location;
 
 public final class WeightedStructureTable extends WeightedObjectTable<AbstractBaseStructure> {
   public WeightedStructureTable(final long seed, final WeightedStructure ...structures) {

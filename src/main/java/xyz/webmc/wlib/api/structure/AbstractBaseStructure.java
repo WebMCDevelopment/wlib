@@ -45,7 +45,26 @@ public abstract class AbstractBaseStructure {
     return this.name;
   }
 
-  public final void loadSchematic(final InputStream is) throws IOException, ParsingException {
+  public int getOffsetX() {
+    return 0;
+  }
+
+  public int getOffsetY() {
+    return 0;
+  }
+
+  public int getOffsetZ() {
+    return 0;
+  }
+
+  protected final void place(final Location loc) {
+    final Location offset = loc.clone().add(this.getOffsetX(), this.getOffsetY(), this.getOffsetZ());
+    for (final BlockRelative blk : blocks) {
+      blk.place(offset);
+    }
+  }
+
+  protected final void loadSchematic(final InputStream is) throws IOException, ParsingException {
     try (is) {
       final Schematic schematic = SchemUtil.readSchematic(is);
 
@@ -83,7 +102,7 @@ public abstract class AbstractBaseStructure {
     }
   }
 
-  public final void loadSchematic(final File file) throws IOException, ParsingException {
+  protected final void loadSchematic(final File file) throws IOException, ParsingException {
     loadSchematic(new FileInputStream(file));
   }
 
