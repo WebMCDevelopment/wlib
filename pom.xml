@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>xyz.webmc</groupId>
   <artifactId>wlib</artifactId>
-  <version>1.2.2-SNAPSHOT</version>
+  <version>1.2.3-SNAPSHOT</version>
   <distributionManagement>
     <repository>
       <id>github</id>
@@ -12,9 +12,10 @@
   </distributionManagement>
   <properties>
     <plugin.name>WLIB</plugin.name>
-    <plugin.vers>${project.version}</plugin.vers>
+    <plugin.vers>${project.version}+${git.commit.id.abbrev}</plugin.vers>
     <plugin.pckg>${project.groupId}.${project.artifactId}</plugin.pckg>
     <plugin.sdep>["PlaceholderAPI","LuckPerms","EaglercraftXServer"]</plugin.sdep>
+    <plugin.athr>["Colbster937"]</plugin.athr>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>17</maven.compiler.release>
   </properties>
@@ -46,9 +47,9 @@
       <version>13.6.0</version>
     </dependency>
     <dependency>
-      <groupId>dev.zerite.craftlib</groupId>
-      <artifactId>craftlib-schematic</artifactId>
-      <version>0.1.4</version>
+        <groupId>net.sandrohc</groupId>
+        <artifactId>schematic4j</artifactId>
+        <version>1.1.1</version>
     </dependency>
     <dependency>
       <groupId>me.clip</groupId>
@@ -68,6 +69,18 @@
       <version>1.1.0</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.26.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.26.0</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
   <repositories>
     <repository>
@@ -81,6 +94,10 @@
     <repository>
       <id>java-util</id>
       <url>https://maven.colbster937.dev/colbster937/java-util/</url>
+    </repository>
+    <repository>
+      <id>schematic4j</id>
+      <url>https://maven.colbster937.dev/colbster937/schematic4j/</url>
     </repository>
     <repository>
       <id>tcoded</id>
@@ -101,6 +118,16 @@
       <resource>
         <filtering>true</filtering>
         <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*.yml</include>
+        </includes>
+      </resource>
+      <resource>
+        <filtering>false</filtering>
+        <directory>src/main/resources</directory>
+        <excludes>
+          <exclude>**/*.yml</exclude>
+        </excludes>
       </resource>
     </resources>
     <plugins>
@@ -135,13 +162,37 @@
                   <shadedPattern>${plugin.pckg}.lib.xseries</shadedPattern>
                 </relocation>
                 <relocation>
-                  <pattern>dev.zerite.craftlib</pattern>
-                  <shadedPattern>${plugin.pckg}.lib.craftlib</shadedPattern>
+                  <pattern>net.sandrohc.schematic4j</pattern>
+                  <shadedPattern>${plugin.pckg}.lib.schematic4j</shadedPattern>
                 </relocation>
               </relocations>
+              <filters>
+              <filter>
+                <artifact>*:*</artifact>
+                <excludes>
+                  <exclude>org/checkerframework/**</exclude>
+                  <exclude>org/slf4j/**</exclude>
+                </excludes>
+              </filter>
+            </filters>
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>io.github.git-commit-id</groupId>
+        <artifactId>git-commit-id-maven-plugin</artifactId>
+        <version>10.0.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>revision</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <generateGitPropertiesFile>false</generateGitPropertiesFile>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
@@ -154,7 +205,7 @@
             </cleanthat>
             <removeUnusedImports />
             <importOrder>
-              <order>xyz.webmc,java,javax,</order>
+              <order>${plugin.pckg},java,javax,</order>
             </importOrder>
             <trimTrailingWhitespace />
             <endWithNewline />

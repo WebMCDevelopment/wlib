@@ -1,32 +1,15 @@
 package xyz.webmc.wlib.api.util;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.entity.Player;
 
-public final class WLIBUtil {
-  private static final List<Plugin> plugins = new ArrayList<>();
-
-  public static final void registerPlugin(final Plugin plugin) {
-    plugins.add(plugin);
-  }
-
-  public static final List<Plugin> getWLIBPlugins() {
-    return plugins;
-  }
-
-  public static final List<String> getWLIBPluginNames() {
-    final List<String> ret = new ArrayList<>();
-
-    for (final Plugin plugin : getWLIBPlugins()) {
-      ret.add(plugin.getName());
-    }
-
-    return ret;
+public final class TextUtil {
+  public static final String parsePlaceholders(final Player player, final String txt) {
+    return PlaceholderUtil.parsePlaceholders(player, txt);
   }
 
   public static final String serializeExceptionStackString(final String stack) {

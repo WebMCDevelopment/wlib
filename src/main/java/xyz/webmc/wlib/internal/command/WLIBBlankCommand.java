@@ -8,7 +8,7 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 
 public final class WLIBBlankCommand extends WCommand {
-  private static final String NAME = RNGUtil.randomStringLowercaseAZ(16);
+  private static final String NAME = RNGUtil.getRandomStringLowercaseAZ(16);
 
   public WLIBBlankCommand() {
     super(NAME);

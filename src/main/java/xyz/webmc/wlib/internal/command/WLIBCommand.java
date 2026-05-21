@@ -1,11 +1,13 @@
 package xyz.webmc.wlib.internal.command;
 
+import xyz.webmc.wlib.api.WLIB;
 import xyz.webmc.wlib.api.command.WCommand;
 import xyz.webmc.wlib.api.structure.AbstractBaseStructure;
 import xyz.webmc.wlib.api.util.PermissionUtil;
 import xyz.webmc.wlib.api.util.SchedulerUtil;
-import xyz.webmc.wlib.api.util.WLIBUtil;
+import xyz.webmc.wlib.api.util.TextUtil;
 import xyz.webmc.wlib.internal.structure.HerobrineShrineTestStructure;
+import xyz.webmc.wlib.internal.structure.RickQRCodeTestSchemStructure;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,7 @@ public final class WLIBCommand extends WCommand {
     if (args.length > 0) {
       final String arg = args[0].trim();
       if ((arg.equals("plugins") || arg.equals("pl")) && (bool2 = sender.hasPermission("wlib.plugins"))) {
-        WLIBUtil.sendStringListMessageType3(sender, "WLIB Plugins", WLIBUtil.getWLIBPluginNames());
+        TextUtil.sendStringListMessageType3(sender, "WLIB Plugins", WLIB.getWLIBPluginNames());
         bool1 = false;
       } else if ((arg.equals("version") || arg.equals("ver")) && (bool2 = sender.hasPermission("wlib.version"))) {
         sender.sendMessage(ChatColor.GREEN + "Running WLIB Version " + this.plugin.getDescription().getVersion());
@@ -57,14 +59,28 @@ public final class WLIBCommand extends WCommand {
           final String act = args[1].trim();
           if (act.equals("throw")) {
             throw new CommandException();
-          } else if (act.equals("shrine")) {
+          } else if (act.equals("place")) {
             bool1 = false;
             if (sender instanceof Player plr) {
-              final AbstractBaseStructure structure = HerobrineShrineTestStructure.INSTANCE;
-              final Location loc = plr.getLocation();
-              structure.place(loc.clone());
-              SchedulerUtil.teleportAsync(plr, loc.clone().add(1, 1, 0).getBlock().getLocation().clone().add(0.5D, 0, 0.5D));
-              sender.sendMessage(ChatColor.GREEN + "Placed structure " + structure.getName());
+              final String struct = args[2].trim();
+              Class<? extends AbstractBaseStructure> clazz = null;
+
+              if (struct.equals("shrine")) {
+                clazz = HerobrineShrineTestStructure.class;
+              } else if (struct.equals("rick")) {
+                clazz = RickQRCodeTestSchemStructure.class;
+              }
+
+              if (clazz != null) {
+                final AbstractBaseStructure structure = AbstractBaseStructure.getInstance(clazz);
+                final Location loc = plr.getLocation();
+                structure.place(loc.clone());
+                SchedulerUtil.teleportAsync(plr, loc.clone().add(1, 1, 0).getBlock().getLocation().clone().add(0.5D, 0, 0.5D));
+                sender.sendMessage(ChatColor.GREEN + "Placed structure " + structure.getName());
+              } else {
+                bool1 = true;
+                bool2 = false;
+              }
             } else {
               sendOnlyPlayersMessage(sender);
             }
@@ -108,7 +124,12 @@ public final class WLIBCommand extends WCommand {
       } else if (args.length == 2) {
         if (args[0].equals("debug") && sender.hasPermission("wlib.debug")) {
           ret.add("throw");
+          ret.add("place");
+        }
+      } else if (args.length == 3) {
+        if (args[0].equals("debug") && args[1].equals("place") && sender.hasPermission("wlib.debug")) {
           ret.add("shrine");
+          ret.add("rick");
         }
       }
 

@@ -6,8 +6,6 @@ import xyz.webmc.wlib.api.structure.BlockRelative;
 import com.cryptomorin.xseries.XMaterial;
 
 public final class HerobrineShrineTestStructure extends AbstractBaseStructure {
-  public static final HerobrineShrineTestStructure INSTANCE = new HerobrineShrineTestStructure();
-
   public HerobrineShrineTestStructure() {
     super("herobrine_shrine");
 
@@ -28,5 +26,9 @@ public final class HerobrineShrineTestStructure extends AbstractBaseStructure {
         }
       }
     }
+  }
+
+  public static final HerobrineShrineTestStructure getInstance() {
+    return getInstance(HerobrineShrineTestStructure.class);
   }
 }

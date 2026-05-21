@@ -1,8 +1,21 @@
 package xyz.webmc.wlib;
 
+import xyz.webmc.wlib.api.WLIB;
+import xyz.webmc.wlib.api.util.CommandUtil;
+import xyz.webmc.wlib.api.util.EventUtil;
+import xyz.webmc.wlib.api.util.PermissionUtil;
+import xyz.webmc.wlib.api.util.PlaceholderUtil;
+import xyz.webmc.wlib.api.util.SchedulerUtil;
+import xyz.webmc.wlib.api.util.TextUtil;
+import xyz.webmc.wlib.internal.command.WLIBBlankCommand;
+import xyz.webmc.wlib.internal.command.WLIBCommand;
+
 import java.util.List;
 
-import org.bukkit.ChatColor;
+import dev.colbster937.reflect.MirrorSafe;
+import net.sandrohc.schematic4j.SchematicLoader;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,19 +23,11 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import dev.colbster937.reflect.MirrorSafe;
-import xyz.webmc.wlib.api.misc.CaptureSender;
-import xyz.webmc.wlib.api.util.CommandUtil;
-import xyz.webmc.wlib.api.util.EventUtil;
-import xyz.webmc.wlib.api.util.PermissionUtil;
-import xyz.webmc.wlib.api.util.PlaceholderUtil;
-import xyz.webmc.wlib.api.util.SchedulerUtil;
-import xyz.webmc.wlib.api.util.WLIBUtil;
-import xyz.webmc.wlib.internal.command.WLIBBlankCommand;
-import xyz.webmc.wlib.internal.command.WLIBCommand;
-
-@SuppressWarnings({ "unused" })
 public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
+  private static final List<String> DISABLE_LOGGERS = List.of(
+    SchematicLoader.class.getPackageName()
+  );
+
   @Override
   public final void onEnable() {
     CommandUtil.init(this);
@@ -30,7 +35,7 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
     PermissionUtil.init();
     PlaceholderUtil.init();
     SchedulerUtil.init(this);
-    WLIBUtil.registerPlugin(this);
+    WLIB.registerPlugin(this);
     CommandUtil.registerCommand(new WLIBCommand(this));
     CommandUtil.registerCommand(new WLIBBlankCommand());
     EventUtil.registerEvents(this);
@@ -82,23 +87,32 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
 
       if (ctx.equals("bukkit") && (cmd.equals("plugins") || cmd.equals("pl"))) {
         final String name = "WLIB Plugins";
-        final List<String> plugins = WLIBUtil.getWLIBPluginNames();
+        final List<String> plugins = WLIB.getWLIBPluginNames();
         if (MirrorSafe.getClass("io.papermc.paper.command.PaperPluginsCommand") != null) {
           SchedulerUtil.runNextTick(() -> {
-            WLIBUtil.sendStringListMessageType2(sender, name, plugins);
+            TextUtil.sendStringListMessageType2(sender, name, plugins);
           });
-        } else if (false) {
+        } /* else {
           final CaptureSender capture = new CaptureSender(sender);
           CommandUtil.dispatch(capture, commandStr);
           final String[] msg = capture.getMessages().get(0).split(": ");
           sender.sendMessage(ChatColor.GOLD + "Bukkit " + msg[0] + ":");
           sender.sendMessage(ChatColor.DARK_GRAY + " - " +  msg[1]);
-          WLIBUtil.sendStringListMessageType3(sender, name, plugins);
+          TextUtil.sendStringListMessageType3(sender, name, plugins);
           return true;
-        }
+        } */
       }
     }
 
     return false;
+  }
+
+  static {
+    for (final String logger : DISABLE_LOGGERS) {
+      Configurator.setLevel(
+        logger,
+        Level.OFF
+      );
+    }
   }
 }

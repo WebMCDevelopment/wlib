@@ -4,20 +4,26 @@ import xyz.webmc.wlib.api.util.SchemUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.cryptomorin.xseries.XMaterial;
-import dev.zerite.craftlib.commons.world.Block;
-import dev.zerite.craftlib.schematic.Schematic;
-import dev.zerite.craftlib.schematic.SchematicMaterials;
+import dev.colbster937.reflect.MirrorSafe;
+import net.sandrohc.schematic4j.exception.ParsingException;
+import net.sandrohc.schematic4j.schematic.Schematic;
+import net.sandrohc.schematic4j.schematic.types.SchematicBlock;
+import net.sandrohc.schematic4j.schematic.types.SchematicBlockPos;
 import org.bukkit.Location;
 
+
+@SuppressWarnings({ "unchecked" })
 public abstract class AbstractBaseStructure {
+  private static final Map<Class<? extends AbstractBaseStructure>, AbstractBaseStructure> INSTANCES = new HashMap<>();
+
   private final List<BlockRelative> blocks = new ArrayList<>();
   private final String name;
 
@@ -39,34 +45,37 @@ public abstract class AbstractBaseStructure {
     return this.name;
   }
 
-  public final void saveSchematic(final OutputStream os) throws IOException {
-    final Schematic schematic = createSchematic();
-    SchemUtil.writeSchematic(schematic, os);
-  }
+  public final void loadSchematic(final InputStream is) throws IOException, ParsingException {
+    try (is) {
+      final Schematic schematic = SchemUtil.readSchematic(is);
 
-  public final void saveSchematic(final File file) throws IOException {
-    saveSchematic(new FileOutputStream(file));
-  }
+      final int width = schematic.width();
+      final int height = schematic.height();
+      final int length = schematic.length();
 
-  public final void loadSchematic(final InputStream is) throws IOException {
-    final Schematic schematic = SchemUtil.readSchematic(is);
+      final SchematicBlockPos offset = schematic.offset();
 
-    final int width = schematic.getWidth();
-    final int height = schematic.getHeight();
-    final int length = schematic.getLength();
+      for (int y = 0; y < height; y++) {
+        for (int z = 0; z < length; z++) {
+          for (int x = 0; x < width; x++) {
+            final SchematicBlock block = schematic.block(x, y, z);
+            if (block != SchematicBlock.AIR) {
+              final XMaterial mat = XMaterial.matchXMaterial(block.block().replace("minecraft:", "")).orElse(XMaterial.AIR);
+              if (mat != null) {
+                final StringBuilder sb = new StringBuilder();
 
-    final int offsetX = schematic.getOffsetX();
-    final int offsetY = schematic.getOffsetY();
-    final int offsetZ = schematic.getOffsetZ();
+                for (final Map.Entry<String, String> entry : block.states().entrySet()) {
+                  if (sb.length() > 0) {
+                    sb.append(",");
+                  }
 
-    for (int y = 0; y < height; y++) {
-      for (int z = 0; z < length; z++) {
-        for (int x = 0; x < width; x++) {
-          final Block block = schematic.get(x, y, z);
-          if (block != Block.AIR) {
-            final XMaterial mat = XMaterial.matchXMaterial(block.toString()).get();
-            if (mat != null) {
-              this.addBlock(new BlockRelative(x - offsetX, y - offsetY, z - offsetZ, mat, (byte) block.getMetadata()));
+                  sb.append(entry.getKey());
+                  sb.append("=");
+                  sb.append(entry.getValue());
+                }
+
+                this.addBlock(new BlockRelative(x - offset.x, y - offset.y, z - offset.z, mat, "[" + sb.toString() + "]"));
+              }
             }
           }
         }
@@ -74,53 +83,18 @@ public abstract class AbstractBaseStructure {
     }
   }
 
-  public final void loadSchematic(final File file) throws IOException {
+  public final void loadSchematic(final File file) throws IOException, ParsingException {
     loadSchematic(new FileInputStream(file));
   }
 
-  public final Schematic createSchematic() {
-    if (!this.blocks.isEmpty()) {
-      int minX = Integer.MAX_VALUE;
-      int minY = Integer.MAX_VALUE;
-      int minZ = Integer.MAX_VALUE;
-      int maxX = Integer.MIN_VALUE;
-      int maxY = Integer.MIN_VALUE;
-      int maxZ = Integer.MIN_VALUE;
+  public static final <T extends AbstractBaseStructure> T getInstance(final Class<T> clazz, final Object... params) {
+    AbstractBaseStructure structure = INSTANCES.get(clazz);
 
-      for (final BlockRelative blk : this.blocks) {
-        minX = Math.min(minX, blk.getX());
-        minY = Math.min(minY, blk.getY());
-        minZ = Math.min(minZ, blk.getZ());
-        maxX = Math.max(maxX, blk.getX());
-        maxY = Math.max(maxY, blk.getY());
-        maxZ = Math.max(maxZ, blk.getZ());
-      }
-
-      final short width = (short) (maxX - minX + 1);
-      final short height = (short) (maxY - minY + 1);
-      final short length = (short) (maxZ - minZ + 1);
-
-      final Block[] blockArray = new Block[width * height * length];
-      for (int i = 0; i < blockArray.length; i++) {
-        blockArray[i] = Block.AIR;
-      }
-
-      for (final BlockRelative blk : this.blocks) {
-        final int x = blk.getX() - minX;
-        final int y = blk.getY() - minY;
-        final int z = blk.getZ() - minZ;
-        final int index = x + z * width + y * width * length;
-
-        final XMaterial xmat = blk.getMaterial();
-        if (xmat != null && xmat.getId() >= 0) {
-          final int blockId = (xmat.getId() << 4) | (blk.getDataLegacy() & 0xF);
-          blockArray[index] = new Block(blockId, x, y, z);
-        }
-      }
-
-      return new Schematic(width, height, length, SchematicMaterials.ALPHA, blockArray, new ArrayList<>(), new ArrayList<>(), -minX, -minY, -minZ);
-    } else {
-      return new Schematic((short) 0, (short) 0, (short) 0, SchematicMaterials.ALPHA);
+    if (structure == null) {
+      structure = MirrorSafe.invokeConstructor(clazz, params);
+      INSTANCES.put(clazz, structure);
     }
+
+    return (T) structure;
   }
 }

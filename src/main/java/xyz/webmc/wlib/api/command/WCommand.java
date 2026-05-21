@@ -1,6 +1,6 @@
 package xyz.webmc.wlib.api.command;
 
-import xyz.webmc.wlib.api.util.WLIBUtil;
+import xyz.webmc.wlib.api.util.TextUtil;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -34,7 +34,7 @@ public abstract class WCommand extends Command {
 
       if (sender instanceof Player) {
         final String stack = ExceptionStacker.getFullStackString(t);
-        final String[] lines = WLIBUtil.serializeExceptionStackStringMultiline(stack);
+        final String[] lines = TextUtil.serializeExceptionStackStringMultiline(stack);
         for (final String line : lines) {
           sender.sendMessage(ChatColor.DARK_RED + line);
         }
@@ -53,7 +53,7 @@ public abstract class WCommand extends Command {
 
       if (sender instanceof Player) {
         final String stack = ExceptionStacker.getFullStackString(t);
-        final String[] lines = WLIBUtil.serializeExceptionStackStringMultiline(stack);
+        final String[] lines = TextUtil.serializeExceptionStackStringMultiline(stack);
         for (final String line : lines) {
           sender.sendMessage(ChatColor.DARK_RED + line);
         }
