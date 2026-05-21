@@ -33,8 +33,9 @@ public abstract class AbstractBaseStructure {
   }
 
   public final void place(final Location loc) {
+    final Location offset = loc.clone().add(this.getOffsetX(), this.getOffsetY(), this.getOffsetZ());
     for (final BlockRelative blk : blocks) {
-      blk.place(loc);
+      blk.place(offset);
     }
   }
 
