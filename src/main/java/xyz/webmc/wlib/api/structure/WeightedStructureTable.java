@@ -5,6 +5,8 @@ import xyz.webmc.wlib.api.util.RNGUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Location;
+
 import dev.colbster937.reflect.MirrorSafe;
 import dev.colbster937.util.WeightedObjectTable;
 
@@ -25,6 +27,10 @@ public final class WeightedStructureTable extends WeightedObjectTable<AbstractBa
   @SafeVarargs
   public WeightedStructureTable(final Class<? extends AbstractBaseStructure> ...structures) {
     this(weigh(structures));
+  }
+
+  public final void place(final Location loc) {
+    computeRandomObject().place(loc);
   }
 
   @SafeVarargs

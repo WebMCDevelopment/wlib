@@ -30,6 +30,7 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
 
   @Override
   public final void onEnable() {
+    WLIB.init(this.getLogger());
     CommandUtil.init(this);
     EventUtil.init(this);
     PermissionUtil.init();
@@ -88,7 +89,7 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
       if (ctx.equals("bukkit") && (cmd.equals("plugins") || cmd.equals("pl"))) {
         final String name = "WLIB Plugins";
         final List<String> plugins = WLIB.getWLIBPluginNames();
-        if (MirrorSafe.getClass("io.papermc.paper.command.PaperPluginsCommand") != null) {
+        if (MirrorSafe.getClassExists("io.papermc.paper.command.PaperPluginsCommand")) {
           SchedulerUtil.runNextTick(() -> {
             TextUtil.sendStringListMessageType2(sender, name, plugins);
           });
