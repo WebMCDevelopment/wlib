@@ -1,5 +1,7 @@
 package xyz.webmc.wlib.api.util;
 
+import xyz.webmc.wlib.api.WLIB;
+
 import java.util.SplittableRandom;
 
 public final class RNGUtil {
@@ -40,10 +42,15 @@ public final class RNGUtil {
     return getRandomStringLowercaseAZ(len, getRandomSeed());
   }
 
+  @Deprecated(forRemoval = true)
+  public static int mix32(final int z) {
+    WLIB.warnDeprecatedUsage();
+    return HashUtil.mix32(z);
+  }
+
+  @Deprecated(forRemoval = true)
   public static final long mix64(final long z) {
-    long ret = z;
-    ret = (ret ^ (ret >>> 33)) * 0xFF51AFD7ED558CCDL;
-    ret = (ret ^ (ret >>> 33)) * 0xC4CEB9FE1A85EC53L;
-    return ret ^ (ret >>> 33);
+    WLIB.warnDeprecatedUsage();
+    return HashUtil.mix64(z);
   }
 }

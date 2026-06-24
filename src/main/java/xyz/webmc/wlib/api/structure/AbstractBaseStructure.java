@@ -1,5 +1,7 @@
 package xyz.webmc.wlib.api.structure;
 
+import xyz.webmc.wlib.api.util.SchemUtil;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -9,16 +11,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.Location;
-
 import com.cryptomorin.xseries.XMaterial;
-
 import dev.colbster937.reflect.MirrorSafe;
 import net.sandrohc.schematic4j.exception.ParsingException;
 import net.sandrohc.schematic4j.schematic.Schematic;
 import net.sandrohc.schematic4j.schematic.types.SchematicBlock;
 import net.sandrohc.schematic4j.schematic.types.SchematicBlockPos;
-import xyz.webmc.wlib.api.util.SchemUtil;
+import org.bukkit.Location;
 
 
 @SuppressWarnings({ "unchecked" })

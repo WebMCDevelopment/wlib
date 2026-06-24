@@ -1,14 +1,22 @@
 package xyz.webmc.wlib.api;
 
+import xyz.webmc.wlib.api.util.RNGUtil;
+
+import java.lang.StackWalker.Option;
+import java.lang.StackWalker.StackFrame;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import dev.colbster937.reflect.MirrorSafe;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 @SuppressWarnings({ "NonConstantLogger" })
 public final class WLIB {
+  private static final StackWalker stackWalker = StackWalker.getInstance(Option.RETAIN_CLASS_REFERENCE);
   private static final List<Plugin> plugins = new ArrayList<>();
   private static Logger logger;
 
@@ -34,11 +42,60 @@ public final class WLIB {
     return ret;
   }
 
-  public static final Logger getLogger() {
-    return logger;
+  public static final void devAlert(final String... txt) {
+    final Class<?> clazz = stackWalker.getCallerClass();
+    final String ctx = clazz.getSimpleName();
+    final String str = ChatColor.DARK_GREEN + "[" + ChatColor.GREEN + "DEV" + ChatColor.RESET + " - " + ChatColor.GREEN
+        + ChatColor.DARK_GREEN + ctx + "] " + ChatColor.RESET + String.join(" ", txt);
+
+    for (final Player p : Bukkit.getOnlinePlayers()) {
+      if (p.hasPermission("wlib.alerts.dev") && !p.hasPermission("wlib.alerts.dev.muted." + ctx)) {
+        p.sendMessage(str);
+      }
+    }
+  }
+
+  public static final void warnDeprecatedUsage() {
+    final StackFrame[] frames = stackWalker.walk(s -> s.skip(1).toArray(StackFrame[]::new));
+    if (frames.length > 1) {
+      final StackFrame called = frames[0];
+      final StackFrame caller = frames[1];
+
+      final StringBuilder sb = new StringBuilder();
+
+      sb.append(caller.getClassName())
+          .append('.')
+          .append(caller.getMethodName())
+          .append(':')
+          .append(caller.getLineNumber())
+          .append(" called deprecated method ")
+          .append(called.getClassName())
+          .append('.')
+          .append(called.getMethodName());
+
+      for (int i = 2; i < frames.length; i++) {
+        final StackFrame frame = frames[i];
+
+        sb.append("\n  at ")
+            .append(frame.getClassName())
+            .append('.')
+            .append(frame.getMethodName())
+            .append('(')
+            .append(frame.getFileName())
+            .append(':')
+            .append(frame.getLineNumber())
+            .append(")");
+      }
+
+      logger.warning(sb.toString());
+    }
   }
 
   public static final boolean getIsModernServer() {
     return MirrorSafe.getClassExists("org.bukkit.block.data.BlockData");
+  }
+
+  public static final Logger getLogger() {
+    return logger;
   }
 }

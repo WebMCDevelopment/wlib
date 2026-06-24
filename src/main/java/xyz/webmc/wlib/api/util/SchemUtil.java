@@ -15,7 +15,7 @@ import org.bukkit.Bukkit;
 
 public final class SchemUtil {
   public static final Schematic readSchematic(final InputStream is) throws IOException, ParsingException {
-    warnUnsupported();
+    warnSchemUnsupportedServerVersion();
     return SchematicLoader.load(is);
   }
 
@@ -23,7 +23,7 @@ public final class SchemUtil {
     return readSchematic(new FileInputStream(file));
   }
 
-  public static final void warnUnsupported() {
+  public static final void warnSchemUnsupportedServerVersion() {
     if (!WLIB.getIsModernServer()) {
       WLIB.getLogger().log(Level.WARNING, "Schematic loading is unsupported on server version {0}.", Bukkit.getVersion());
     }
