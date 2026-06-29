@@ -39,12 +39,12 @@
     <dependency>
       <groupId>com.tcoded</groupId>
       <artifactId>FoliaLib</artifactId>
-      <version>0.5.1</version>
+      <version>0.5.2</version>
     </dependency>
     <dependency>
       <groupId>com.github.cryptomorin</groupId>
       <artifactId>XSeries</artifactId>
-      <version>13.6.0</version>
+      <version>13.7.0</version>
     </dependency>
     <dependency>
         <groupId>net.sandrohc</groupId>
@@ -197,7 +197,7 @@
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
-        <version>3.5.1</version>
+        <version>3.7.0</version>
         <configuration>
           <java>
             <cleanthat>
