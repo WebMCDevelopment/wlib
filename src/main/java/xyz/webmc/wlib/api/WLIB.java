@@ -1,6 +1,5 @@
 package xyz.webmc.wlib.api;
 
-import xyz.webmc.wlib.api.util.RNGUtil;
 
 import java.lang.StackWalker.Option;
 import java.lang.StackWalker.StackFrame;

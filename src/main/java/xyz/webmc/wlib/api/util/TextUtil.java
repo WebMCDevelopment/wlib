@@ -27,7 +27,7 @@ public final class TextUtil {
   }
 
   public static final void sendStringListMessageType2(final CommandSender sender, final String name, final List<String> lst) {
-    sender.sendMessage(ChatColor.BLUE + name + ":");
+    sendPluginName24(sender, name);
     sender.sendMessage(ChatColor.DARK_GRAY + " - " +  getStringListMessage(lst));
   }
 
@@ -35,12 +35,25 @@ public final class TextUtil {
     sendStringListMessageType2(sender, name + " (" + lst.size() + ")", lst);
   }
 
-  public static final String getStringListMessage(final ChatColor color, final List<String> lst) {
+  public static final void sendStringListMessageType4(final CommandSender sender, final String name, final List<String> lst) {
+    sendPluginName24(sender, name);
+    sender.sendMessage(ChatColor.DARK_GRAY + " - [" + getStringListMessage(ChatColor.DARK_GRAY, lst) + ChatColor.DARK_GRAY + "]");
+  }
+
+  public static final String getStringListMessage(final ChatColor strColor, final ChatColor sepColor, final List<String> lst) {
     Collections.sort(lst, String.CASE_INSENSITIVE_ORDER);
-    return color + String.join(ChatColor.RESET + ", " + color, lst);
+    return strColor + String.join(sepColor + ", " + strColor, lst);
+  }
+
+  public static final String getStringListMessage(final ChatColor sepColor,final List<String> lst) {
+    return getStringListMessage(ChatColor.GREEN, sepColor, lst);
   }
 
   public static final String getStringListMessage(final List<String> lst) {
-    return getStringListMessage(ChatColor.GREEN, lst);
+    return getStringListMessage(ChatColor.RESET, lst);
+  }
+
+  private static void sendPluginName24(final CommandSender sender, final String name) {
+    sender.sendMessage(ChatColor.BLUE + name + ":");
   }
 }

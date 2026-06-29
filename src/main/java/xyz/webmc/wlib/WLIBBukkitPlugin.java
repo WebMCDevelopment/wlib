@@ -17,6 +17,7 @@ import net.sandrohc.schematic4j.SchematicLoader;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -90,9 +91,12 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
         final String name = "WLIB Plugins";
         final List<String> plugins = WLIB.getWLIBPluginNames();
         if (MirrorSafe.getClassExists("io.papermc.paper.command.PaperPluginsCommand")) {
-          SchedulerUtil.runNextTick(() -> {
-            TextUtil.sendStringListMessageType2(sender, name, plugins);
-          });
+          final int type = !MirrorSafe.getClassExists("io.canvasmc.horizon.HorizonLoader") ? 2 : 4;
+          if (type < 4 && !(sender instanceof ConsoleCommandSender)) {
+            SchedulerUtil.runNextTick(() -> {
+              MirrorSafe.invokeMethod(TextUtil.class, "sendStringListMessageType" + type, sender, name, plugins);
+            });
+          }
         } /* else {
           final CaptureSender capture = new CaptureSender(sender);
           CommandUtil.dispatch(capture, commandStr);
