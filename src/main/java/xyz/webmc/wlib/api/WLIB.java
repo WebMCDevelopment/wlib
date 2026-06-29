@@ -44,8 +44,7 @@ public final class WLIB {
   public static final void devAlert(final String... txt) {
     final Class<?> clazz = stackWalker.getCallerClass();
     final String ctx = clazz.getSimpleName();
-    final String str = ChatColor.DARK_GREEN + "[" + ChatColor.GREEN + "DEV" + ChatColor.RESET + " - " + ChatColor.GREEN
-        + ChatColor.DARK_GREEN + ctx + "] " + ChatColor.RESET + String.join(" ", txt);
+    final String str = ChatColor.DARK_GREEN + "[" + ChatColor.GREEN + "DEV" + ChatColor.RESET + " - " + ChatColor.GREEN + ChatColor.AQUA + ctx + ChatColor.DARK_GREEN + "] " + ChatColor.RESET + String.join(" ", txt);
 
     for (final Player p : Bukkit.getOnlinePlayers()) {
       if (p.hasPermission("wlib.alerts.dev") && !p.hasPermission("wlib.alerts.dev.muted." + ctx)) {
