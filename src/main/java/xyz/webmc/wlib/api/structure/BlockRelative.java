@@ -2,6 +2,8 @@ package xyz.webmc.wlib.api.structure;
 
 import com.cryptomorin.xseries.XMaterial;
 import dev.colbster937.reflect.MirrorSafe;
+import xyz.webmc.wlib.api.WLIB;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -9,7 +11,6 @@ import org.bukkit.block.Block;
 
 @SuppressWarnings({ "deprecation" })
 public final class BlockRelative {
-
   private final int x;
   private final int y;
   private final int z;
@@ -57,7 +58,7 @@ public final class BlockRelative {
     final Material _mat = this.mat.parseMaterial();
 
     if (mat != null) {
-      if (isModern() && this.dataModern != null) {
+      if (WLIB.getIsModernServer() && this.dataModern != null) {
         final Object data = MirrorSafe.invokeMethod(Bukkit.class, "createBlockData", new Object[] { "minecraft:" + _mat.name().toLowerCase() + this.dataModern });
         MirrorSafe.invokeMethod(Block.class, blk, "setBlockData", data, false);
       } else {
@@ -66,15 +67,6 @@ public final class BlockRelative {
           blk.setData(this.dataLegacy);
         }
       }
-    }
-  }
-
-  private static boolean isModern() {
-    try {
-      Class.forName("org.bukkit.block.data.BlockData");
-      return true;
-    } catch (final ClassNotFoundException ex) {
-      return false;
     }
   }
 

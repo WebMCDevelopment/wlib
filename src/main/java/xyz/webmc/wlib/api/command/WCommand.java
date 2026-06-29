@@ -30,16 +30,7 @@ public abstract class WCommand extends Command {
     try {
       return this.run(sender, label, args);
     } catch (final Throwable t) {
-      Bukkit.getLogger().log(Level.SEVERE, t.getMessage(), t);
-
-      if (sender instanceof Player) {
-        final String stack = ExceptionStacker.getFullStackString(t);
-        final String[] lines = TextUtil.serializeExceptionStackStringMultiline(stack);
-        for (final String line : lines) {
-          sender.sendMessage(ChatColor.DARK_RED + line);
-        }
-      }
-
+      this.showStack(sender, t);
       return true;
     }
   }
@@ -49,35 +40,8 @@ public abstract class WCommand extends Command {
     try {
       return this.tab(sender, label, args);
     } catch (final Throwable t) {
-      Bukkit.getLogger().log(Level.SEVERE, t.getMessage(), t);
-
-      if (sender instanceof Player) {
-        final String stack = ExceptionStacker.getFullStackString(t);
-        final String[] lines = TextUtil.serializeExceptionStackStringMultiline(stack);
-        for (final String line : lines) {
-          sender.sendMessage(ChatColor.DARK_RED + line);
-        }
-      }
-
+      this.showStack(sender, t);
       return List.of();
-    }
-  }
-
-  protected final boolean checkPlayer(final CommandSender sender) {
-    if (!(sender instanceof Player)) {
-      sendOnlyPlayersMessage(sender);
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  protected final boolean checkPermission(final CommandSender sender, final String perm) {
-    if (!sender.hasPermission(perm)) {
-      this.sendPermissionMessage(sender);
-      return false;
-    } else {
-      return true;
     }
   }
 
@@ -95,6 +59,35 @@ public abstract class WCommand extends Command {
 
   public final void sendPermissionMessage(final CommandSender sender) {
     sendPermissionMessage(sender, "");
+  }
+
+  protected final boolean checkIsPlayer(final CommandSender sender) {
+    if (!(sender instanceof Player)) {
+      sendOnlyPlayersMessage(sender);
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  protected final boolean checkHasPermission(final CommandSender sender, final String perm) {
+    if (!sender.hasPermission(perm)) {
+      this.sendPermissionMessage(sender);
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  private void showStack(final CommandSender sender, final Throwable t) {
+    Bukkit.getLogger().log(Level.SEVERE, t.getMessage(), t);
+    if (sender instanceof Player) {
+      final String stack = ExceptionStacker.getFullStackString(t);
+      final String[] lines = TextUtil.serializeExceptionStackStringMultiline(stack);
+      for (final String line : lines) {
+        sender.sendMessage(ChatColor.DARK_RED + line);
+      }
+    }
   }
 
   private String replaceUsedAlias(final String str, final String alias) {

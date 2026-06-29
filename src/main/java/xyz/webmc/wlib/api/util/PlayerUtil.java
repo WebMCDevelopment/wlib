@@ -1,11 +1,10 @@
 package xyz.webmc.wlib.api.util;
 
+import dev.colbster937.reflect.MirrorSafe;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-
-import dev.colbster937.reflect.MirrorSafe;
 
 public final class PlayerUtil {
   public static final void teleport(final Player plr, final Location loc) {
