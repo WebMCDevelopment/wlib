@@ -70,31 +70,31 @@ public final class BlockRelative {
     }
   }
 
-  public int getX() {
+  public final int getX() {
     return x;
   }
 
-  public int getY() {
+  public final int getY() {
     return y;
   }
 
-  public int getZ() {
+  public final int getZ() {
     return z;
   }
 
-  public XMaterial getMaterial() {
+  public final XMaterial getMaterial() {
     return mat;
   }
 
-  public Material getBukkitMaterial() {
+  public final Material getBukkitMaterial() {
     return mat.parseMaterial();
   }
 
-  public String getDataModern() {
+  public final String getDataModern() {
     return dataModern;
   }
 
-  public byte getDataLegacy() {
+  public final byte getDataLegacy() {
     return dataLegacy;
   }
 }
