@@ -8,7 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 @SuppressWarnings({ "deprecation" })
-public final class BlockRelative {
+public class BlockRelative {
 
   private final int x;
   private final int y;
