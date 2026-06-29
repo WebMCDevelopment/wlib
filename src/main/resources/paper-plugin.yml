@@ -4,6 +4,6 @@ main: ${plugin.pckg}.${plugin.name}BukkitPlugin
 authors: ["${plugin.athr}"]
 folia-supported: true
 api-version: 1.13
-load: STARTUP
 
-softdepend: ${plugin.deps.lgcy}
+dependencies:
+  server: ${plugin.deps.mdrn}

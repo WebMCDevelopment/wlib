@@ -10,7 +10,7 @@ import net.sandrohc.schematic4j.exception.ParsingException;
 public final class RickQRCodeTestSchemStructure extends AbstractBaseStructure {
   public RickQRCodeTestSchemStructure() throws IOException, ParsingException {
     super("rick_qr");
-    try (InputStream is = RickQRCodeTestSchemStructure.class.getResourceAsStream("/rick.schem")) {
+    try (InputStream is = RickQRCodeTestSchemStructure.class.getResourceAsStream("/schematics/rick.schem")) {
       super.loadSchematic(is);
     }
   }
