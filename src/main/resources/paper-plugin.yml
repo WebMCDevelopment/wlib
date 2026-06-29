@@ -3,7 +3,7 @@ version: ${plugin.vers}
 main: ${plugin.pckg}.${plugin.name}BukkitPlugin
 authors: ["${plugin.athr}"]
 folia-supported: true
-api-version: 1.13
+api-version: 1.19
 
 dependencies:
   server: ${plugin.deps.mdrn}
