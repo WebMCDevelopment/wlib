@@ -15,7 +15,7 @@
     <plugin.vers>${project.version}+${git.commit.id.abbrev}</plugin.vers>
     <plugin.pckg>${project.groupId}.${project.artifactId}</plugin.pckg>
     <plugin.athr>Colbster937</plugin.athr>
-    <plugin.deps>PlaceholderAPI, LuckPerms, EaglercraftXServer</plugin.deps>
+    <plugin.deps>PlaceholderAPI, LuckPerms, Essentials, EaglercraftXServer</plugin.deps>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>17</maven.compiler.release>
   </properties>

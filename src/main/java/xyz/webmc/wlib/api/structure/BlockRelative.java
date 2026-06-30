@@ -2,6 +2,8 @@ package xyz.webmc.wlib.api.structure;
 
 import com.cryptomorin.xseries.XMaterial;
 import dev.colbster937.reflect.MirrorSafe;
+import xyz.webmc.wlib.api.WLIB;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -57,7 +59,7 @@ public class BlockRelative {
     final Material _mat = this.mat.parseMaterial();
 
     if (mat != null) {
-      if (isModern() && this.dataModern != null) {
+      if (WLIB.getIsModernServer() && this.dataModern != null) {
         final Object data = MirrorSafe.invokeMethod(Bukkit.class, "createBlockData", new Object[] { "minecraft:" + _mat.name().toLowerCase() + this.dataModern });
         MirrorSafe.invokeMethod(Block.class, blk, "setBlockData", data, false);
       } else {
@@ -69,40 +71,31 @@ public class BlockRelative {
     }
   }
 
-  private static boolean isModern() {
-    try {
-      Class.forName("org.bukkit.block.data.BlockData");
-      return true;
-    } catch (final ClassNotFoundException ex) {
-      return false;
-    }
-  }
-
-  public int getX() {
+  public final int getX() {
     return x;
   }
 
-  public int getY() {
+  public final int getY() {
     return y;
   }
 
-  public int getZ() {
+  public final int getZ() {
     return z;
   }
 
-  public XMaterial getMaterial() {
+  public final XMaterial getMaterial() {
     return mat;
   }
 
-  public Material getBukkitMaterial() {
+  public final Material getBukkitMaterial() {
     return mat.parseMaterial();
   }
 
-  public String getDataModern() {
+  public final String getDataModern() {
     return dataModern;
   }
 
-  public byte getDataLegacy() {
+  public final byte getDataLegacy() {
     return dataLegacy;
   }
 }
