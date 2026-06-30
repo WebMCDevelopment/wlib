@@ -10,7 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 @SuppressWarnings({ "deprecation" })
-public final class BlockRelative {
+public class BlockRelative {
   private final int x;
   private final int y;
   private final int z;
@@ -52,7 +52,7 @@ public final class BlockRelative {
     this(x, y, z, XMaterial.matchXMaterial(mat), dataLegacy);
   }
 
-  public final void place(final Location loc) {
+  public void place(final Location loc) {
     final Location rel = loc.clone().add(this.x, this.y, this.z);
     final Block blk = rel.getBlock();
     final Material _mat = this.mat.parseMaterial();
