@@ -110,6 +110,12 @@
     <repository>
       <id>lax1dude</id>
       <url>https://repo.lax1dude.net/repository/releases/</url>
+      <releases>
+        <checksumPolicy>ignore</checksumPolicy>
+      </releases>
+      <snapshots>
+        <checksumPolicy>ignore</checksumPolicy>
+      </snapshots>
     </repository>
   </repositories>
   <build>

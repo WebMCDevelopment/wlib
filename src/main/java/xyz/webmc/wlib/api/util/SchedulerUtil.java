@@ -1,5 +1,11 @@
 package xyz.webmc.wlib.api.util;
 
+import xyz.webmc.wlib.api.misc.ScheduledTask;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -11,10 +17,13 @@ import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
 public final class SchedulerUtil {
+  private static final Map<Plugin, List<ScheduledTask>> tasks = new HashMap<>();
+  private static Plugin plugin;
   private static FoliaLib lib;
   private static PlatformScheduler sch;
 
   public static final void init(final Plugin plugin) {
+    SchedulerUtil.plugin = plugin;
     lib = new FoliaLib(plugin);
     sch = lib.getScheduler();
   }
@@ -23,8 +32,14 @@ public final class SchedulerUtil {
     return lib.isFolia();
   }
 
-  public static final boolean isPaper() {
-    return lib.isPaper();
+  public static final void cancelPluginTasks(final Plugin plugin) {
+    if (tasks.containsKey(plugin)) {
+      for (final ScheduledTask task : tasks.get(plugin)) {
+        task.cancel();
+      }
+
+      tasks.remove(plugin);
+    }
   }
 
   public static final void cancelAllTasks() {
@@ -35,59 +50,111 @@ public final class SchedulerUtil {
     return sch.runNextTick(t -> task.run());
   }
 
-  public static final WrappedTask runLater(final Runnable task, final long delayTicks) {
-    return sch.runLater(task, delayTicks);
+  public static final ScheduledTask runLater(final Plugin plugin, final Runnable task, final long delayTicks) {
+    return task(plugin, sch.runLater(task, delayTicks));
   }
 
-  public static final WrappedTask runTimer(final Runnable task, final long delayTicks, final long periodTicks) {
-    return sch.runTimer(task, delayTicks, periodTicks);
+  public static final ScheduledTask runLater(final Runnable task, final long delayTicks) {
+    return runLater(plugin, task, delayTicks);
+  }
+
+  public static final ScheduledTask runTimer(final Plugin plugin, final Runnable task, final long delayTicks, final long periodTicks) {
+    return task(plugin, sch.runTimer(task, delayTicks, periodTicks));
+  }
+
+  public static final ScheduledTask runTimer(final Runnable task, final long delayTicks, final long periodTicks) {
+    return runTimer(plugin, task, delayTicks, periodTicks);
   }
 
   public static final CompletableFuture<Void> runAsync(final Runnable task) {
     return sch.runAsync(t -> task.run());
   }
 
-  public static final WrappedTask runLaterAsync(final Runnable task, final long delayTicks) {
-    return sch.runLaterAsync(task, delayTicks);
+  public static final ScheduledTask runLaterAsync(final Plugin plugin, final Runnable task, final long delayTicks) {
+    return task(plugin, sch.runLaterAsync(task, delayTicks));
   }
 
-  public static final WrappedTask runLaterAsync(final Runnable task, final long delay, final TimeUnit unit) {
-    return sch.runLaterAsync(task, delay, unit);
+  public static final ScheduledTask runLaterAsync(final Runnable task, final long delayTicks) {
+    return runLaterAsync(plugin, task, delayTicks);
   }
 
-  public static final WrappedTask runTimerAsync(final Runnable task, final long delayTicks, final long periodTicks) {
-    return sch.runTimerAsync(task, delayTicks, periodTicks);
+  public static final ScheduledTask runLaterAsync(final Plugin plugin, final Runnable task, final long delay, final TimeUnit unit) {
+    return task(plugin, sch.runLaterAsync(task, delay, unit));
   }
 
-  public static final WrappedTask runTimerAsync(final Runnable task, final long delay, final long period, final TimeUnit unit) {
-    return sch.runTimerAsync(task, delay, period, unit);
+  public static final ScheduledTask runLaterAsync(final Runnable task, final long delay, final TimeUnit unit) {
+    return runLaterAsync(plugin, task, delay, unit);
+  }
+
+  public static final ScheduledTask runTimerAsync(final Plugin plugin, final Runnable task, final long delayTicks, final long periodTicks) {
+    return task(plugin, sch.runTimerAsync(task, delayTicks, periodTicks));
+  }
+
+  public static final ScheduledTask runTimerAsync(final Runnable task, final long delayTicks, final long periodTicks) {
+    return runTimerAsync(plugin, task, delayTicks, periodTicks);
+  }
+
+  public static final ScheduledTask runTimerAsync(final Plugin plugin, final Runnable task, final long delay, final long period, final TimeUnit unit) {
+    return task(plugin, sch.runTimerAsync(task, delay, period, unit));
+  }
+
+  public static final ScheduledTask runTimerAsync(final Runnable task, final long delay, final long period, final TimeUnit unit) {
+    return runTimerAsync(plugin, task, delay, period, unit);
   }
 
   public static final CompletableFuture<Void> runAtLocation(final Location loc, final Runnable task) {
     return sch.runAtLocation(loc, t -> task.run());
   }
 
-  public static final WrappedTask runAtLocationLater(final Location loc, final Runnable task, final long delayTicks) {
-    return sch.runAtLocationLater(loc, task, delayTicks);
+  public static final ScheduledTask runAtLocationLater(final Plugin plugin, final Location loc, final Runnable task, final long delayTicks) {
+    return task(plugin, sch.runAtLocationLater(loc, task, delayTicks));
   }
 
-  public static final WrappedTask runAtLocationTimer(final Location loc, final Runnable task, final long delayTicks, final long periodTicks) {
-    return sch.runAtLocationTimer(loc, task, delayTicks, periodTicks);
+  public static final ScheduledTask runAtLocationLater(final Location loc, final Runnable task, final long delayTicks) {
+    return runAtLocationLater(plugin, loc, task, delayTicks);
+  }
+
+  public static final ScheduledTask runAtLocationTimer(final Plugin plugin, final Location loc, final Runnable task, final long delayTicks, final long periodTicks) {
+    return task(plugin, sch.runAtLocationTimer(loc, task, delayTicks, periodTicks));
+  }
+
+  public static final ScheduledTask runAtLocationTimer(final Location loc, final Runnable task, final long delayTicks, final long periodTicks) {
+    return runAtLocationTimer(plugin, loc, task, delayTicks, periodTicks);
   }
 
   public static final CompletableFuture<?> runAtEntity(final Entity ent, final Runnable task) {
     return sch.runAtEntity(ent, t -> task.run());
   }
 
-  public static final WrappedTask runAtEntityLater(final Entity ent, final Runnable task, final long delayTicks) {
-    return sch.runAtEntityLater(ent, task, delayTicks);
+  public static final ScheduledTask runAtEntityLater(final Plugin plugin, final Entity ent, final Runnable task, final long delayTicks) {
+    return task(plugin, sch.runAtEntityLater(ent, task, delayTicks));
   }
 
-  public static final WrappedTask runAtEntityTimer(final Entity ent, final Runnable task, final long delayTicks, final long periodTicks) {
-    return sch.runAtEntityTimer(ent, task, delayTicks, periodTicks);
+  public static final ScheduledTask runAtEntityLater(final Entity ent, final Runnable task, final long delayTicks) {
+    return runAtEntityLater(plugin, ent, task, delayTicks);
+  }
+
+  public static final ScheduledTask runAtEntityTimer(final Plugin plugin, final Entity ent, final Runnable task, final long delayTicks, final long periodTicks) {
+    return task(plugin, sch.runAtEntityTimer(ent, task, delayTicks, periodTicks));
+  }
+
+  public static final ScheduledTask runAtEntityTimer(final Entity ent, final Runnable task, final long delayTicks, final long periodTicks) {
+    return runAtEntityTimer(plugin, ent, task, delayTicks, periodTicks);
   }
 
   public static final void teleportAsync(final Entity ent, final Location loc) {
     sch.teleportAsync(ent, loc);
+  }
+
+  private static ScheduledTask task(final Plugin plugin, final WrappedTask task) {
+    final ScheduledTask scheduled = ScheduledTask.from(task);
+
+    if (!tasks.containsKey(plugin)) {
+      tasks.put(plugin, new ArrayList<>());
+    }
+
+    tasks.get(plugin).add(scheduled);
+
+    return scheduled;
   }
 }
