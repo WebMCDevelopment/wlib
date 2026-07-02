@@ -1,9 +1,9 @@
 package xyz.webmc.wlib.api.structure;
 
-import com.cryptomorin.xseries.XMaterial;
-import dev.colbster937.reflect.MirrorSafe;
 import xyz.webmc.wlib.api.WLIB;
 
+import com.cryptomorin.xseries.XMaterial;
+import dev.colbster937.reflect.MirrorSafe;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;

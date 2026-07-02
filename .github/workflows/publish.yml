@@ -13,10 +13,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - id: vars
+        run: |
+          echo "HASH=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          echo "VERS=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> "$GITHUB_OUTPUT"
+          echo "JAVA=$(mvn help:evaluate -Dexpression=maven.compiler.release -q -DforceStdout)" >> "$GITHUB_OUTPUT"
+          echo "AFCT=$(mvn help:evaluate -Dexpression=project.build.finalName -q -DforceStdout)" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: ${{ steps.vars.outputs.JAVA }}
           server-id: github
           server-username: GITHUB_ACTOR
           server-password: GITHUB_TOKEN
@@ -24,11 +30,6 @@ jobs:
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - id: vars
-        run: |
-          echo "HASH=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
-          echo "VERS=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> "$GITHUB_OUTPUT"
-          echo "AFCT=$(mvn help:evaluate -Dexpression=project.build.finalName -q -DforceStdout)" >> "$GITHUB_OUTPUT"
       - id: dist
         run: |
           echo "REL_NAME=${{ format('v{0}+{1}', steps.vars.outputs.VERS, steps.vars.outputs.HASH) }}" >> "$GITHUB_OUTPUT"
