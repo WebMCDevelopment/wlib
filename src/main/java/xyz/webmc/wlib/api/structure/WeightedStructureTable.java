@@ -29,7 +29,7 @@ public final class WeightedStructureTable extends WeightedObjectTable<AbstractBa
   }
 
   public final void place(final Location loc) {
-    computeRandomObject().place(loc);
+    this.computeRandomObject().place(loc);
   }
 
   @SafeVarargs

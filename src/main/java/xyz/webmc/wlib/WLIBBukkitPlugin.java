@@ -12,6 +12,7 @@ import xyz.webmc.wlib.internal.command.WLIBCommand;
 
 import java.util.List;
 
+import dev.colbster937.reflect.Mirror;
 import dev.colbster937.reflect.MirrorSafe;
 import net.sandrohc.schematic4j.SchematicLoader;
 import org.apache.logging.log4j.Level;
@@ -53,14 +54,18 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
   }
 
   @EventHandler
-  public final void onCommand(final ServerCommandEvent ev) {
+  public final void onServerCommand(final ServerCommandEvent ev) {
     if (handleCommandEvent(ev.getSender(), ev.getCommand())) {
-      ev.setCommand(WLIBBlankCommand.getBlankRandomCommandKey());
+      if (Mirror.hasMethod(ev.getClass(), "setCancelled", boolean.class)) {
+        MirrorSafe.invokeMethod(ev, "setCancelled", true);
+      } else {
+        ev.setCommand(WLIBBlankCommand.getBlankRandomCommandKey());
+      }
     }
   }
 
   @EventHandler
-  public final void onCommand(final PlayerCommandPreprocessEvent ev) {
+  public final void onPlayerCommand(final PlayerCommandPreprocessEvent ev) {
     if (handleCommandEvent(ev.getPlayer(), ev.getMessage())) {
       ev.setCancelled(true);
     }
