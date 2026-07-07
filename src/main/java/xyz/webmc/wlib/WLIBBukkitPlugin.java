@@ -1,6 +1,7 @@
 package xyz.webmc.wlib;
 
 import xyz.webmc.wlib.api.WLIB;
+import xyz.webmc.wlib.api.misc.CaptureSender;
 import xyz.webmc.wlib.api.util.CommandUtil;
 import xyz.webmc.wlib.api.util.EventUtil;
 import xyz.webmc.wlib.api.util.PermissionUtil;
@@ -17,6 +18,7 @@ import dev.colbster937.reflect.MirrorSafe;
 import net.sandrohc.schematic4j.SchematicLoader;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.EventHandler;
@@ -102,7 +104,7 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
               MirrorSafe.invokeMethod(TextUtil.class, "sendStringListMessageType" + type, sender, name, plugins);
             });
           }
-        } /* else {
+        } else {
           final CaptureSender capture = new CaptureSender(sender);
           CommandUtil.dispatch(capture, commandStr);
           final String[] msg = capture.getMessages().get(0).split(": ");
@@ -110,7 +112,7 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
           sender.sendMessage(ChatColor.DARK_GRAY + " - " +  msg[1]);
           TextUtil.sendStringListMessageType3(sender, name, plugins);
           return true;
-        } */
+        }
       }
     }
 

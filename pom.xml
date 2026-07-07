@@ -52,6 +52,11 @@
         <version>1.1.1</version>
     </dependency>
     <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20260522</version>
+    </dependency>
+    <dependency>
       <groupId>me.clip</groupId>
       <artifactId>placeholderapi</artifactId>
       <version>2.12.2</version>
@@ -170,6 +175,10 @@
                 <relocation>
                   <pattern>net.sandrohc.schematic4j</pattern>
                   <shadedPattern>${plugin.pckg}.lib.schematic4j</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.json</pattern>
+                  <shadedPattern>${plugin.pckg}.lib.json</shadedPattern>
                 </relocation>
               </relocations>
               <filters>
