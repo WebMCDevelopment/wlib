@@ -1,0 +1,32 @@
+on:
+  push:
+    paths:
+      - 'src/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - id: vars
+        run: echo "JAVA=$(mvn help:evaluate -Dexpression=maven.compiler.release -q -DforceStdout)" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-java@v5
+        with:
+          distribution: liberica
+          java-version: '17'
+      - run: |
+          ./src/build/scripts/FormatCode.sh
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A src
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: auto-format code"
+          git push

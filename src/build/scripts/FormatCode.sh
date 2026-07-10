@@ -1,0 +1,1 @@
+mvn license:format spotless:apply $@

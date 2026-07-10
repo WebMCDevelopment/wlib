@@ -195,6 +195,31 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>com.mycila</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>5.0.0</version>
+        <configuration>
+          <properties>
+            <owner>${plugin.athr}</owner>
+          </properties>
+          <licenseSets>
+            <licenseSet>
+              <header>src/build/resources/LICENSE_HEADER.txt</header>
+              <includes>
+                <include>src/**/*.java</include>
+              </includes>
+            </licenseSet>
+          </licenseSets>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>com.mycila</groupId>
+            <artifactId>license-maven-plugin-git</artifactId>
+            <version>5.0.0</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
         <version>4.3.1</version>
@@ -213,7 +238,7 @@
             </goals>
             <configuration>
               <scripts>
-                <script>${project.basedir}/src/main/groovy/createPluginDeps.groovy</script>
+                <script>${project.basedir}/src/build/groovy/createPluginDeps.groovy</script>
               </scripts>
             </configuration>
           </execution>
@@ -249,6 +274,11 @@
             </importOrder>
             <trimTrailingWhitespace />
             <endWithNewline />
+            <replaceRegex>
+              <name>newline after license header</name>
+              <searchRegex>\*/\R*package</searchRegex>
+              <replacement>*/&#10;&#10;package</replacement>
+            </replaceRegex>
           </java>
         </configuration>
         <executions>
