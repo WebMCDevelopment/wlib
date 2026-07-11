@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2026 ${plugin.athr}
+ * Copyright (C) 2026 Colbster937
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
