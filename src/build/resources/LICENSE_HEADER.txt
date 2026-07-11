@@ -1,4 +1,4 @@
-Copyright (C) ${license.git.copyrightExistenceYears} ${plugin.athr}
+Copyright (C) ${license.git.copyrightExistenceYears} ${owner}
 
 SPDX-License-Identifier: AGPL-3.0-or-later
 
