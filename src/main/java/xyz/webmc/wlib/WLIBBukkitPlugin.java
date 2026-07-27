@@ -41,8 +41,7 @@ import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
-  private static final List<String> DISABLE_LOGGERS = List.of(
-      SchematicLoader.class.getPackageName());
+  private static final List<String> DISABLE_LOGGERS = List.of(SchematicLoader.class.getPackageName());
 
   @Override
   public void onEnable() {
