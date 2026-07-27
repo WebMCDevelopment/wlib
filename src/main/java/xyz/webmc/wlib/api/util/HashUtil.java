@@ -21,7 +21,7 @@ public final class HashUtil {
     return ret ^ (ret >>> 16);
   }
 
-  public static final long mix64(final long z) {
+  public static long mix64(final long z) {
     long ret = z;
     ret = (ret ^ (ret >>> 33)) * 0xFF51AFD7ED558CCDL;
     ret = (ret ^ (ret >>> 33)) * 0xC4CEB9FE1A85EC53L;

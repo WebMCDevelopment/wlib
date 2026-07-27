@@ -30,29 +30,29 @@ import org.bukkit.plugin.Plugin;
 public final class CommandUtil {
   private static Plugin plugin;
 
-  public static final void init(final Plugin plugin) {
+  public static void init(final Plugin plugin) {
     CommandUtil.plugin = plugin;
   }
 
-  public static final void registerCommand(final Plugin plugin, final Command command) {
+  public static void registerCommand(final Plugin plugin, final Command command) {
     getCommandMap().register(plugin.getName(), command);
     syncCommands();
   }
 
-  public static final void registerCommand(final Command command) {
+  public static void registerCommand(final Command command) {
     registerCommand(plugin, command);
   }
 
-  public static final void registerCommands(final Plugin plugin, final List<Command> commands) {
+  public static void registerCommands(final Plugin plugin, final List<Command> commands) {
     getCommandMap().registerAll(plugin.getName(), commands);
     syncCommands();
   }
 
-  public static final void registerCommands(final List<Command> commands) {
+  public static void registerCommands(final List<Command> commands) {
     registerCommands(plugin, commands);
   }
 
-  public static final void unregisterCommand(final String commandStr) {
+  public static void unregisterCommand(final String commandStr) {
     final Command command = getKnownCommands().remove(commandStr);
 
     if (command != null) {
@@ -62,7 +62,7 @@ public final class CommandUtil {
     syncCommands();
   }
 
-  public static final void registerCommandAliases(final Plugin plugin, final String cmd, final String ...aliases) {
+  public static void registerCommandAliases(final Plugin plugin, final String cmd, final String... aliases) {
     final List<Command> commands = new ArrayList<>();
 
     for (final String alias : aliases) {
@@ -72,19 +72,20 @@ public final class CommandUtil {
     registerCommands(plugin, commands);
   }
 
-  public static final void registerCommandAliases(final String cmd, final String ...aliases) {
+  public static void registerCommandAliases(final String cmd, final String... aliases) {
     registerCommandAliases(plugin, cmd, aliases);
   }
 
-  public static final boolean dispatch(final CommandSender sender, final String cmd) throws CommandException {
+  public static boolean dispatch(final CommandSender sender, final String cmd) throws CommandException {
     return getCommandMap().dispatch(sender, cmd);
   }
 
-  public static final List<String> tabComplete(final CommandSender sender, final String cmd) throws IllegalArgumentException {
+  public static List<String> tabComplete(final CommandSender sender, final String cmd)
+      throws IllegalArgumentException {
     return getCommandMap().tabComplete(sender, cmd);
   }
 
-  public static final Command getCommand(final String cmd) {
+  public static Command getCommand(final String cmd) {
     return getCommandMap().getCommand(cmd);
   }
 

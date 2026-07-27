@@ -18,18 +18,18 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 public final class JSONUtil {
-  public static final String serialize(final Object obj) {
+  public static String serialize(final Object obj) {
     validateObject(obj);
     return JSONObject.valueToString(obj);
   }
 
-  public static final Object deserialize(final String json) {
+  public static Object deserialize(final String json) {
     final Object ret = new JSONTokener(json).nextValue();
     validateObject(ret);
     return ret;
   }
 
-  public static final boolean isJSON(final String json) {
+  public static boolean isJSON(final String json) {
     try {
       deserialize(json);
       return true;

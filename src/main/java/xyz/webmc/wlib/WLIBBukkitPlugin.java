@@ -42,12 +42,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
   private static final List<String> DISABLE_LOGGERS = List.of(
-    SchematicLoader.class.getPackageName()
-  );
+      SchematicLoader.class.getPackageName());
 
   @Override
-  public final void onEnable() {
-    WLIB.init(this.getLogger());
+  public void onEnable() {
+    WLIB.init(this);
     CommandUtil.init(this);
     EventUtil.init(this);
     PermissionUtil.init();
@@ -64,12 +63,12 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
   }
 
   @Override
-  public final void onDisable() {
+  public void onDisable() {
     SchedulerUtil.cancelAllTasks();
   }
 
   @EventHandler
-  public final void onServerCommand(final ServerCommandEvent ev) {
+  public void onServerCommand(final ServerCommandEvent ev) {
     if (handleCommandEvent(ev.getSender(), ev.getCommand())) {
       if (Mirror.hasMethod(ev.getClass(), "setCancelled", boolean.class)) {
         MirrorSafe.invokeMethod(ev, "setCancelled", true);
@@ -80,7 +79,7 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
   }
 
   @EventHandler
-  public final void onPlayerCommand(final PlayerCommandPreprocessEvent ev) {
+  public void onPlayerCommand(final PlayerCommandPreprocessEvent ev) {
     if (handleCommandEvent(ev.getPlayer(), ev.getMessage())) {
       ev.setCancelled(true);
     }
@@ -122,7 +121,7 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
           CommandUtil.dispatch(capture, commandStr);
           final String[] msg = capture.getMessages().get(0).split(": ");
           sender.sendMessage(ChatColor.GOLD + "Bukkit " + msg[0] + ":");
-          sender.sendMessage(ChatColor.DARK_GRAY + " - " +  msg[1]);
+          sender.sendMessage(ChatColor.DARK_GRAY + " - " + msg[1]);
           TextUtil.sendStringListMessageType3(sender, name, plugins);
           return true;
         }
@@ -135,9 +134,8 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
   static {
     for (final String logger : DISABLE_LOGGERS) {
       Configurator.setLevel(
-        logger,
-        Level.OFF
-      );
+          logger,
+          Level.OFF);
     }
   }
 }

@@ -70,7 +70,8 @@ public abstract class ExtendableCommandSender implements CommandSender {
   }
 
   @Override
-  public final PermissionAttachment addAttachment(final Plugin plugin, final String name, final boolean value, final int ticks) {
+  public final PermissionAttachment addAttachment(final Plugin plugin, final String name, final boolean value,
+      final int ticks) {
     return this.perm.addAttachment(plugin, name, value, ticks);
   }
 
@@ -80,12 +81,12 @@ public abstract class ExtendableCommandSender implements CommandSender {
   }
 
   @Override
-  public final void removeAttachment(final PermissionAttachment attachment) {
+  public void removeAttachment(final PermissionAttachment attachment) {
     this.perm.removeAttachment(attachment);
   }
 
   @Override
-  public final void recalculatePermissions() {
+  public void recalculatePermissions() {
     this.perm.recalculatePermissions();
   }
 
@@ -100,7 +101,7 @@ public abstract class ExtendableCommandSender implements CommandSender {
   }
 
   @Override
-  public final void setOp(final boolean value) {
+  public void setOp(final boolean value) {
     this.perm.setOp(value);
   }
 

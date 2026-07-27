@@ -27,18 +27,19 @@ import net.sandrohc.schematic4j.schematic.Schematic;
 import org.bukkit.Bukkit;
 
 public final class SchemUtil {
-  public static final Schematic readSchematic(final InputStream is) throws IOException, ParsingException {
+  public static Schematic readSchematic(final InputStream is) throws IOException, ParsingException {
     warnSchemUnsupportedServerVersion();
     return SchematicLoader.load(is);
   }
 
-  public static final Schematic readSchematic(final File file) throws IOException, ParsingException {
+  public static Schematic readSchematic(final File file) throws IOException, ParsingException {
     return readSchematic(new FileInputStream(file));
   }
 
-  public static final void warnSchemUnsupportedServerVersion() {
+  public static void warnSchemUnsupportedServerVersion() {
     if (!WLIB.getIsModernServer()) {
-      WLIB.getLogger().log(Level.WARNING, "Schematic loading is unsupported on server version {0}.", Bukkit.getVersion());
+      WLIB.getLogger().log(Level.WARNING, "Schematic loading is unsupported on server version {0}.",
+          Bukkit.getVersion());
     }
   }
 }

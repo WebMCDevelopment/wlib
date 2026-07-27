@@ -24,26 +24,26 @@ import org.bukkit.inventory.ItemStack;
 
 @SuppressWarnings({ "deprecation" })
 public final class WorldUtil {
-  public static final String getChunkKey(final Chunk chnk) {
+  public static String getChunkKey(final Chunk chnk) {
     final String w = getWorldKey(chnk.getWorld());
     final int x = chnk.getX();
     final int z = chnk.getZ();
     return w + ":" + x + ":" + z;
   }
 
-  public static final String getChunkKey(final Location loc) {
+  public static String getChunkKey(final Location loc) {
     return getChunkKey(loc.getChunk());
   }
 
-  public static final String getChunkKeyH(final Chunk chnk) {
+  public static String getChunkKeyH(final Chunk chnk) {
     return HashUtil.hash64S(getChunkKey(chnk));
   }
 
-  public static final String getChunkKeyH(final Location loc) {
+  public static String getChunkKeyH(final Location loc) {
     return getChunkKeyH(loc.getChunk());
   }
 
-  public static final String getLocKey(final Location loc) {
+  public static String getLocKey(final Location loc) {
     final String w = getWorldKey(loc.getWorld());
     final int x = loc.getBlockX();
     final int y = loc.getBlockY();
@@ -51,19 +51,19 @@ public final class WorldUtil {
     return w + ":" + x + ":" + y + ":" + z;
   }
 
-  public static final String getLocKeyH(final Location loc) {
+  public static String getLocKeyH(final Location loc) {
     return HashUtil.hash64S(getLocKey(loc));
   }
 
-  public static final String getWorldKey(final World wrld) {
+  public static String getWorldKey(final World wrld) {
     return wrld.getName();
   }
 
-  public static final void dropItem(final ItemStack item, final Location loc) {
+  public static void dropItem(final ItemStack item, final Location loc) {
     loc.getWorld().dropItemNaturally(loc.clone().add(0.5D, 0.5D, 0.5D), item);
   }
 
-  public static final void sendFakeBlock(final Location loc, final Material mat, final byte dat) {
+  public static void sendFakeBlock(final Location loc, final Material mat, final byte dat) {
     final World wrld = loc.getWorld();
     final Chunk chnk = wrld.getChunkAt(loc);
 
@@ -80,7 +80,7 @@ public final class WorldUtil {
     }
   }
 
-  public static final void sendFakeBlock(final Location loc, final Material mat) {
+  public static void sendFakeBlock(final Location loc, final Material mat) {
     sendFakeBlock(loc, mat, (byte) 0);
   }
 }

@@ -23,25 +23,25 @@ import dev.colbster937.util.WeightedObjectTable;
 import org.bukkit.Location;
 
 public final class WeightedStructureTable extends WeightedObjectTable<AbstractBaseStructure> {
-  public WeightedStructureTable(final long seed, final WeightedStructure ...structures) {
+  public WeightedStructureTable(final long seed, final WeightedStructure... structures) {
     super(seed, structures);
   }
 
-  public WeightedStructureTable(final WeightedStructure ...structures) {
+  public WeightedStructureTable(final WeightedStructure... structures) {
     this(RNGUtil.getRandomSeed(), structures);
   }
 
   @SafeVarargs
-  public WeightedStructureTable(final long seed, final Class<? extends AbstractBaseStructure> ...structures) {
+  public WeightedStructureTable(final long seed, final Class<? extends AbstractBaseStructure>... structures) {
     this(seed, weigh(structures));
   }
 
   @SafeVarargs
-  public WeightedStructureTable(final Class<? extends AbstractBaseStructure> ...structures) {
+  public WeightedStructureTable(final Class<? extends AbstractBaseStructure>... structures) {
     this(weigh(structures));
   }
 
-  public final void place(final Location loc) {
+  public void place(final Location loc) {
     this.computeRandomObject().place(loc);
   }
 

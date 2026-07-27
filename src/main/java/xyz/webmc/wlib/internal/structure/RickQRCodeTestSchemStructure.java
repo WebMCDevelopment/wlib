@@ -28,7 +28,7 @@ public final class RickQRCodeTestSchemStructure extends AbstractBaseStructure {
     }
   }
 
-  public static final RickQRCodeTestSchemStructure getInstance() {
+  public static RickQRCodeTestSchemStructure getInstance() {
     return getInstance(RickQRCodeTestSchemStructure.class);
   }
 }

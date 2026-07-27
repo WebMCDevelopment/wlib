@@ -20,19 +20,19 @@ import java.util.SplittableRandom;
 public final class RNGUtil {
   private static final SplittableRandom RNG = new SplittableRandom();
 
-  public static final SplittableRandom getRandom(final long seed) {
+  public static SplittableRandom getRandom(final long seed) {
     return new SplittableRandom(seed);
   }
 
-  public static final SplittableRandom getRandom() {
+  public static SplittableRandom getRandom() {
     return RNG.split();
   }
 
-  public static final long getRandomSeed() {
+  public static long getRandomSeed() {
     return RNG.nextLong();
   }
 
-  public static final String getRandomString(final String chars, final int len, final long seed) {
+  public static String getRandomString(final String chars, final int len, final long seed) {
     final StringBuilder sb = new StringBuilder(len);
     final SplittableRandom rng = getRandom(seed);
 
@@ -43,15 +43,15 @@ public final class RNGUtil {
     return sb.toString();
   }
 
-  public static final String getRandomStringLowercaseAZ(final int len, final long seed) {
+  public static String getRandomStringLowercaseAZ(final int len, final long seed) {
     return getRandomString("abcdefghijklmnopqrstuvwxyz", len, seed);
   }
 
-  public static final String getRandomString(final String chars, final int len) {
+  public static String getRandomString(final String chars, final int len) {
     return getRandomString(chars, len, getRandomSeed());
   }
 
-  public static final String getRandomStringLowercaseAZ(final int len) {
+  public static String getRandomStringLowercaseAZ(final int len) {
     return getRandomStringLowercaseAZ(len, getRandomSeed());
   }
 
@@ -62,7 +62,7 @@ public final class RNGUtil {
   }
 
   @Deprecated(forRemoval = true)
-  public static final long mix64(final long z) {
+  public static long mix64(final long z) {
     WLIB.warnDeprecatedUsage();
     return HashUtil.mix64(z);
   }

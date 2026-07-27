@@ -41,7 +41,7 @@ public final class HerobrineShrineTestStructure extends AbstractBaseStructure {
     }
   }
 
-  public static final HerobrineShrineTestStructure getInstance() {
+  public static HerobrineShrineTestStructure getInstance() {
     return getInstance(HerobrineShrineTestStructure.class);
   }
 }

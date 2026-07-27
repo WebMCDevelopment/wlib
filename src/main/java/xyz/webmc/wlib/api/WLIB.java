@@ -24,26 +24,34 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.semver4j.Semver;
 
 @SuppressWarnings({ "NonConstantLogger" })
 public final class WLIB {
   private static final StackWalker stackWalker = StackWalker.getInstance(Option.RETAIN_CLASS_REFERENCE);
   private static final List<Plugin> plugins = new ArrayList<>();
+  private static Semver version;
   private static Logger logger;
 
-  public static final void init(final Logger logger) {
-    WLIB.logger = logger;
+  public static void init(final Plugin plugin) {
+    version = new Semver(plugin.getDescription().getVersion());
+    logger = plugin.getLogger();
   }
 
-  public static final void registerPlugin(final Plugin plugin) {
+  public static boolean requireWLIB(final String ver) {
+    final Semver semver = new Semver(ver);
+    return semver.isGreaterThanOrEqualTo(version);
+  }
+
+  public static void registerPlugin(final Plugin plugin) {
     plugins.add(plugin);
   }
 
-  public static final List<Plugin> getWLIBPlugins() {
+  public static List<Plugin> getWLIBPlugins() {
     return plugins;
   }
 
-  public static final List<String> getWLIBPluginNames() {
+  public static List<String> getWLIBPluginNames() {
     final List<String> ret = new ArrayList<>();
 
     for (final Plugin plugin : getWLIBPlugins()) {
@@ -53,7 +61,7 @@ public final class WLIB {
     return ret;
   }
 
-  public static final void devAlert(final String... txt) {
+  public static void devAlert(final String... txt) {
     final Class<?> clazz = stackWalker.getCallerClass();
     final String ctx = clazz.getSimpleName();
     final String str = ChatColor.DARK_GREEN + "[" + ChatColor.GREEN + "DEV" + ChatColor.RESET + " - " + ChatColor.GREEN + ChatColor.AQUA + ctx + ChatColor.DARK_GREEN + "] " + ChatColor.RESET + String.join(" ", txt);
@@ -65,7 +73,7 @@ public final class WLIB {
     }
   }
 
-  public static final void warnDeprecatedUsage() {
+  public static void warnDeprecatedUsage() {
     final StackFrame[] frames = stackWalker.walk(s -> s.skip(1).toArray(StackFrame[]::new));
     if (frames.length > 1) {
       final StackFrame called = frames[0];
@@ -101,11 +109,11 @@ public final class WLIB {
     }
   }
 
-  public static final boolean getIsModernServer() {
+  public static boolean getIsModernServer() {
     return MirrorSafe.getClassExists("org.bukkit.block.data.BlockData");
   }
 
-  public static final Logger getLogger() {
+  public static Logger getLogger() {
     return logger;
   }
 }

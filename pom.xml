@@ -57,6 +57,11 @@
       <version>20260522</version>
     </dependency>
     <dependency>
+      <groupId>org.semver4j</groupId>
+      <artifactId>semver4j</artifactId>
+      <version>6.0.0</version>
+    </dependency>
+    <dependency>
       <groupId>org.javassist</groupId>
       <artifactId>javassist</artifactId>
       <version>3.32.0-GA</version>
@@ -184,6 +189,10 @@
                 <relocation>
                   <pattern>org.json</pattern>
                   <shadedPattern>${plugin.pckg}.lib.json</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.semver4j</pattern>
+                  <shadedPattern>${plugin.pckg}.lib.semver4j</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>org.javassist</pattern>

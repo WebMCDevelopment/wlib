@@ -20,7 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public final class PlayerUtil {
-  public static final void teleport(final Player plr, final Location loc) {
+  public static void teleport(final Player plr, final Location loc) {
     final Location prev = plr.getLocation().clone();
 
     SchedulerUtil.teleportAsync(plr, loc);
@@ -34,20 +34,22 @@ public final class PlayerUtil {
     }
   }
 
-  public static final void teleport(final Player plr, final World world, final double x, final double y, final double z, final float yaw, final float pitch) {
+  public static void teleport(final Player plr, final World world, final double x, final double y, final double z,
+      final float yaw, final float pitch) {
     teleport(plr, new Location(world, x, y, z, yaw, pitch));
   }
 
-  public static final void teleport(final Player plr, final World world, final double x, final double y, final double z) {
+  public static void teleport(final Player plr, final World world, final double x, final double y, final double z) {
     final Location prev = plr.getLocation().clone();
     teleport(plr, world, x, y, z, prev.getYaw(), prev.getPitch());
   }
 
-  public static final void teleport(final Player plr, final double x, final double y, final double z, final float yaw, final float pitch) {
+  public static void teleport(final Player plr, final double x, final double y, final double z, final float yaw,
+      final float pitch) {
     teleport(plr, plr.getWorld(), x, y, z, yaw, pitch);
   }
 
-  public static final void teleport(final Player plr, final double x, final double y, final double z) {
+  public static void teleport(final Player plr, final double x, final double y, final double z) {
     final Location prev = plr.getLocation().clone();
     teleport(plr, plr.getWorld(), x, y, z, prev.getYaw(), prev.getPitch());
   }

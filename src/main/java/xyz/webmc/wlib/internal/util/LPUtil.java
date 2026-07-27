@@ -22,7 +22,7 @@ import net.luckperms.api.model.user.UserManager;
 import net.luckperms.api.node.Node;
 
 public final class LPUtil {
-  public static final boolean hasPermission(final UUID uuid, final String node) {
+  public static boolean hasPermission(final UUID uuid, final String node) {
     return getUserManager().loadUser(uuid).thenApply(user -> {
       if (user != null) {
         return user.getCachedData().getPermissionData().checkPermission(node).asBoolean();
@@ -32,7 +32,7 @@ public final class LPUtil {
     }).join();
   }
 
-  public static final boolean setUserPermission(final UUID uuid, final String node, final boolean value) {
+  public static boolean setUserPermission(final UUID uuid, final String node, final boolean value) {
     final UserManager um = getUserManager();
     return um.loadUser(uuid).thenApply(user -> {
       if (user != null) {
@@ -46,7 +46,7 @@ public final class LPUtil {
     }).join();
   }
 
-  public static final boolean unsetUserPermission(final UUID uuid, final String node) {
+  public static boolean unsetUserPermission(final UUID uuid, final String node) {
     final UserManager um = getUserManager();
     return um.loadUser(uuid).thenApply(user -> {
       if (user != null) {
@@ -59,7 +59,7 @@ public final class LPUtil {
     }).join();
   }
 
-  public static final boolean hasGroupPermission(final String name, final String node) {
+  public static boolean hasGroupPermission(final String name, final String node) {
     final GroupManager gm = getGroupManager();
 
     return gm.loadGroup(name).thenApply(optional -> {
@@ -72,7 +72,7 @@ public final class LPUtil {
     }).join();
   }
 
-  public static final boolean setGroupPermission(final String name, final String node, final boolean value) {
+  public static boolean setGroupPermission(final String name, final String node, final boolean value) {
     final GroupManager gm = getGroupManager();
     return gm.loadGroup(name).thenApply(optional -> {
       if (optional.isPresent()) {
@@ -87,7 +87,7 @@ public final class LPUtil {
     }).join();
   }
 
-  public static final boolean unsetGroupPermission(final String name, final String node) {
+  public static boolean unsetGroupPermission(final String name, final String node) {
     final GroupManager gm = getGroupManager();
     return gm.loadGroup(name).thenApply(optional -> {
       if (optional.isPresent()) {

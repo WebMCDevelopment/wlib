@@ -35,12 +35,12 @@ public final class CaptureSender extends ExtendableCommandSender {
   }
 
   @Override
-  public final void sendMessage(final String message) {
+  public void sendMessage(final String message) {
     this.messages.add(message);
   }
 
   @Override
-  public final void sendMessage(final String[] messages) {
+  public void sendMessage(final String[] messages) {
     this.messages.addAll(Arrays.asList(messages));
   }
 }

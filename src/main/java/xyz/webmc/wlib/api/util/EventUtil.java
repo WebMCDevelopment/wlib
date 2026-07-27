@@ -25,27 +25,29 @@ public final class EventUtil {
   private static final PluginManager pm = Bukkit.getPluginManager();
   private static Plugin plugin;
 
-  public static final void init(final Plugin plugin) {
+  public static void init(final Plugin plugin) {
     EventUtil.plugin = plugin;
   }
 
-  public static final void registerEvents(final Listener listener, final Plugin plugin) {
+  public static void registerEvents(final Listener listener, final Plugin plugin) {
     pm.registerEvents(listener, plugin);
   }
 
-  public static final void registerEvent(final Class<? extends Event> event, final Listener listener, final EventPriority priority, final EventExecutor executor, final Plugin plugin) {
+  public static void registerEvent(final Class<? extends Event> event, final Listener listener,
+      final EventPriority priority, final EventExecutor executor, final Plugin plugin) {
     pm.registerEvent(event, listener, priority, executor, plugin);
   }
 
-  public static final void registerEvents(final Listener listener) {
+  public static void registerEvents(final Listener listener) {
     registerEvents(listener, plugin);
   }
 
-  public static final void registerEvent(final Class<? extends Event> event, final Listener listener, final EventPriority priority, final EventExecutor executor) {
+  public static void registerEvent(final Class<? extends Event> event, final Listener listener,
+      final EventPriority priority, final EventExecutor executor) {
     pm.registerEvent(event, listener, priority, executor, plugin);
   }
 
-  public static final void callEvent(final Event ev) {
+  public static void callEvent(final Event ev) {
     pm.callEvent(ev);
   }
 }

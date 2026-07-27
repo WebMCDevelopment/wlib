@@ -22,7 +22,7 @@ public final class ScheduledTask {
     this.task = task;
   }
 
-  public final void cancel() {
+  public void cancel() {
     this.task.cancel();
   }
 
@@ -38,7 +38,7 @@ public final class ScheduledTask {
     return this.task;
   }
 
-  public static final ScheduledTask from(final WrappedTask task) {
+  public static ScheduledTask from(final WrappedTask task) {
     return new ScheduledTask(task);
   }
 }
