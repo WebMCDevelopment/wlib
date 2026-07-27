@@ -195,7 +195,7 @@
                   <shadedPattern>${plugin.pckg}.lib.semver4j</shadedPattern>
                 </relocation>
                 <relocation>
-                  <pattern>org.javassist</pattern>
+                  <pattern>javassist</pattern>
                   <shadedPattern>${plugin.pckg}.lib.javassist</shadedPattern>
                 </relocation>
               </relocations>
