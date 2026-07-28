@@ -109,7 +109,7 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
         final String name = "WLIB Plugins";
         final List<String> plugins = WLIB.getWLIBPluginNames();
         if (MirrorSafe.getClassExists("io.papermc.paper.command.PaperPluginsCommand")) {
-          final int type = !MirrorSafe.getClassExists("io.canvasmc.horizon.HorizonLoader") ? 2 : 4;
+          final int type = !MirrorSafe.getClassExists("io.canvasmc.horizon.HorizonLoader") ? 3 : 4;
           if (type < 4 || !(sender instanceof ConsoleCommandSender)) {
             SchedulerUtil.runNextTick(() -> {
               MirrorSafe.invokeMethod(TextUtil.class, "sendStringListMessageType" + type, sender, name, plugins);

@@ -20,12 +20,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public final class PlayerUtil {
+  private static final Plugin essentials = PluginUtil.getPlugin("Essentials");
   public static void teleport(final Player plr, final Location loc) {
     final Location prev = plr.getLocation().clone();
 
     SchedulerUtil.teleportAsync(plr, loc);
 
-    final Plugin essentials = PluginUtil.getPlugin("Essentials");
     if (essentials != null) {
       final Object user = MirrorSafe.invokeMethod(essentials, "getUser", plr);
       if (user != null) {

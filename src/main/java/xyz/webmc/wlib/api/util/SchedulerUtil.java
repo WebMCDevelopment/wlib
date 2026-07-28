@@ -201,6 +201,10 @@ public final class SchedulerUtil {
     sch.teleportAsync(ent, loc);
   }
 
+  public static void teleportAsync(final Entity ent, final Entity tent) {
+    teleportAsync(ent, tent.getLocation());
+  }
+
   private static ScheduledTask task(final Plugin plugin, final WrappedTask task) {
     final ScheduledTask scheduled = ScheduledTask.from(task);
 
