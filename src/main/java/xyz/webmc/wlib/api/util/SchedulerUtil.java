@@ -23,6 +23,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.enums.EntityTaskResult;
 import com.tcoded.folialib.impl.PlatformScheduler;
 import com.tcoded.folialib.wrapper.task.WrappedTask;
 import org.bukkit.Location;
@@ -133,6 +134,21 @@ public final class SchedulerUtil {
     return runAtLocationLater(plugin, loc, task, delayTicks);
   }
 
+  public static CompletableFuture<Void> runAtLocationNextTick(final Location loc, final Runnable task) {
+    final CompletableFuture<Void> future = new CompletableFuture<>();
+
+    runAtLocationLater(loc, () -> {
+      try {
+        task.run();
+        future.complete(null);
+      } catch (final Throwable t) {
+        future.completeExceptionally(t);
+      }
+    }, 1L);
+
+    return future;
+  }
+
   public static ScheduledTask runAtLocationTimer(final Plugin plugin, final Location loc, final Runnable task,
       final long delayTicks, final long periodTicks) {
     return task(plugin, sch.runAtLocationTimer(loc, task, delayTicks, periodTicks));
@@ -143,7 +159,7 @@ public final class SchedulerUtil {
     return runAtLocationTimer(plugin, loc, task, delayTicks, periodTicks);
   }
 
-  public static CompletableFuture<?> runAtEntity(final Entity ent, final Runnable task) {
+  public static CompletableFuture<EntityTaskResult> runAtEntity(final Entity ent, final Runnable task) {
     return sch.runAtEntity(ent, t -> task.run());
   }
 
@@ -154,6 +170,21 @@ public final class SchedulerUtil {
 
   public static ScheduledTask runAtEntityLater(final Entity ent, final Runnable task, final long delayTicks) {
     return runAtEntityLater(plugin, ent, task, delayTicks);
+  }
+
+  public static CompletableFuture<Void> runAtEntityNextTick(final Entity ent, final Runnable task) {
+    final CompletableFuture<Void> future = new CompletableFuture<>();
+
+    runAtEntityLater(ent, () -> {
+      try {
+        task.run();
+        future.complete(null);
+      } catch (final Throwable t) {
+        future.completeExceptionally(t);
+      }
+    }, 1L);
+
+    return future;
   }
 
   public static ScheduledTask runAtEntityTimer(final Plugin plugin, final Entity ent, final Runnable task,
