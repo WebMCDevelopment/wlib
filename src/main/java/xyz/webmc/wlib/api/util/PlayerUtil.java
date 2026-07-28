@@ -21,6 +21,7 @@ import org.bukkit.plugin.Plugin;
 
 public final class PlayerUtil {
   private static final Plugin essentials = PluginUtil.getPlugin("Essentials");
+
   public static void teleport(final Player plr, final Location loc) {
     final Location prev = plr.getLocation().clone();
 
