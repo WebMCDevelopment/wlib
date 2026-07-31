@@ -27,7 +27,7 @@ public final class CaptureSender extends ExtendableCommandSender {
   }
 
   public CaptureSender() {
-    super(null);
+    this(null);
   }
 
   public final List<String> getMessages() {

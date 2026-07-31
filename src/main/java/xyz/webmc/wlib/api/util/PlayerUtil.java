@@ -13,45 +13,36 @@
 
 package xyz.webmc.wlib.api.util;
 
-import dev.colbster937.reflect.MirrorSafe;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
+@Deprecated
 public final class PlayerUtil {
-  private static final Plugin essentials = PluginUtil.getPlugin("Essentials");
-
+  @Deprecated
   public static void teleport(final Player plr, final Location loc) {
-    final Location prev = plr.getLocation().clone();
-
-    SchedulerUtil.teleportAsync(plr, loc);
-
-    if (essentials != null) {
-      final Object user = MirrorSafe.invokeMethod(essentials, "getUser", plr);
-      if (user != null) {
-        MirrorSafe.invokeMethod(user, "setLastLocation", prev);
-      }
-    }
+    WorldUtil.teleportPlayer(plr, loc);
   }
 
-  public static void teleport(final Player plr, final World world, final double x, final double y, final double z,
+  @Deprecated
+  public static void teleport(final Player plr, final World wrld, final double x, final double y, final double z,
       final float yaw, final float pitch) {
-    teleport(plr, new Location(world, x, y, z, yaw, pitch));
+    WorldUtil.teleportPlayer(plr, wrld, x, y, z, yaw, pitch);
   }
 
-  public static void teleport(final Player plr, final World world, final double x, final double y, final double z) {
-    final Location prev = plr.getLocation().clone();
-    teleport(plr, world, x, y, z, prev.getYaw(), prev.getPitch());
+  @Deprecated
+  public static void teleport(final Player plr, final World wrld, final double x, final double y, final double z) {
+    WorldUtil.teleportPlayer(plr, wrld, x, y, z);
   }
 
+  @Deprecated
   public static void teleport(final Player plr, final double x, final double y, final double z, final float yaw,
       final float pitch) {
-    teleport(plr, plr.getWorld(), x, y, z, yaw, pitch);
+    WorldUtil.teleportPlayer(plr, x, y, z, yaw, pitch);
   }
 
+  @Deprecated
   public static void teleport(final Player plr, final double x, final double y, final double z) {
-    final Location prev = plr.getLocation().clone();
-    teleport(plr, plr.getWorld(), x, y, z, prev.getYaw(), prev.getPitch());
+    WorldUtil.teleportPlayer(plr, x, y, z);
   }
 }

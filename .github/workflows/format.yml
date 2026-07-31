@@ -16,12 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - id: vars
-        run: echo "JAVA=$(mvn help:evaluate -Dexpression=maven.compiler.release -q -DforceStdout)" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-java@v5
         with:
           distribution: liberica
-          java-version: '17'
+          java-version: 17
       - run: |
           ./src/build/scripts/FormatCode.sh
           git config user.name "github-actions[bot]"

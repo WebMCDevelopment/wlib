@@ -21,8 +21,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public final class TextUtil {
-  public static String parsePlaceholders(final Player player, final String txt) {
-    return PlaceholderUtil.parsePlaceholders(player, txt);
+  public static String parsePlaceholders(final Player plr, final String txt) {
+    return PlaceholderUtil.parsePlaceholders(plr, txt);
   }
 
   public static String serializeExceptionStackString(final String stack) {

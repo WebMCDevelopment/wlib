@@ -66,7 +66,7 @@ public final class WLIBCommand extends WCommand {
               state = ChatColor.RED + "DISABLED";
             }
 
-            sender.sendMessage(state + ChatColor.RESET + " alerts for " + ChatColor.AQUA + ctx + ChatColor.AQUA);
+            sender.sendMessage(state + ChatColor.RESET + " alerts for " + ChatColor.AQUA + ctx);
           }
         } else if (arg.equals("debug") && (bool2 = sender.hasPermission("wlib.debug"))) {
           final String act = args[1].trim();

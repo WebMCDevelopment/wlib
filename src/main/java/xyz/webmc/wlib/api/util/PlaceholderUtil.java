@@ -25,9 +25,9 @@ public final class PlaceholderUtil extends AbstractPluginRequiredUtil {
     bool = check("PlaceholderAPI");
   }
 
-  public static String parsePlaceholders(final Player player, final String txt) {
+  public static String parsePlaceholders(final Player plr, final String txt) {
     if (bool) {
-      return PlaceholderAPI.setPlaceholders(player, txt);
+      return PlaceholderAPI.setPlaceholders(plr, txt);
     } else {
       return txt;
     }

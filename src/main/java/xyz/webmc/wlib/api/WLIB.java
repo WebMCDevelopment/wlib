@@ -39,8 +39,7 @@ public final class WLIB {
   }
 
   public static boolean requireWLIB(final String ver) {
-    final Semver semver = new Semver(ver);
-    return semver.isGreaterThanOrEqualTo(version);
+    return version.isGreaterThanOrEqualTo(ver);
   }
 
   public static void registerPlugin(final Plugin plugin) {
