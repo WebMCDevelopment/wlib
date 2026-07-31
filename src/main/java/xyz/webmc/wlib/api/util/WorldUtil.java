@@ -157,7 +157,7 @@ public final class WorldUtil {
     if (Mirror.hasMethod(plr, "isChunkSent", Chunk.class)) {
       sent = MirrorSafe.invokeMethod(plr, "isChunkSent", chnk);
     } else if (Mirror.hasMethod(chnk, "getPlayersSeeingChunk")) {
-      final List<Player> lst = MirrorSafe.invokeMethod(chnk, "getPlayersSeeingChunk");
+      final Collection<Player> lst = MirrorSafe.invokeMethod(chnk, "getPlayersSeeingChunk");
       sent = (lst != null && lst.contains(plr));
     }
 
