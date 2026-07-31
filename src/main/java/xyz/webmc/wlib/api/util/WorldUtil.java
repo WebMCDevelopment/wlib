@@ -14,6 +14,7 @@
 package xyz.webmc.wlib.api.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import dev.colbster937.reflect.Mirror;
@@ -133,7 +134,7 @@ public final class WorldUtil {
           if (Mirror.hasMethod(plr, "isChunkSent", Chunk.class)) {
             add = MirrorSafe.invokeMethod(plr, "isChunkSent", _chnk);
           } else if (Mirror.hasMethod(chnk, "getPlayersSeeingChunk")) {
-            final List<Player> lst = MirrorSafe.invokeMethod(_chnk, "getPlayersSeeingChunk");
+            final Collection<Player> lst = MirrorSafe.invokeMethod(_chnk, "getPlayersSeeingChunk");
             add = lst != null && lst.contains(plr);
           }
 
