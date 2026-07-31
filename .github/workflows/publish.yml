@@ -2,6 +2,7 @@ on:
   push:
     paths:
       - 'src/**'
+      - '.github/workflows/publish.yml'
   workflow_dispatch:
 
 permissions:
@@ -42,7 +43,7 @@ jobs:
           cp target/${{ steps.vars.outputs.AFCT }}.jar dist/${{ steps.dist.outputs.JAR_NAME }}
       - uses: actions/upload-artifact@v7
         with:
-          path: dist/${{ steps.vars.outputs.AFCT }}.jar
+          path: target/${{ steps.vars.outputs.AFCT }}.jar
           name: ${{ steps.vars.outputs.AFCT }}
           if-no-files-found: error
       - id: mrtoken
