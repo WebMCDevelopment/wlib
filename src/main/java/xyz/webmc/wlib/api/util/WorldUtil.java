@@ -145,6 +145,18 @@ public final class WorldUtil {
       }
     }
 
+    ret.sort((a, b) -> {
+      final int ax = a.getX() - cx;
+      final int az = a.getZ() - cz;
+      final int bx = b.getX() - cx;
+      final int bz = b.getZ() - cz;
+
+      return Integer.compare(
+        ax * ax + az * az,
+        bx * bx + bz * bz
+      );
+    });
+
     return ret;
   }
 
