@@ -21,7 +21,7 @@ import org.bukkit.entity.Player;
 public final class PlaceholderUtil extends AbstractPluginRequiredUtil {
   private static boolean bool = false;
 
-  public static void init() {
+  public static void _init() {
     bool = check("PlaceholderAPI");
   }
 

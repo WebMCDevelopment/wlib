@@ -16,6 +16,7 @@ package xyz.webmc.wlib;
 import xyz.webmc.wlib.api.WLIB;
 import xyz.webmc.wlib.api.misc.CaptureSender;
 import xyz.webmc.wlib.api.util.CommandUtil;
+import xyz.webmc.wlib.api.util.DatapackUtil;
 import xyz.webmc.wlib.api.util.EventUtil;
 import xyz.webmc.wlib.api.util.PermissionUtil;
 import xyz.webmc.wlib.api.util.PlaceholderUtil;
@@ -38,6 +39,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
+import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
@@ -45,13 +47,14 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
 
   @Override
   public void onEnable() {
-    WLIB.init(this);
-    CommandUtil.init(this);
-    EventUtil.init(this);
-    PermissionUtil.init();
-    PlaceholderUtil.init();
-    SchedulerUtil.init(this);
-    WLIB.registerPlugin(this);
+    WLIB._init(this);
+    CommandUtil._init(this);
+    DatapackUtil._init(this);
+    EventUtil._init(this);
+    PermissionUtil._init();
+    PlaceholderUtil._init();
+    SchedulerUtil._init(this);
+    WLIB.initPlugin(this);
     CommandUtil.registerCommand(new WLIBCommand(this));
     CommandUtil.registerCommand(new WLIBBlankCommand());
     EventUtil.registerEvents(this);
@@ -81,6 +84,13 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
   public void onPlayerCommand(final PlayerCommandPreprocessEvent ev) {
     if (handleCommandEvent(ev.getPlayer(), ev.getMessage())) {
       ev.setCancelled(true);
+    }
+  }
+
+  @EventHandler
+  public void onWorldInit(final WorldInitEvent ev) {
+    if (WLIB.getIsModernServer()) {
+      DatapackUtil.initWorld(ev.getWorld());
     }
   }
 
@@ -132,9 +142,7 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
 
   static {
     for (final String logger : DISABLE_LOGGERS) {
-      Configurator.setLevel(
-          logger,
-          Level.OFF);
+      Configurator.setLevel(logger, Level.OFF);
     }
   }
 }

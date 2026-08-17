@@ -36,7 +36,7 @@ public final class SchedulerUtil {
   private static FoliaLib lib;
   private static PlatformScheduler sch;
 
-  public static void init(final Plugin plugin) {
+  public static void _init(final Plugin plugin) {
     SchedulerUtil.plugin = plugin;
     lib = new FoliaLib(plugin);
     sch = lib.getScheduler();

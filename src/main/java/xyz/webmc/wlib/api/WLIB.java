@@ -13,6 +13,8 @@
 
 package xyz.webmc.wlib.api;
 
+import xyz.webmc.wlib.api.util.DatapackUtil;
+
 import java.lang.StackWalker.Option;
 import java.lang.StackWalker.StackFrame;
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ public final class WLIB {
   private static Semver version;
   private static Logger logger;
 
-  public static void init(final Plugin plugin) {
+  public static void _init(final Plugin plugin) {
     version = new Semver(plugin.getDescription().getVersion());
     logger = plugin.getLogger();
   }
@@ -42,8 +44,17 @@ public final class WLIB {
     return version.isGreaterThanOrEqualTo(ver);
   }
 
-  public static void registerPlugin(final Plugin plugin) {
+  public static void initPlugin(final Plugin plugin) {
+    if (getIsModernServer()) {
+      DatapackUtil.initPlugin(plugin);
+    }
+
     plugins.add(plugin);
+  }
+
+  @Deprecated(forRemoval = true)
+  public static void registerPlugin(final Plugin plugin) {
+    initPlugin(plugin);
   }
 
   public static List<Plugin> getWLIBPlugins() {

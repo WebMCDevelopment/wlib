@@ -25,7 +25,7 @@ public final class EventUtil {
   private static final PluginManager pm = Bukkit.getPluginManager();
   private static Plugin plugin;
 
-  public static void init(final Plugin plugin) {
+  public static void _init(final Plugin plugin) {
     EventUtil.plugin = plugin;
   }
 

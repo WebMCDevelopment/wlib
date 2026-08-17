@@ -13,6 +13,7 @@
 
 package xyz.webmc.wlib.api.util;
 
+import xyz.webmc.wlib.api.misc.CaptureSender;
 import xyz.webmc.wlib.internal.command.AliasCommand;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ import org.bukkit.plugin.Plugin;
 public final class CommandUtil {
   private static Plugin plugin;
 
-  public static void init(final Plugin plugin) {
+  public static void _init(final Plugin plugin) {
     CommandUtil.plugin = plugin;
   }
 
@@ -80,9 +81,22 @@ public final class CommandUtil {
     return getCommandMap().dispatch(sender, cmd);
   }
 
-  public static List<String> tabComplete(final CommandSender sender, final String cmd)
-      throws IllegalArgumentException {
+  public static List<String> tabComplete(final CommandSender sender, final String cmd) throws IllegalArgumentException {
     return getCommandMap().tabComplete(sender, cmd);
+  }
+
+  public static boolean dispatchConsole(final String cmd) throws CommandException {
+    return dispatch(Bukkit.getConsoleSender(), cmd);
+  }
+
+  public static List<String> dispatchConsoleCapture(final String cmd) throws CommandException {
+    final CaptureSender capture = new CaptureSender(Bukkit.getConsoleSender());
+    dispatch(capture, cmd);
+    return capture.getMessages();
+  }
+
+  public static List<String> tabCompleteConsole(final String cmd) throws IllegalArgumentException {
+    return tabComplete(Bukkit.getConsoleSender(), cmd);
   }
 
   public static Command getCommand(final String cmd) {
