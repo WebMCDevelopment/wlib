@@ -110,4 +110,8 @@ public class BlockRelative {
   public final byte getDataLegacy() {
     return dataLegacy;
   }
+
+  public final BlockRelative offset(final int x, final int y, final int z) {
+    return new BlockRelative(this.x + x, this.y + y, this.z + z, this.mat, this.dataModern, this.dataLegacy);
+  }
 }

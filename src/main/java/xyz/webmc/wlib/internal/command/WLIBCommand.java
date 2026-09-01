@@ -73,26 +73,31 @@ public final class WLIBCommand extends WCommand {
           if (act.equals("throw")) {
             throw new CommandException();
           } else if (act.equals("place")) {
+            if (args.length < 3) {
+              super.sendUsageMessage(sender, label);
+              return true;
+            }
+
             bool1 = false;
             if (sender instanceof Player plr) {
               final String struct = args[2].trim();
-              Class<? extends AbstractBaseStructure> clazz = null;
+              final AbstractBaseStructure structure;
 
               if (struct.equals("shrine")) {
-                clazz = HerobrineShrineTestStructure.class;
+                structure = new HerobrineShrineTestStructure();
               } else if (struct.equals("rick")) {
-                clazz = RickQRCodeTestSchemStructure.class;
+                structure = new RickQRCodeTestSchemStructure();
+              } else {
+                bool1 = true;
+                bool2 = false;
+                structure = null;
               }
 
-              if (clazz != null) {
-                final AbstractBaseStructure structure = AbstractBaseStructure.getInstance(clazz);
+              if (structure != null) {
                 final Location loc = plr.getLocation();
                 structure.place(loc.clone());
                 SchedulerUtil.teleportAsync(plr, loc.clone().add(1, 1, 0).getBlock().getLocation().clone().add(0.5D, 0, 0.5D));
                 sender.sendMessage(ChatColor.GREEN + "Placed structure " + structure.getName());
-              } else {
-                bool1 = true;
-                bool2 = false;
               }
             } else {
               sendOnlyPlayersMessage(sender);
