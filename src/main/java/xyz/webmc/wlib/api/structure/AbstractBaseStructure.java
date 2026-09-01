@@ -13,10 +13,10 @@
 
 package xyz.webmc.wlib.api.structure;
 
-import org.bukkit.Location;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.bukkit.Location;
 
 public abstract class AbstractBaseStructure {
   private static List<Class<AbstractBaseStructure>> structures = new ArrayList<>();
