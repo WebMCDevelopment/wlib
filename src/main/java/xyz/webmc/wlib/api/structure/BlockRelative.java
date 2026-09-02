@@ -71,7 +71,7 @@ public class BlockRelative {
     final Material _mat = this.mat.parseMaterial();
 
     if (mat != null) {
-      if (WLIB.getIsModernServer() && this.dataModern != null) {
+      if (WLIB.getIsModernServer() && this.dataModern != null && _mat != null) {
         final Object data = MirrorSafe.invokeMethod(Bukkit.class, "createBlockData", new Object[] { "minecraft:" + _mat.name().toLowerCase() + this.dataModern });
         MirrorSafe.invokeMethod(Block.class, blk, "setBlockData", data, false);
       } else {

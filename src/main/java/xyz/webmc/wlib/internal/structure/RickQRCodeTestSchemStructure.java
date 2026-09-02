@@ -29,12 +29,13 @@ public final class RickQRCodeTestSchemStructure extends AbstractBaseStructure {
   @Override
   public PlaceableStructure build(final long seed) {
     final PlaceableStructure structure = new PlaceableStructure(this.getName());
+
     try (InputStream is = RickQRCodeTestSchemStructure.class.getResourceAsStream("/schematics/rick.schem")) {
       structure.loadSchematic(is);
     } catch (final IOException | ParsingException ex) {
       throw new RuntimeException("Failed to load schematic for structure " + this.getName(), ex);
     }
+
     return structure;
   }
-
 }

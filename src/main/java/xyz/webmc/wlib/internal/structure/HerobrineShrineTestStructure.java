@@ -48,5 +48,4 @@ public final class HerobrineShrineTestStructure extends AbstractBaseStructure {
 
     return structure;
   }
-
 }

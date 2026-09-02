@@ -28,7 +28,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.semver4j.Semver;
 
-@SuppressWarnings({ "NonConstantLogger" })
+@SuppressWarnings({ "NonConstantLogger" , "null"})
 public final class WLIB {
   private static final StackWalker stackWalker = StackWalker.getInstance(Option.RETAIN_CLASS_REFERENCE);
   private static final List<Plugin> plugins = new ArrayList<>();

@@ -73,34 +73,34 @@ public final class WLIBCommand extends WCommand {
           if (act.equals("throw")) {
             throw new CommandException();
           } else if (act.equals("place")) {
-            if (args.length < 3) {
-              super.sendUsageMessage(sender, label);
-              return true;
-            }
+            if (args.length >= 3) {
+              bool1 = false;
+              if (sender instanceof Player plr) {
+                final String struct = args[2].trim();
+                final AbstractBaseStructure structure;
 
-            bool1 = false;
-            if (sender instanceof Player plr) {
-              final String struct = args[2].trim();
-              final AbstractBaseStructure structure;
+                switch (struct) {
+                  case "shrine" -> structure = new HerobrineShrineTestStructure();
+                  case "rick" -> structure = new RickQRCodeTestSchemStructure();
+                  default -> {
+                    bool1 = true;
+                    bool2 = false;
+                    structure = null;
+                  }
+                }
 
-              if (struct.equals("shrine")) {
-                structure = new HerobrineShrineTestStructure();
-              } else if (struct.equals("rick")) {
-                structure = new RickQRCodeTestSchemStructure();
+                if (structure != null) {
+                  final Location loc = plr.getLocation();
+                  structure.place(loc.clone());
+                SchedulerUtil.teleportAsync(plr, loc.clone().add(0, 1, 0).getBlock().getLocation().clone().add(0.5D, 0, 0.5D));
+                  sender.sendMessage(ChatColor.GREEN + "Placed structure " + structure.getName());
+                }
               } else {
-                bool1 = true;
-                bool2 = false;
-                structure = null;
+                sendOnlyPlayersMessage(sender);
               }
 
-              if (structure != null) {
-                final Location loc = plr.getLocation();
-                structure.place(loc.clone());
-                SchedulerUtil.teleportAsync(plr, loc.clone().add(1, 1, 0).getBlock().getLocation().clone().add(0.5D, 0, 0.5D));
-                sender.sendMessage(ChatColor.GREEN + "Placed structure " + structure.getName());
-              }
             } else {
-              sendOnlyPlayersMessage(sender);
+              return true;
             }
           }
         }
@@ -120,10 +120,9 @@ public final class WLIBCommand extends WCommand {
 
   @Override
   public final List<String> tab(final CommandSender sender, final String label, final String[] args) {
-    if (args.length > 0) {
-      final List<String> ret = new ArrayList<>();
-
-      if (args.length == 1) {
+    final List<String> ret = new ArrayList<>();
+    switch (args.length) {
+      case 1 -> {
         if (sender.hasPermission("wlib.plugins")) {
           ret.add("plugins");
         }
@@ -139,21 +138,22 @@ public final class WLIBCommand extends WCommand {
         if (sender.hasPermission("wlib.debug")) {
           ret.add("debug");
         }
-      } else if (args.length == 2) {
+      }
+
+      case 2 -> {
         if (args[0].equals("debug") && sender.hasPermission("wlib.debug")) {
           ret.add("throw");
           ret.add("place");
         }
-      } else if (args.length == 3) {
+      }
+
+      case 3 -> {
         if (args[0].equals("debug") && args[1].equals("place") && sender.hasPermission("wlib.debug")) {
           ret.add("shrine");
           ret.add("rick");
         }
       }
-
-      return ret;
-    } else {
-      return List.of();
     }
+    return ret;
   }
 }

@@ -19,7 +19,7 @@ import java.util.List;
 import org.bukkit.Location;
 
 public abstract class AbstractBaseStructure {
-  private static List<Class<AbstractBaseStructure>> structures = new ArrayList<>();
+  private static final List<Class<AbstractBaseStructure>> STRUCTURES = new ArrayList<>();
   private final String name;
 
   protected AbstractBaseStructure(final String name) {
@@ -49,12 +49,12 @@ public abstract class AbstractBaseStructure {
   }
 
   public static List<Class<AbstractBaseStructure>> getStructures() {
-    return structures;
+    return STRUCTURES;
   }
 
-  public static void registerStructure(final Class<AbstractBaseStructure> structureClass) {
-    if (structureClass != null && !structures.contains(structureClass)) {
-      structures.add(structureClass);
+  public static void registerStructure(final Class<AbstractBaseStructure> clazz) {
+    if (clazz != null && !STRUCTURES.contains(clazz)) {
+      STRUCTURES.add(clazz);
     }
   }
 }
