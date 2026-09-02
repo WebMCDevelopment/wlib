@@ -13,13 +13,13 @@
 
 package xyz.webmc.wlib.internal.structure;
 
-import xyz.webmc.wlib.api.structure.AbstractBaseStructure;
+import xyz.webmc.wlib.api.structure.AbstractGenerableStructure;
 import xyz.webmc.wlib.api.structure.BlockRelative;
 import xyz.webmc.wlib.api.structure.PlaceableStructure;
 
 import com.cryptomorin.xseries.XMaterial;
 
-public final class HerobrineShrineTestStructure extends AbstractBaseStructure {
+public final class HerobrineShrineTestStructure extends AbstractGenerableStructure {
   public HerobrineShrineTestStructure() {
     super("herobrine_shrine");
   }
@@ -47,5 +47,15 @@ public final class HerobrineShrineTestStructure extends AbstractBaseStructure {
     }
 
     return structure;
+  }
+
+  @Override
+  public boolean canGenerateAt(final int chunkX, final int chunkZ, final long worldSeed) {
+    return (chunkX + chunkZ) % 10 == 0;
+  }
+
+  @Override
+  public long getGenerationSeed(final int chunkX, final int chunkZ, final long worldSeed) {
+    return worldSeed + (chunkX * 31L) + (chunkZ * 17L);
   }
 }

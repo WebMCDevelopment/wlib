@@ -25,7 +25,18 @@ public abstract class AbstractGenerableStructure extends AbstractBaseStructure {
 
   public abstract boolean canGenerateAt(final int chunkX, final int chunkZ, final long worldSeed);
 
+  public abstract long getGenerationSeed(final int chunkX, final int chunkZ, final long worldSeed);
+
+  public abstract PlaceableStructure build(final long seed);
+
+  @Override
+  public final PlaceableStructure build() {
+    return this.build(0);
+  }
+
   public final Location locateNearest(final Location pos, final long worldSeed) {
+    Location ret = null;
+    
     if (pos != null && pos.getWorld() != null) {
       final int centerChunkX = pos.getChunk().getX();
       final int centerChunkZ = pos.getChunk().getZ();
@@ -39,27 +50,39 @@ public abstract class AbstractGenerableStructure extends AbstractBaseStructure {
 
         for (int chunkX = minX; chunkX <= maxX; chunkX++) {
           if (this.canGenerateAt(chunkX, minZ, worldSeed)) {
-            return this.createLocation(world, chunkX, minZ);
+            ret = this.createLocation(world, chunkX, minZ);
+            break;
           }
 
-          if (minZ != maxZ && this.canGenerateAt(chunkX, maxZ, worldSeed)) {
-            return this.createLocation(world, chunkX, maxZ);
+          if (this.canGenerateAt(chunkX, maxZ, worldSeed)) {
+            ret = this.createLocation(world, chunkX, maxZ);
+            break;
           }
+        }
+
+        if (ret != null) {
+          break;
         }
 
         for (int chunkZ = minZ + 1; chunkZ < maxZ; chunkZ++) {
           if (this.canGenerateAt(minX, chunkZ, worldSeed)) {
-            return this.createLocation(world, minX, chunkZ);
+            ret = this.createLocation(world, minX, chunkZ);
+            break;
           }
 
-          if (minX != maxX && this.canGenerateAt(maxX, chunkZ, worldSeed)) {
-            return this.createLocation(world, maxX, chunkZ);
+          if (this.canGenerateAt(maxX, chunkZ, worldSeed)) {
+            ret = this.createLocation(world, maxX, chunkZ);
+            break;
           }
+        }
+
+        if (ret != null) {
+          break;
         }
       }
     }
 
-    return null;
+    return ret;
   }
 
   private Location createLocation(final World world, final int chunkX, final int chunkZ) {
@@ -67,5 +90,10 @@ public abstract class AbstractGenerableStructure extends AbstractBaseStructure {
     final int blockZ = chunkZ * 16 + 8;
 
     return new Location(world, blockX, 65, blockZ);
+  }
+
+  @Deprecated(forRemoval = true)
+  public void place(final Location loc) {
+    this.build(getGenerationSeed(loc.getChunk().getX(), loc.getChunk().getZ(), loc.getWorld().getSeed())).place(loc);
   }
 }

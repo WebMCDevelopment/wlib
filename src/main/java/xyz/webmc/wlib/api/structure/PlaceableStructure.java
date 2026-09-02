@@ -34,8 +34,8 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 
 public final class PlaceableStructure {
-  private final String name;
   private final List<BlockRelative> blocks = new ArrayList<>();
+  private final String name;
 
   public PlaceableStructure(final String name) {
     this.name = name;

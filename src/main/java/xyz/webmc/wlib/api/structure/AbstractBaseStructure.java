@@ -13,9 +13,15 @@
 
 package xyz.webmc.wlib.api.structure;
 
+import xyz.webmc.wlib.api.WLIB;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sandrohc.schematic4j.exception.ParsingException;
 import org.bukkit.Location;
 
 public abstract class AbstractBaseStructure {
@@ -30,23 +36,7 @@ public abstract class AbstractBaseStructure {
     return this.name;
   }
 
-  public abstract PlaceableStructure build(long seed);
-
-  public final void place(final Location loc, final long seed) {
-    this.build(seed).place(loc);
-  }
-
-  public final void place(final Location loc) {
-    this.place(loc, 0L);
-  }
-
-  public final PlaceableStructure getChunk(final int chunkX, final int chunkZ, final long seed) {
-    return this.build(seed).getChunk(chunkX, chunkZ);
-  }
-
-  public final PlaceableStructure getChunk(final int chunkX, final int chunkZ) {
-    return this.getChunk(chunkX, chunkZ, 0L);
-  }
+  public abstract PlaceableStructure build();
 
   public static final List<Class<AbstractBaseStructure>> getStructures() {
     return STRUCTURES;
@@ -56,5 +46,49 @@ public abstract class AbstractBaseStructure {
     if (clazz != null && !STRUCTURES.contains(clazz)) {
       STRUCTURES.add(clazz);
     }
+  }
+
+  /*
+   * DEPRECATED METHODS USE PlaceableStructure and .build() INSTEAD
+   *
+   * The 2 first methods are here to make the transition easier, but .build must be use in the future.
+   */
+
+  @Deprecated(forRemoval = true)
+  public void place(final Location loc) {
+    this.build().place(loc);
+  }
+
+  @Deprecated(forRemoval = true)
+  public int getOffsetY() {
+    WLIB.warnDeprecatedUsage();
+    return 0;
+  }
+
+  @Deprecated(forRemoval = true)
+  public int getOffsetZ() {
+    WLIB.warnDeprecatedUsage();
+    return 0;
+  }
+
+  @Deprecated(forRemoval = true)
+  protected final void addBlock(final BlockRelative blk) {
+    WLIB.warnDeprecatedUsage();
+  }
+
+  @Deprecated(forRemoval = true)
+  protected final void loadSchematic(final InputStream is) throws IOException, ParsingException {
+    WLIB.warnDeprecatedUsage();
+  }
+
+  @Deprecated(forRemoval = true)
+  protected final void loadSchematic(final File file) throws IOException, ParsingException {
+    WLIB.warnDeprecatedUsage();
+  }
+
+  @Deprecated(forRemoval = true)
+  public static final <T extends AbstractBaseStructure> T getInstance(final Class<T> clazz, final Object... params) {
+    WLIB.warnDeprecatedUsage();
+    return null;
   }
 }

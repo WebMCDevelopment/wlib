@@ -22,18 +22,18 @@ import java.io.InputStream;
 import net.sandrohc.schematic4j.exception.ParsingException;
 
 public final class RickQRCodeTestSchemStructure extends AbstractBaseStructure {
-  public RickQRCodeTestSchemStructure(){
+  public RickQRCodeTestSchemStructure() {
     super("rick_qr");
   }
 
   @Override
-  public PlaceableStructure build(final long seed) {
+  public PlaceableStructure build() {
     final PlaceableStructure structure = new PlaceableStructure(this.getName());
 
     try (InputStream is = RickQRCodeTestSchemStructure.class.getResourceAsStream("/schematics/rick.schem")) {
       structure.loadSchematic(is);
     } catch (final IOException | ParsingException ex) {
-      throw new RuntimeException("Failed to load schematic for structure " + this.getName(), ex);
+      throw new RuntimeException(ex);
     }
 
     return structure;
