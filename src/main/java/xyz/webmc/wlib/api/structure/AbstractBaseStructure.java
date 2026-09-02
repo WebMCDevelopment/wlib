@@ -48,11 +48,11 @@ public abstract class AbstractBaseStructure {
     return this.getChunk(chunkX, chunkZ, 0L);
   }
 
-  public final static List<Class<AbstractBaseStructure>> getStructures() {
+  public static final List<Class<AbstractBaseStructure>> getStructures() {
     return STRUCTURES;
   }
 
-  public final static void registerStructure(final Class<AbstractBaseStructure> clazz) {
+  public static final void registerStructure(final Class<AbstractBaseStructure> clazz) {
     if (clazz != null && !STRUCTURES.contains(clazz)) {
       STRUCTURES.add(clazz);
     }
