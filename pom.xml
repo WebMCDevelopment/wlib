@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>xyz.webmc</groupId>
   <artifactId>wlib</artifactId>
-  <version>1.2.9-SNAPSHOT</version>
+  <version>1.3.0-SNAPSHOT</version>
   <distributionManagement>
     <repository>
       <id>github</id>
@@ -150,6 +150,11 @@
           <exclude>**/*.yml</exclude>
         </excludes>
       </resource>
+      <resource>
+        <filtering>true</filtering>
+        <directory>src/build/resources</directory>
+        <targetPath>${project.build.directory}/resources</targetPath>
+      </resource>
     </resources>
     <plugins>
       <plugin>
@@ -213,6 +218,30 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>com.github.wvengen</groupId>
+        <artifactId>proguard-maven-plugin</artifactId>
+        <version>2.7.0</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>proguard</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <maxMemory>1024m</maxMemory>
+          <includeDependency>true</includeDependency>
+          <injar>${project.build.finalName}.jar</injar>
+          <outjar>${project.build.finalName}.jar</outjar>
+          <outputDirectory>${project.build.directory}</outputDirectory>
+          <proguardInclude>${project.build.directory}/resources/proguardRules.conf</proguardInclude>
+          <libs>
+            <lib>${java.home}/jmods/java.base.jmod</lib>
+          </libs>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>com.mycila</groupId>
         <artifactId>license-maven-plugin</artifactId>
         <version>5.1.1</version>
@@ -222,7 +251,7 @@
           </properties>
           <licenseSets>
             <licenseSet>
-              <header>src/build/resources/LICENSE_HEADER.txt</header>
+              <header>src/build/resources/licenseHeader.txt</header>
               <includes>
                 <include>src/**/*.java</include>
               </includes>
