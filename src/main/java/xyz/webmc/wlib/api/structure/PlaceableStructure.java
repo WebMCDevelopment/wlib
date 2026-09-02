@@ -33,7 +33,7 @@ import net.sandrohc.schematic4j.schematic.types.SchematicBlockPos;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 
-public class PlaceableStructure {
+public final class PlaceableStructure {
   private final String name;
   private final List<BlockRelative> blocks = new ArrayList<>();
 
