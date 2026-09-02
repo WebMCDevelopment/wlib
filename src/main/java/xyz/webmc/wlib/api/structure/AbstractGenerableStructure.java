@@ -36,7 +36,7 @@ public abstract class AbstractGenerableStructure extends AbstractBaseStructure {
 
   public final Location locateNearest(final Location pos, final long worldSeed) {
     Location ret = null;
-    
+
     if (pos != null && pos.getWorld() != null) {
       final int centerChunkX = pos.getChunk().getX();
       final int centerChunkZ = pos.getChunk().getZ();
