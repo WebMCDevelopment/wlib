@@ -16,6 +16,8 @@ package xyz.webmc.wlib.api.structure;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import xyz.webmc.wlib.api.WLIB;
+
 public abstract class AbstractGenerableStructure extends AbstractBaseStructure {
   static final int SEARCH_RADIUS = 100;
 
@@ -42,6 +44,7 @@ public abstract class AbstractGenerableStructure extends AbstractBaseStructure {
       final int centerChunkZ = pos.getChunk().getZ();
       final World world = pos.getWorld();
 
+      search:
       for (int radius = 0; radius <= SEARCH_RADIUS; radius++) {
         final int minX = centerChunkX - radius;
         final int maxX = centerChunkX + radius;
@@ -49,35 +52,21 @@ public abstract class AbstractGenerableStructure extends AbstractBaseStructure {
         final int maxZ = centerChunkZ + radius;
 
         for (int chunkX = minX; chunkX <= maxX; chunkX++) {
-          if (this.canGenerateAt(chunkX, minZ, worldSeed)) {
-            ret = this.createLocation(world, chunkX, minZ);
-            break;
+          for (int chunkZ : new int[] { minZ, maxZ }) {
+            if (this.canGenerateAt(chunkX, chunkZ, worldSeed)) {
+              ret = this.createLocation(world, chunkX, chunkZ);
+              break search;
+            }
           }
-
-          if (this.canGenerateAt(chunkX, maxZ, worldSeed)) {
-            ret = this.createLocation(world, chunkX, maxZ);
-            break;
-          }
-        }
-
-        if (ret != null) {
-          break;
         }
 
         for (int chunkZ = minZ + 1; chunkZ < maxZ; chunkZ++) {
-          if (this.canGenerateAt(minX, chunkZ, worldSeed)) {
-            ret = this.createLocation(world, minX, chunkZ);
-            break;
+          for (int chunkX : new int[] { minX, maxX }) {
+            if (this.canGenerateAt(chunkX, chunkZ, worldSeed)) {
+              ret = this.createLocation(world, chunkX, chunkZ);
+              break search;
+            }
           }
-
-          if (this.canGenerateAt(maxX, chunkZ, worldSeed)) {
-            ret = this.createLocation(world, maxX, chunkZ);
-            break;
-          }
-        }
-
-        if (ret != null) {
-          break;
         }
       }
     }
@@ -85,15 +74,13 @@ public abstract class AbstractGenerableStructure extends AbstractBaseStructure {
     return ret;
   }
 
-  private Location createLocation(final World world, final int chunkX, final int chunkZ) {
-    final int blockX = chunkX * 16 + 8;
-    final int blockZ = chunkZ * 16 + 8;
-
-    return new Location(world, blockX, 65, blockZ);
+  @Deprecated(forRemoval = true)
+  public final void place(final Location loc) {
+    WLIB.warnDeprecatedUsage();
+    this.build(getGenerationSeed(loc.getChunk().getX(), loc.getChunk().getZ(), loc.getWorld().getSeed())).place(loc);
   }
 
-  @Deprecated(forRemoval = true)
-  public void place(final Location loc) {
-    this.build(getGenerationSeed(loc.getChunk().getX(), loc.getChunk().getZ(), loc.getWorld().getSeed())).place(loc);
+  private Location createLocation(final World world, final int chunkX, final int chunkZ) {
+    return new Location(world, chunkX * 16 + 8, 65, chunkZ * 16 + 8);
   }
 }

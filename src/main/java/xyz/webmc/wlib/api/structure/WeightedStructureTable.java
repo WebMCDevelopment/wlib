@@ -13,6 +13,7 @@
 
 package xyz.webmc.wlib.api.structure;
 
+import xyz.webmc.wlib.api.WLIB;
 import xyz.webmc.wlib.api.util.RNGUtil;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import dev.colbster937.reflect.MirrorSafe;
 import dev.colbster937.util.WeightedObjectTable;
 import org.bukkit.Location;
 
+@SuppressWarnings({ "removal" })
 public final class WeightedStructureTable extends WeightedObjectTable<AbstractBaseStructure> {
   public WeightedStructureTable(final long seed, final WeightedStructure... structures) {
     super(seed, structures);
@@ -41,7 +43,9 @@ public final class WeightedStructureTable extends WeightedObjectTable<AbstractBa
     this(weigh(structures));
   }
 
+  @Deprecated(forRemoval = true)
   public void place(final Location loc) {
+    WLIB.warnDeprecatedUsage();
     this.computeRandomObject().place(loc);
   }
 

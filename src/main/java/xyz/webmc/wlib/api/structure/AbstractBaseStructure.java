@@ -48,47 +48,51 @@ public abstract class AbstractBaseStructure {
     }
   }
 
-  /*
-   * DEPRECATED METHODS USE PlaceableStructure and .build() INSTEAD
-   *
-   * The 2 first methods are here to make the transition easier, but .build must be use in the future.
-   */
-
   @Deprecated(forRemoval = true)
   public void place(final Location loc) {
+    WLIB.warnDeprecatedUsage();
     this.build().place(loc);
+  }
+
+  @Deprecated(forRemoval = true)
+  public int getOffsetX() {
+    WLIB.warnDeprecatedUsage();
+    throw new UnsupportedOperationException();
   }
 
   @Deprecated(forRemoval = true)
   public int getOffsetY() {
     WLIB.warnDeprecatedUsage();
-    return 0;
+    throw new UnsupportedOperationException();
   }
 
   @Deprecated(forRemoval = true)
   public int getOffsetZ() {
     WLIB.warnDeprecatedUsage();
-    return 0;
+    throw new UnsupportedOperationException();
   }
 
   @Deprecated(forRemoval = true)
   protected final void addBlock(final BlockRelative blk) {
     WLIB.warnDeprecatedUsage();
+    throw new UnsupportedOperationException();
   }
 
   @Deprecated(forRemoval = true)
   protected final void loadSchematic(final InputStream is) throws IOException, ParsingException {
     WLIB.warnDeprecatedUsage();
+    throw new UnsupportedOperationException();
   }
 
   @Deprecated(forRemoval = true)
   protected final void loadSchematic(final File file) throws IOException, ParsingException {
     WLIB.warnDeprecatedUsage();
+    throw new UnsupportedOperationException();
   }
 
   @Deprecated(forRemoval = true)
   public static final <T extends AbstractBaseStructure> T getInstance(final Class<T> clazz, final Object... params) {
     WLIB.warnDeprecatedUsage();
-    return null;
+    throw new UnsupportedOperationException();
   }
 }

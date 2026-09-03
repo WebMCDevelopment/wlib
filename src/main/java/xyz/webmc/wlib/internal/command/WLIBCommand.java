@@ -93,14 +93,12 @@ public final class WLIBCommand extends WCommand {
                 if (structure != null) {
                   final Location loc = plr.getLocation();
                   if (structure instanceof AbstractGenerableStructure generable) {
-                    final long seed = generable.getGenerationSeed(loc.getChunk().getX(), loc.getChunk().getZ(),
-                        plr.getWorld().getSeed());
+                    final long seed = generable.getGenerationSeed(loc.getChunk().getX(), loc.getChunk().getZ(), plr.getWorld().getSeed());
                     generable.build(seed).place(loc.clone());
                   } else {
                     structure.build().place(loc.clone());
                   }
-                  SchedulerUtil.teleportAsync(plr,
-                      loc.clone().add(0, 1, 0).getBlock().getLocation().clone().add(0.5D, 0, 0.5D));
+                  SchedulerUtil.teleportAsync(plr, loc.clone().add(0, 1, 0).getBlock().getLocation().clone().add(0.5D, 0, 0.5D));
                   sender.sendMessage(ChatColor.GREEN + "Placed structure " + structure.getName());
                 }
               } else {
@@ -108,41 +106,20 @@ public final class WLIBCommand extends WCommand {
                 return true;
               }
             }
-          } else if (act.equals("locateHerobrine")) {
-            if (sender instanceof Player plr) {
-              final AbstractGenerableStructure structure = new HerobrineShrineTestStructure();
-              final Location loc = structure.locateNearest(plr.getLocation(), plr.getWorld().getSeed());
-              if (loc != null) {
-                /*
-                 * Unless an other plugin use a chunk generator to generate the Herobrine Shrine the structure will NOT naturaly spawn. This is a theoretical location.
-                 */
-                sender.sendMessage(ChatColor.GREEN + "Nearest naturaly spawned Herobrine Shrine would be at " + ChatColor.AQUA + loc.getBlockX()
-                    + ChatColor.GREEN + ", " + ChatColor.AQUA + loc.getBlockY() + ChatColor.GREEN + ", "
-                    + ChatColor.AQUA + "~" + ChatColor.GREEN + " in world "
-                    + ChatColor.AQUA + loc.getWorld().getName());
-              } else {
-                sender.sendMessage(ChatColor.RED + "No naturaly spawned Herobrine Shrine would be within search radius.");
-              }
-            } else {
-              sendOnlyPlayersMessage(sender);
-              return true;
-            }
           }
         }
       }
     }
 
-  if(bool1)
-
-  {
-    if (!bool2) {
-      super.sendUsageMessage(sender, label);
-    } else {
-      super.sendPermissionMessage(sender, label);
+    if (bool1) {
+      if (!bool2) {
+        super.sendUsageMessage(sender, label);
+      } else {
+        super.sendPermissionMessage(sender, label);
+      }
     }
-  }
 
-  return true;
+    return true;
   }
 
   @Override
