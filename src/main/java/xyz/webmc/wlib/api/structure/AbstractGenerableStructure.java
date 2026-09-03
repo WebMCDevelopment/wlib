@@ -13,10 +13,10 @@
 
 package xyz.webmc.wlib.api.structure;
 
+import xyz.webmc.wlib.api.WLIB;
+
 import org.bukkit.Location;
 import org.bukkit.World;
-
-import xyz.webmc.wlib.api.WLIB;
 
 public abstract class AbstractGenerableStructure extends AbstractBaseStructure {
   static final int SEARCH_RADIUS = 100;
