@@ -13,21 +13,21 @@
 
 package xyz.webmc.wlib.api.structures;
 
-import xyz.webmc.wlib.api.structures.placeble.RelativePlacebleStructure;
+import xyz.webmc.wlib.api.structures.placeable.RelativePlaceableStructure;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 
 public abstract class RelativeStructure extends Structure {
-    public abstract RelativePlacebleStructure build();
+  public abstract RelativePlaceableStructure build();
 
-    @Override
-    public final void place(Location loc) {
-        build().place(loc);
-    }
+  @Override
+  public final void place(final Location loc) {
+    this.build().place(loc);
+  }
 
-    @Override
-    public final void place(Location loc, Chunk chunk) {
-        build().place(loc, chunk);
-    }
+  @Override
+  public final void place(final Location loc, final Chunk chunk) {
+    this.build().place(loc, chunk);
+  }
 }

@@ -14,15 +14,16 @@
 package xyz.webmc.wlib.api.structures.blocks;
 
 import com.cryptomorin.xseries.XMaterial;
+
+import org.bukkit.Location;
 import org.bukkit.Material;
 
-public class RelativeBlock extends Block {
+public final class RelativeBlock extends Block {
   private final int x;
   private final int y;
   private final int z;
 
-  RelativeBlock(final int x, final int y, final int z, final XMaterial mat, final String dataModern,
-      final byte dataLegacy) {
+  public RelativeBlock(final int x, final int y, final int z, final XMaterial mat, final String dataModern, final byte dataLegacy) {
     super(mat, dataModern, dataLegacy);
     this.x = x;
     this.y = y;
@@ -53,24 +54,24 @@ public class RelativeBlock extends Block {
     this(x, y, z, XMaterial.matchXMaterial(mat), dataLegacy);
   }
 
-  public final int getX() {
+  public int getX() {
     return x;
   }
 
-  public final int getY() {
+  public int getY() {
     return y;
   }
 
-  public final int getZ() {
+  public int getZ() {
     return z;
   }
 
   @Override
-  public void place(final org.bukkit.Location loc) {
+  public void place(final Location loc) {
     super.place(loc.clone().add(x, y, z));
   }
 
-  public final LocatedBlock toLocated(final org.bukkit.Location relativeOrigin) {
+  public LocatedBlock toLocated(final Location relativeOrigin) {
     return new LocatedBlock(
         relativeOrigin.clone().add(x, y, z),
         this.mat,

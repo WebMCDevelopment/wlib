@@ -11,9 +11,8 @@
  * See the LICENSE file for details.
  */
 
-package xyz.webmc.wlib.api.structures.placeble;
+package xyz.webmc.wlib.api.structures.placeable;
 
-import xyz.webmc.wlib.api.misc.SchemLoadingError;
 import xyz.webmc.wlib.api.structures.blocks.Block;
 
 import java.io.File;
@@ -24,10 +23,10 @@ import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings({ "unchecked" })
-public abstract class PlacebleStructure<B extends Block> {
+public abstract class PlaceableStructure<B extends Block> {
   protected List<B> blocks = new ArrayList<>();
 
-  protected PlacebleStructure(List<B> blocks) {
+  protected PlaceableStructure(List<B> blocks) {
     this.blocks = blocks;
   }
 
@@ -43,22 +42,21 @@ public abstract class PlacebleStructure<B extends Block> {
     this.blocks.addAll(List.of(blks));
   }
 
-  public abstract void loadSchematic(InputStream stream, int offsetx, int offsety, int offsetz)
-      throws SchemLoadingError;
+  public abstract void loadSchematic(InputStream stream, int offsetx, int offsety, int offsetz);
 
-  public void loadSchematic(File file, int offsetx, int offsety, int offsetz) throws SchemLoadingError {
+  public void loadSchematic(File file, int offsetx, int offsety, int offsetz) {
     try (final FileInputStream fis = new FileInputStream(file)) {
       this.loadSchematic(fis, offsetx, offsety, offsetz);
-    } catch (Exception e) {
-      throw new SchemLoadingError("Failed to load schematic from file: " + file.getAbsolutePath());
+    } catch (final Exception ex) {
+      throw new RuntimeException(ex);
     }
   }
 
-  public void loadSchematic(InputStream stream) throws SchemLoadingError {
+  public void loadSchematic(InputStream stream) {
     this.loadSchematic(stream, 0, 0, 0);
   }
 
-  public void loadSchematic(File file) throws SchemLoadingError {
+  public void loadSchematic(File file) {
     this.loadSchematic(file, 0, 0, 0);
   }
 }

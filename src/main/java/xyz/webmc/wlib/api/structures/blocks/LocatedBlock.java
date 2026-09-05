@@ -17,10 +17,10 @@ import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-public class LocatedBlock extends Block {
+public final class LocatedBlock extends Block {
   private final Location loc;
 
-  LocatedBlock(final Location loc, final XMaterial mat, final String dataModern, final byte dataLegacy) {
+  public LocatedBlock(final Location loc, final XMaterial mat, final String dataModern, final byte dataLegacy) {
     super(mat, dataModern, dataLegacy);
     this.loc = loc;
   }
@@ -49,19 +49,19 @@ public class LocatedBlock extends Block {
     this(x, y, z, XMaterial.matchXMaterial(mat), dataLegacy);
   }
 
-  public final int getX() {
+  public int getX() {
     return this.loc.getBlockX();
   }
 
-  public final int getY() {
+  public int getY() {
     return this.loc.getBlockY();
   }
 
-  public final int getZ() {
+  public int getZ() {
     return this.loc.getBlockZ();
   }
 
-  public final Location getLocation() {
+  public Location getLocation() {
     return this.loc;
   }
 
@@ -69,7 +69,7 @@ public class LocatedBlock extends Block {
     super.place(this.loc);
   }
 
-  public final RelativeBlock toRelative(final Location newRelativeOrigin) {
+  public RelativeBlock toRelative(final Location newRelativeOrigin) {
     return new RelativeBlock(
         this.loc.getBlockX() - newRelativeOrigin.getBlockX(),
         this.loc.getBlockY() - newRelativeOrigin.getBlockY(),

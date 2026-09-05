@@ -15,7 +15,7 @@ package xyz.webmc.wlib.internal.structures;
 
 import xyz.webmc.wlib.api.structures.RelativeStructure;
 import xyz.webmc.wlib.api.structures.Structure;
-import xyz.webmc.wlib.api.structures.placeble.RelativePlacebleStructure;
+import xyz.webmc.wlib.api.structures.placeable.RelativePlaceableStructure;
 
 import java.io.InputStream;
 
@@ -25,13 +25,8 @@ public final class RickQRCodeTestStructure extends RelativeStructure {
   }
 
   @Override
-  public String getName() {
-    return "Rick QR Code Test Structure";
-  }
-
-  @Override
-  public RelativePlacebleStructure build() {
-    final RelativePlacebleStructure structure = new RelativePlacebleStructure();
+  public RelativePlaceableStructure build() {
+    final RelativePlaceableStructure structure = new RelativePlaceableStructure();
     final InputStream stream = RickQRCodeTestStructure.class.getResourceAsStream("/schematics/rick.schem");
     structure.loadSchematic(stream);
     return structure;

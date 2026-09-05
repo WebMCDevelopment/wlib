@@ -20,14 +20,17 @@ import dev.colbster937.reflect.MirrorSafe;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 
+@SuppressWarnings({ "unchecked" })
 public abstract class Structure {
   private static final Map<Class<? extends Structure>, Structure> INSTANCES = new HashMap<>();
-
-  public abstract String getName();
 
   public abstract void place(Location loc);
 
   public abstract void place(Location loc, Chunk chunk);
+
+  public String getName() {
+    return this.getClass().getSimpleName();
+  }
 
   public static final <T extends Structure> T getInstance(final Class<T> clazz, final Object... params) {
     Structure structure = INSTANCES.get(clazz);

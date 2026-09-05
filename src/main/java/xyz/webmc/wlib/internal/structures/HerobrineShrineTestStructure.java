@@ -17,7 +17,7 @@ import xyz.webmc.wlib.api.structures.GenerableStructure;
 import xyz.webmc.wlib.api.structures.RelativeStructure;
 import xyz.webmc.wlib.api.structures.Structure;
 import xyz.webmc.wlib.api.structures.blocks.RelativeBlock;
-import xyz.webmc.wlib.api.structures.placeble.RelativePlacebleStructure;
+import xyz.webmc.wlib.api.structures.placeable.RelativePlaceableStructure;
 
 import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Chunk;
@@ -39,13 +39,8 @@ public final class HerobrineShrineTestStructure extends RelativeStructure implem
   }
 
   @Override
-  public String getName() {
-    return "Herobrine Shrine Test Structure";
-  }
-
-  @Override
-  public RelativePlacebleStructure build(){
-    final RelativePlacebleStructure structure = new RelativePlacebleStructure();
+  public RelativePlaceableStructure build() {
+    final RelativePlaceableStructure structure = new RelativePlaceableStructure();
 
     for (int y = 0; y < 3; y++) {
       for (int x = -1; x < 2; x++) {

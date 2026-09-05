@@ -21,7 +21,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-public class Block {
+public abstract class Block {
   protected final XMaterial mat;
   protected final String dataModern;
   protected final byte dataLegacy;
@@ -38,8 +38,7 @@ public class Block {
 
     if (mat != null) {
       if (WLIB.getIsModernServer() && this.dataModern != null && _mat != null) {
-        final Object data = MirrorSafe.invokeMethod(Bukkit.class, "createBlockData",
-            new Object[] { "minecraft:" + _mat.name().toLowerCase() + this.dataModern });
+        final Object data = MirrorSafe.invokeMethod(Bukkit.class, "createBlockData", new Object[] { "minecraft:" + _mat.name().toLowerCase() + this.dataModern });
         MirrorSafe.invokeMethod(org.bukkit.block.Block.class, blk, "setBlockData", data, false);
       } else {
         blk.setType(_mat, false);

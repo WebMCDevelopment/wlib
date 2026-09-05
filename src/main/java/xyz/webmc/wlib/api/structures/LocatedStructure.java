@@ -13,13 +13,13 @@
 
 package xyz.webmc.wlib.api.structures;
 
-import xyz.webmc.wlib.api.structures.placeble.LocatedPlacebleStructure;
+import xyz.webmc.wlib.api.structures.placeable.LocatedPlaceableStructure;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 
 public abstract class LocatedStructure extends Structure {
-    public abstract LocatedPlacebleStructure build(Location loc);
+    public abstract LocatedPlaceableStructure build(Location loc);
 
     @Override
     public final void place(Location loc) {
