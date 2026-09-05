@@ -13,14 +13,19 @@
 
 package xyz.webmc.wlib.internal.structure;
 
+import xyz.webmc.wlib.api.WLIB;
 import xyz.webmc.wlib.api.structure.AbstractBaseStructure;
 import xyz.webmc.wlib.api.structure.BlockRelative;
 
 import com.cryptomorin.xseries.XMaterial;
 
+@Deprecated(forRemoval = true)
+@SuppressWarnings({ "removal" })
 public final class HerobrineShrineTestStructure extends AbstractBaseStructure {
+  @Deprecated(forRemoval = true)
   public HerobrineShrineTestStructure() {
     super("herobrine_shrine");
+    WLIB.warnDeprecatedUsage();
 
     for (int y = 0; y < 3; y++) {
       for (int x = -1; x < 2; x++) {
@@ -41,7 +46,9 @@ public final class HerobrineShrineTestStructure extends AbstractBaseStructure {
     }
   }
 
+  @Deprecated(forRemoval = true)
   public static HerobrineShrineTestStructure getInstance() {
+    WLIB.warnDeprecatedUsage();
     return getInstance(HerobrineShrineTestStructure.class);
   }
 }

@@ -13,6 +13,7 @@
 
 package xyz.webmc.wlib.api.structure;
 
+import xyz.webmc.wlib.api.WLIB;
 import xyz.webmc.wlib.api.util.RNGUtil;
 
 import java.util.ArrayList;
@@ -22,30 +23,43 @@ import dev.colbster937.reflect.MirrorSafe;
 import dev.colbster937.util.WeightedObjectTable;
 import org.bukkit.Location;
 
+@SuppressWarnings({ "removal" })
+@Deprecated(forRemoval = true)
 public final class WeightedStructureTable extends WeightedObjectTable<AbstractBaseStructure> {
+  @Deprecated(forRemoval = true)
   public WeightedStructureTable(final long seed, final WeightedStructure... structures) {
     super(seed, structures);
+    WLIB.warnDeprecatedUsage();
   }
 
+  @Deprecated(forRemoval = true)
   public WeightedStructureTable(final WeightedStructure... structures) {
     this(RNGUtil.getRandomSeed(), structures);
+    WLIB.warnDeprecatedUsage();
   }
 
   @SafeVarargs
+  @Deprecated(forRemoval = true)
   public WeightedStructureTable(final long seed, final Class<? extends AbstractBaseStructure>... structures) {
     this(seed, weigh(structures));
+    WLIB.warnDeprecatedUsage();
   }
 
   @SafeVarargs
+  @Deprecated(forRemoval = true)
   public WeightedStructureTable(final Class<? extends AbstractBaseStructure>... structures) {
     this(weigh(structures));
+    WLIB.warnDeprecatedUsage();
   }
 
+  @Deprecated(forRemoval = true)
   public void place(final Location loc) {
+    WLIB.warnDeprecatedUsage();
     this.computeRandomObject().place(loc);
   }
 
   @SafeVarargs
+  @Deprecated(forRemoval = true)
   private static WeightedStructure[] weigh(final Class<? extends AbstractBaseStructure>... structures) {
     final List<WeightedStructure> lst = new ArrayList<>();
     final int chance = 100 / structures.length;

@@ -13,6 +13,7 @@
 
 package xyz.webmc.wlib.internal.structure;
 
+import xyz.webmc.wlib.api.WLIB;
 import xyz.webmc.wlib.api.structure.AbstractBaseStructure;
 
 import java.io.IOException;
@@ -20,15 +21,22 @@ import java.io.InputStream;
 
 import net.sandrohc.schematic4j.exception.ParsingException;
 
+@Deprecated(forRemoval = true)
+@SuppressWarnings({ "removal" })
 public final class RickQRCodeTestSchemStructure extends AbstractBaseStructure {
+  @Deprecated(forRemoval = true)
   public RickQRCodeTestSchemStructure() throws IOException, ParsingException {
     super("rick_qr");
+    WLIB.warnDeprecatedUsage();
+
     try (InputStream is = RickQRCodeTestSchemStructure.class.getResourceAsStream("/schematics/rick.schem")) {
       super.loadSchematic(is);
     }
   }
 
+  @Deprecated(forRemoval = true)
   public static RickQRCodeTestSchemStructure getInstance() {
+    WLIB.warnDeprecatedUsage();
     return getInstance(RickQRCodeTestSchemStructure.class);
   }
 }
