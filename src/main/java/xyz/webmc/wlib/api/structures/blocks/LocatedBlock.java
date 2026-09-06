@@ -17,7 +17,7 @@ import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-public final class LocatedBlock extends Block {
+public class LocatedBlock extends PlaceableBlock {
   private final Location loc;
 
   public LocatedBlock(final Location loc, final XMaterial mat, final String dataModern, final byte dataLegacy) {

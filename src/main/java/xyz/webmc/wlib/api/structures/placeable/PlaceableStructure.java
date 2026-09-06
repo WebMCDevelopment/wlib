@@ -13,7 +13,7 @@
 
 package xyz.webmc.wlib.api.structures.placeable;
 
-import xyz.webmc.wlib.api.structures.blocks.Block;
+import xyz.webmc.wlib.api.structures.blocks.PlaceableBlock;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,7 +23,7 @@ import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings({ "unchecked" })
-public abstract class PlaceableStructure<B extends Block> {
+public abstract class PlaceableStructure<B extends PlaceableBlock> {
   protected List<B> blocks = new ArrayList<>();
 
   protected PlaceableStructure(List<B> blocks) {

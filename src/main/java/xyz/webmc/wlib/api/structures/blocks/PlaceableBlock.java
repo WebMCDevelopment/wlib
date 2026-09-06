@@ -21,12 +21,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-public abstract class Block {
+public abstract class PlaceableBlock {
   protected final XMaterial mat;
   protected final String dataModern;
   protected final byte dataLegacy;
 
-  protected Block(final XMaterial mat, final String dataModern, final byte dataLegacy) {
+  protected PlaceableBlock(final XMaterial mat, final String dataModern, final byte dataLegacy) {
     this.mat = mat;
     this.dataModern = dataModern;
     this.dataLegacy = dataLegacy;

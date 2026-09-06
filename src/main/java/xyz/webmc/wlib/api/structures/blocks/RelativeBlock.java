@@ -18,12 +18,13 @@ import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-public final class RelativeBlock extends Block {
+public class RelativeBlock extends PlaceableBlock {
   private final int x;
   private final int y;
   private final int z;
 
-  public RelativeBlock(final int x, final int y, final int z, final XMaterial mat, final String dataModern, final byte dataLegacy) {
+  public RelativeBlock(final int x, final int y, final int z, final XMaterial mat, final String dataModern,
+      final byte dataLegacy) {
     super(mat, dataModern, dataLegacy);
     this.x = x;
     this.y = y;
