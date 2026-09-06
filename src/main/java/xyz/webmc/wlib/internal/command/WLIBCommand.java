@@ -118,32 +118,32 @@ public final class WLIBCommand extends WCommand {
     if (args.length > 0) {
       final List<String> ret = new ArrayList<>();
 
-      switch (args.length) {
-        case 1 -> {
-            if (sender.hasPermission("wlib.plugins")) {
-                ret.add("plugins");
-            }
-            if (sender.hasPermission("wlib.version")) {
-                ret.add("version");
-            }
-            if (sender.hasPermission("wlib.alerts.dev")) {
-                ret.add("alerts");
-            }
-            if (sender.hasPermission("wlib.debug")) {
-                ret.add("debug");
-            } }
-        case 2 -> {
-            if (args[0].equals("debug") && sender.hasPermission("wlib.debug")) {
-                ret.add("throw");
-                ret.add("place");
-            } }
-        case 3 -> {
-            if (args[0].equals("debug") && args[1].equals("place") && sender.hasPermission("wlib.debug")) {
-                ret.add("shrine");
-                ret.add("rick");
-            } }
-        default -> {
-            }
+      if (args.length == 1) {
+        if (sender.hasPermission("wlib.plugins")) {
+          ret.add("plugins");
+        }
+
+        if (sender.hasPermission("wlib.version")) {
+          ret.add("version");
+        }
+
+        if (sender.hasPermission("wlib.alerts.dev")) {
+          ret.add("alerts");
+        }
+
+        if (sender.hasPermission("wlib.debug")) {
+          ret.add("debug");
+        }
+      } else if (args.length == 2) {
+        if (args[0].equals("debug") && sender.hasPermission("wlib.debug")) {
+          ret.add("throw");
+          ret.add("place");
+        }
+      } else if (args.length == 3) {
+        if (args[0].equals("debug") && args[1].equals("place") && sender.hasPermission("wlib.debug")) {
+          ret.add("shrine");
+          ret.add("rick");
+        }
       }
 
       return ret;

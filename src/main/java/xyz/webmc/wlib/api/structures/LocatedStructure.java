@@ -19,15 +19,15 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 
 public abstract class LocatedStructure extends Structure {
-    public abstract LocatedPlaceableStructure build(Location loc);
+  public abstract LocatedPlaceableStructure build(Location loc);
 
-    @Override
-    public final void place(Location loc) {
-        build(loc).place();
-    }
+  @Override
+  public final void place(Location loc) {
+    build(loc).place();
+  }
 
-    @Override
-    public final void place(Location loc, Chunk chunk) {
-        build(loc).place(chunk);
-    }
+  @Override
+  public final void place(Location loc, Chunk chunk) {
+    build(loc).place(chunk);
+  }
 }

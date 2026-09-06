@@ -24,10 +24,6 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 
 public final class HerobrineShrineTestStructure extends RelativeStructure implements GenerableStructure {
-  public static HerobrineShrineTestStructure getInstance() {
-    return Structure.getInstance(HerobrineShrineTestStructure.class);
-  }
-
   @Override
   public boolean canGenerate(final Location loc) {
     return true;
@@ -61,5 +57,9 @@ public final class HerobrineShrineTestStructure extends RelativeStructure implem
     }
 
     return structure;
+  }
+
+  public static HerobrineShrineTestStructure getInstance() {
+    return Structure.getInstance(HerobrineShrineTestStructure.class);
   }
 }

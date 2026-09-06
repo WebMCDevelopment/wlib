@@ -20,15 +20,15 @@ import xyz.webmc.wlib.api.structures.placeable.RelativePlaceableStructure;
 import java.io.InputStream;
 
 public final class RickQRCodeTestStructure extends RelativeStructure {
-  public static RickQRCodeTestStructure getInstance() {
-    return Structure.getInstance(RickQRCodeTestStructure.class);
-  }
-
   @Override
   public RelativePlaceableStructure build() {
     final RelativePlaceableStructure structure = new RelativePlaceableStructure();
     final InputStream stream = RickQRCodeTestStructure.class.getResourceAsStream("/schematics/rick.schem");
     structure.loadSchematic(stream);
     return structure;
+  }
+
+  public static RickQRCodeTestStructure getInstance() {
+    return Structure.getInstance(RickQRCodeTestStructure.class);
   }
 }
