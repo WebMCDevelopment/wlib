@@ -17,7 +17,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-public interface GenerableStructure {
+public interface GenerableStructure extends AbstractBaseStructure {
   int SEARCH_RADIUS = 64;
 
   boolean canGenerate(Location loc);
@@ -45,7 +45,7 @@ public interface GenerableStructure {
         for (int chunkX = minX; chunkX <= maxX; chunkX++) {
           for (final int chunkZ : new int[] { minZ, maxZ }) {
             final Location loc = createLocation(world, chunkX, chunkZ);
-            if (canGenerate(loc)) {
+            if (this.canGenerate(loc)) {
               ret = loc;
               break search;
             }
@@ -55,7 +55,7 @@ public interface GenerableStructure {
         for (int chunkZ = minZ + 1; chunkZ < maxZ; chunkZ++) {
           for (final int chunkX : new int[] { minX, maxX }) {
             final Location loc = createLocation(world, chunkX, chunkZ);
-            if (canGenerate(loc)) {
+            if (this.canGenerate(loc)) {
               ret = loc;
               break search;
             }

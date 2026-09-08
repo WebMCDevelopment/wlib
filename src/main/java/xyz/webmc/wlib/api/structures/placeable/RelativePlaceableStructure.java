@@ -16,13 +16,11 @@ package xyz.webmc.wlib.api.structures.placeable;
 import xyz.webmc.wlib.api.structures.blocks.RelativeBlock;
 import xyz.webmc.wlib.api.util.SchemUtil;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Map;
 
 import com.cryptomorin.xseries.XMaterial;
-import net.sandrohc.schematic4j.exception.ParsingException;
 import net.sandrohc.schematic4j.schematic.Schematic;
 import net.sandrohc.schematic4j.schematic.types.SchematicBlock;
 import net.sandrohc.schematic4j.schematic.types.SchematicBlockPos;
@@ -34,13 +32,13 @@ public class RelativePlaceableStructure extends PlaceableStructure<RelativeBlock
     super(new ArrayList<>());
   }
 
-  public void place(Location loc) {
+  public void place(final Location loc) {
     for (final RelativeBlock block : this.blocks) {
       block.place(loc);
     }
   }
 
-  public void place(Location loc, Chunk chunk) {
+  public void place(final Location loc, final Chunk chunk) {
     for (final RelativeBlock block : this.blocks) {
       final Location blockLocation = loc.clone().add(block.getX(), block.getY(), block.getZ());
       if (blockLocation.getWorld() == chunk.getWorld() && blockLocation.getBlockX() >> 4 == chunk.getX() && blockLocation.getBlockZ() >> 4 == chunk.getZ()) {
@@ -50,7 +48,7 @@ public class RelativePlaceableStructure extends PlaceableStructure<RelativeBlock
   }
 
   @Override
-  public void loadSchematic(InputStream stream, int offsetx, int offsety, int offsetz) {
+  public final void loadSchematic(final InputStream stream, final int offsetx, final int offsety, final int offsetz) {
     try (stream) {
       final Schematic schematic = SchemUtil.readSchematic(stream);
       final SchematicBlockPos offset = schematic.offset();
@@ -81,7 +79,7 @@ public class RelativePlaceableStructure extends PlaceableStructure<RelativeBlock
           }
         }
       }
-    } catch (final IOException | ParsingException ex) {
+    } catch (final Exception ex) {
       throw new RuntimeException();
     }
   }

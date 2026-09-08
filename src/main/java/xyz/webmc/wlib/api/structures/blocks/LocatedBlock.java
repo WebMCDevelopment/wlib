@@ -49,19 +49,19 @@ public class LocatedBlock extends PlaceableBlock {
     this(x, y, z, XMaterial.matchXMaterial(mat), dataLegacy);
   }
 
-  public int getX() {
+  public final int getX() {
     return this.loc.getBlockX();
   }
 
-  public int getY() {
+  public final int getY() {
     return this.loc.getBlockY();
   }
 
-  public int getZ() {
+  public final int getZ() {
     return this.loc.getBlockZ();
   }
 
-  public Location getLocation() {
+  public final Location getLocation() {
     return this.loc;
   }
 
@@ -69,7 +69,7 @@ public class LocatedBlock extends PlaceableBlock {
     super.place(this.loc);
   }
 
-  public RelativeBlock toRelative(final Location newRelativeOrigin) {
+  public final RelativeBlock toRelative(final Location newRelativeOrigin) {
     return new RelativeBlock(
         this.loc.getBlockX() - newRelativeOrigin.getBlockX(),
         this.loc.getBlockY() - newRelativeOrigin.getBlockY(),

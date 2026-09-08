@@ -17,13 +17,11 @@ import xyz.webmc.wlib.api.structures.blocks.LocatedBlock;
 import xyz.webmc.wlib.api.structures.blocks.RelativeBlock;
 import xyz.webmc.wlib.api.util.SchemUtil;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Map;
 
 import com.cryptomorin.xseries.XMaterial;
-import net.sandrohc.schematic4j.exception.ParsingException;
 import net.sandrohc.schematic4j.schematic.Schematic;
 import net.sandrohc.schematic4j.schematic.types.SchematicBlock;
 import net.sandrohc.schematic4j.schematic.types.SchematicBlockPos;
@@ -33,7 +31,7 @@ import org.bukkit.Location;
 public class LocatedPlaceableStructure extends PlaceableStructure<LocatedBlock> {
   private final Location location;
 
-  public LocatedPlaceableStructure(Location location) {
+  public LocatedPlaceableStructure(final Location location) {
     super(new ArrayList<>());
     this.location = location;
   }
@@ -44,7 +42,7 @@ public class LocatedPlaceableStructure extends PlaceableStructure<LocatedBlock> 
     }
   }
 
-  public void place(Chunk chunk) {
+  public void place(final Chunk chunk) {
     for (final LocatedBlock block : this.blocks) {
       final Location blockLocation = block.getLocation();
       if (blockLocation.getWorld() == chunk.getWorld() && block.getX() >> 4 == chunk.getX() && block.getZ() >> 4 == chunk.getZ()) {
@@ -54,7 +52,7 @@ public class LocatedPlaceableStructure extends PlaceableStructure<LocatedBlock> 
   }
 
   @Override
-  public void loadSchematic(InputStream stream, int offsetx, int offsety, int offsetz) {
+  public void loadSchematic(final InputStream stream, final int offsetx, final int offsety, final int offsetz) {
     try (stream) {
       final Schematic schematic = SchemUtil.readSchematic(stream);
       final SchematicBlockPos offset = schematic.offset();
@@ -86,7 +84,7 @@ public class LocatedPlaceableStructure extends PlaceableStructure<LocatedBlock> 
           }
         }
       }
-    } catch (final IOException | ParsingException ex) {
+    } catch (final Exception ex) {
       throw new RuntimeException(ex);
     }
   }

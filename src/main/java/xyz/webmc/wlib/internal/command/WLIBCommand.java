@@ -15,10 +15,11 @@ package xyz.webmc.wlib.internal.command;
 
 import xyz.webmc.wlib.api.WLIB;
 import xyz.webmc.wlib.api.command.WCommand;
-import xyz.webmc.wlib.api.structures.Structure;
+import xyz.webmc.wlib.api.structures.AbstractBaseStructure;
 import xyz.webmc.wlib.api.util.PermissionUtil;
 import xyz.webmc.wlib.api.util.SchedulerUtil;
 import xyz.webmc.wlib.api.util.TextUtil;
+import xyz.webmc.wlib.internal.structures.CoordinateStructure;
 import xyz.webmc.wlib.internal.structures.HerobrineShrineTestStructure;
 import xyz.webmc.wlib.internal.structures.RickQRCodeTestStructure;
 
@@ -76,12 +77,14 @@ public final class WLIBCommand extends WCommand {
             bool1 = false;
             if (sender instanceof Player plr) {
               final String struct = args[2].trim();
-              Structure structure = null;
+              AbstractBaseStructure structure = null;
 
               if (struct.equals("shrine")) {
                 structure = HerobrineShrineTestStructure.getInstance();
               } else if (struct.equals("rick")) {
                 structure = RickQRCodeTestStructure.getInstance();
+              } else if (struct.equals("coord")) {
+                structure = CoordinateStructure.getInstance();
               }
 
               if (structure != null) {
@@ -143,6 +146,7 @@ public final class WLIBCommand extends WCommand {
         if (args[0].equals("debug") && args[1].equals("place") && sender.hasPermission("wlib.debug")) {
           ret.add("shrine");
           ret.add("rick");
+          ret.add("coord");
         }
       }
 

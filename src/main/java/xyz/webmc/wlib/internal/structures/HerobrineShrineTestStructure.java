@@ -15,7 +15,7 @@ package xyz.webmc.wlib.internal.structures;
 
 import xyz.webmc.wlib.api.structures.GenerableStructure;
 import xyz.webmc.wlib.api.structures.RelativeStructure;
-import xyz.webmc.wlib.api.structures.Structure;
+import xyz.webmc.wlib.api.structures.StructuresInstances;
 import xyz.webmc.wlib.api.structures.blocks.RelativeBlock;
 import xyz.webmc.wlib.api.structures.placeable.RelativePlaceableStructure;
 
@@ -60,6 +60,10 @@ public final class HerobrineShrineTestStructure extends RelativeStructure implem
   }
 
   public static HerobrineShrineTestStructure getInstance() {
-    return Structure.getInstance(HerobrineShrineTestStructure.class);
+    return StructuresInstances.getInstance(HerobrineShrineTestStructure.class);
+  }
+
+  static {
+    StructuresInstances.registerInstance(HerobrineShrineTestStructure.class);
   }
 }

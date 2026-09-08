@@ -18,16 +18,18 @@ import xyz.webmc.wlib.api.structures.placeable.LocatedPlaceableStructure;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 
-public abstract class LocatedStructure extends Structure {
-  public abstract LocatedPlaceableStructure build(Location loc);
+public abstract class LocatedStructure implements AbstractBaseStructure {
+  public abstract LocatedPlaceableStructure build(final Location loc);
 
   @Override
-  public final void place(Location loc) {
-    build(loc).place();
-  }
-
-  @Override
-  public final void place(Location loc, Chunk chunk) {
-    build(loc).place(chunk);
+  public final void place(final Location loc, final Chunk... chunks) {
+    if (chunks.length > 0) {
+      final LocatedPlaceableStructure builder = this.build(loc);
+      for (Chunk chk: chunks){
+        builder.place(chk);
+      }
+    } else {
+      this.build(loc).place();
+    }
   }
 }

@@ -20,6 +20,7 @@ import dev.colbster937.reflect.MirrorSafe;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 
 public abstract class PlaceableBlock {
   protected final XMaterial mat;
@@ -33,13 +34,13 @@ public abstract class PlaceableBlock {
   }
 
   protected void place(final Location loc) {
-    final org.bukkit.block.Block blk = loc.getBlock();
+    final Block blk = loc.getBlock();
     final Material _mat = this.mat.get();
 
     if (mat != null) {
       if (WLIB.getIsModernServer() && this.dataModern != null && _mat != null) {
         final Object data = MirrorSafe.invokeMethod(Bukkit.class, "createBlockData", new Object[] { "minecraft:" + _mat.name().toLowerCase() + this.dataModern });
-        MirrorSafe.invokeMethod(org.bukkit.block.Block.class, blk, "setBlockData", data, false);
+        MirrorSafe.invokeMethod(Block.class, blk, "setBlockData", data, false);
       } else {
         blk.setType(_mat, false);
       }
@@ -47,18 +48,18 @@ public abstract class PlaceableBlock {
   }
 
   public final XMaterial getMaterial() {
-    return mat;
+    return this.mat;
   }
 
   public final Material getBukkitMaterial() {
-    return mat.get();
+    return this.mat.get();
   }
 
   public final String getDataModern() {
-    return dataModern;
+    return this.dataModern;
   }
 
   public final byte getDataLegacy() {
-    return dataLegacy;
+    return this.dataLegacy;
   }
 }

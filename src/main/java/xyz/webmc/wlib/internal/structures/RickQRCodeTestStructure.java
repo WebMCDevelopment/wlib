@@ -14,7 +14,7 @@
 package xyz.webmc.wlib.internal.structures;
 
 import xyz.webmc.wlib.api.structures.RelativeStructure;
-import xyz.webmc.wlib.api.structures.Structure;
+import xyz.webmc.wlib.api.structures.StructuresInstances;
 import xyz.webmc.wlib.api.structures.placeable.RelativePlaceableStructure;
 
 import java.io.InputStream;
@@ -29,6 +29,10 @@ public final class RickQRCodeTestStructure extends RelativeStructure {
   }
 
   public static RickQRCodeTestStructure getInstance() {
-    return Structure.getInstance(RickQRCodeTestStructure.class);
+    return StructuresInstances.getInstance(RickQRCodeTestStructure.class);
+  }
+
+  static {
+    StructuresInstances.registerInstance(RickQRCodeTestStructure.class);
   }
 }

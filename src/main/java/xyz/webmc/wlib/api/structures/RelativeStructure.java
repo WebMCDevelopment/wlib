@@ -18,16 +18,18 @@ import xyz.webmc.wlib.api.structures.placeable.RelativePlaceableStructure;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 
-public abstract class RelativeStructure extends Structure {
+public abstract class RelativeStructure implements AbstractBaseStructure {
   public abstract RelativePlaceableStructure build();
 
   @Override
-  public final void place(final Location loc) {
-    this.build().place(loc);
-  }
-
-  @Override
-  public final void place(final Location loc, final Chunk chunk) {
-    this.build().place(loc, chunk);
+  public final void place(final Location loc, final Chunk... chunks) {
+    if (chunks.length > 0) {
+      final RelativePlaceableStructure builder = this.build();
+      for (Chunk chk: chunks){
+        builder.place(loc, chk);
+      }
+    } else {
+      this.build().place(loc);
+    }
   }
 }

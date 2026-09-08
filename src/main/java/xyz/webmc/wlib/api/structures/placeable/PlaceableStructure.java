@@ -26,25 +26,13 @@ import java.util.List;
 public abstract class PlaceableStructure<B extends PlaceableBlock> {
   protected List<B> blocks = new ArrayList<>();
 
-  protected PlaceableStructure(List<B> blocks) {
+  protected PlaceableStructure(final List<B> blocks) {
     this.blocks = blocks;
   }
 
-  public void addBlock(B blk) {
-    this.blocks.add(blk);
-  }
+  public abstract void loadSchematic(final InputStream stream, final int offsetx, final int offsety, final int offsetz);
 
-  public void addBlocks(Collection<B> blks) {
-    this.blocks.addAll(blks);
-  }
-
-  public void addBlocks(B... blks) {
-    this.blocks.addAll(List.of(blks));
-  }
-
-  public abstract void loadSchematic(InputStream stream, int offsetx, int offsety, int offsetz);
-
-  public void loadSchematic(File file, int offsetx, int offsety, int offsetz) {
+  public final void loadSchematic(final File file, final int offsetx, final int offsety, final int offsetz) {
     try (final FileInputStream fis = new FileInputStream(file)) {
       this.loadSchematic(fis, offsetx, offsety, offsetz);
     } catch (final Exception ex) {
@@ -52,11 +40,23 @@ public abstract class PlaceableStructure<B extends PlaceableBlock> {
     }
   }
 
-  public void loadSchematic(InputStream stream) {
+  public final void loadSchematic(final InputStream stream) {
     this.loadSchematic(stream, 0, 0, 0);
   }
 
-  public void loadSchematic(File file) {
+  public final void loadSchematic(final File file) {
     this.loadSchematic(file, 0, 0, 0);
+  }
+
+  public final void addBlock(final B blk) {
+    this.blocks.add(blk);
+  }
+
+  public final void addBlocks(final Collection<B> blks) {
+    this.blocks.addAll(blks);
+  }
+
+  public final void addBlocks(final B... blks) {
+    this.blocks.addAll(List.of(blks));
   }
 }
