@@ -245,7 +245,7 @@
           <dependency>
             <groupId>org.apache.groovy</groupId>
             <artifactId>groovy</artifactId>
-            <version>5.1.1</version>
+            <version>5.1.2</version>
           </dependency>
         </dependencies>
         <executions>
@@ -265,7 +265,7 @@
       <plugin>
         <groupId>io.github.git-commit-id</groupId>
         <artifactId>git-commit-id-maven-plugin</artifactId>
-        <version>10.0.0</version>
+        <version>10.0.1</version>
         <executions>
           <execution>
             <goals>
@@ -280,7 +280,7 @@
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
-        <version>3.10.1</version>
+        <version>3.10.2</version>
         <configuration>
           <java>
             <cleanthat>
