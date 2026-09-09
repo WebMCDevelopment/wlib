@@ -31,7 +31,7 @@ public class StructuresInstances {
   }
 
   public static final <T extends AbstractBaseStructure> void registerInstance(final Class<T> clazz, final Object... params) {
-    if (INSTANCES.containsKey(clazz)) {
+    if (!INSTANCES.containsKey(clazz)) {
       INSTANCES.put(clazz, MirrorSafe.invokeConstructor(clazz, params));
     }
   }
