@@ -11,15 +11,14 @@
  * See the LICENSE file for details.
  */
 
-package xyz.webmc.wlib.api.util;
+package xyz.webmc.wlib.internal.util;
 
 import xyz.webmc.wlib.api.WLIB;
 
-@Deprecated(forRemoval = true)
-public final class AlertUtil {
-  @Deprecated(forRemoval = true)
-  public static void devAlert(final String... txt) {
-    WLIB.warnDeprecatedUsage();
-    WLIB.devAlert(txt);
+public interface ModernServerUtil {
+  static void requireModernServer() throws IllegalStateException {
+    if (!WLIB.getIsModernServer()) {
+      throw new IllegalStateException();
+    }
   }
 }

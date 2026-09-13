@@ -14,11 +14,12 @@
 package xyz.webmc.wlib.internal.structure;
 
 import xyz.webmc.wlib.api.structure.AbstractBaseStructure;
-import xyz.webmc.wlib.api.structure.BlockRelative;
+import xyz.webmc.wlib.api.structure.block.BlockRelative;
+import xyz.webmc.wlib.api.structure.iface.TestStructure;
 
 import com.cryptomorin.xseries.XMaterial;
 
-public final class HerobrineShrineTestStructure extends AbstractBaseStructure {
+public final class HerobrineShrineTestStructure extends AbstractBaseStructure implements TestStructure {
   public HerobrineShrineTestStructure() {
     super("herobrine_shrine");
 
@@ -39,9 +40,5 @@ public final class HerobrineShrineTestStructure extends AbstractBaseStructure {
         }
       }
     }
-  }
-
-  public static HerobrineShrineTestStructure getInstance() {
-    return getInstance(HerobrineShrineTestStructure.class);
   }
 }

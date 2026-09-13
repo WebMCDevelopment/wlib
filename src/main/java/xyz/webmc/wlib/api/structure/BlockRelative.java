@@ -13,101 +13,40 @@
 
 package xyz.webmc.wlib.api.structure;
 
-import xyz.webmc.wlib.api.WLIB;
-
 import com.cryptomorin.xseries.XMaterial;
-import dev.colbster937.reflect.MirrorSafe;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 
-@SuppressWarnings({ "deprecation" })
-public class BlockRelative {
-  private final int x;
-  private final int y;
-  private final int z;
+import static xyz.webmc.wlib.api.WLIB.warnDeprecatedUsage;
 
-  private final XMaterial mat;
-  private final String dataModern;
-  private final byte dataLegacy;
-
-  private BlockRelative(final int x, final int y, final int z, final XMaterial mat, final String dataModern, final byte dataLegacy) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
-    this.mat = mat;
-    this.dataModern = dataModern;
-    this.dataLegacy = dataLegacy;
+@Deprecated(forRemoval = true)
+public class BlockRelative extends xyz.webmc.wlib.api.structure.block.BlockRelative {
+  public BlockRelative(int x, int y, int z, XMaterial mat) {
+    super(x, y, z, mat, null, (byte) 0);
+    warnDeprecatedUsage();
   }
 
-  public BlockRelative(final int x, final int y, final int z, final XMaterial mat) {
-    this(x, y, z, mat, null, (byte) 0);
+  public BlockRelative(int x, int y, int z, Material mat) {
+    super(x, y, z, XMaterial.matchXMaterial(mat));
+    warnDeprecatedUsage();
   }
 
-  public BlockRelative(final int x, final int y, final int z, final Material mat) {
-    this(x, y, z, XMaterial.matchXMaterial(mat));
+  public BlockRelative(int x, int y, int z, XMaterial mat, String dataModern) {
+    super(x, y, z, mat, dataModern, (byte) 0);
+    warnDeprecatedUsage();
   }
 
-  public BlockRelative(final int x, final int y, final int z, final XMaterial mat, final String dataModern) {
-    this(x, y, z, mat, dataModern, (byte) 0);
+  public BlockRelative(int x, int y, int z, Material mat, String dataModern) {
+    super(x, y, z, XMaterial.matchXMaterial(mat), dataModern);
+    warnDeprecatedUsage();
   }
 
-  public BlockRelative(final int x, final int y, final int z, final Material mat, final String dataModern) {
-    this(x, y, z, XMaterial.matchXMaterial(mat), dataModern);
+  public BlockRelative(int x, int y, int z, XMaterial mat, byte dataLegacy) {
+    super(x, y, z, mat, null, dataLegacy);
+    warnDeprecatedUsage();
   }
 
-  public BlockRelative(final int x, final int y, final int z, final XMaterial mat, final byte dataLegacy) {
-    this(x, y, z, mat, null, dataLegacy);
-  }
-
-  public BlockRelative(final int x, final int y, final int z, final Material mat, final byte dataLegacy) {
-    this(x, y, z, XMaterial.matchXMaterial(mat), dataLegacy);
-  }
-
-  public void place(final Location loc) {
-    final Location rel = loc.clone().add(this.x, this.y, this.z);
-    final Block blk = rel.getBlock();
-    final Material _mat = this.mat.parseMaterial();
-
-    if (mat != null) {
-      if (WLIB.getIsModernServer() && this.dataModern != null) {
-        final Object data = MirrorSafe.invokeMethod(Bukkit.class, "createBlockData", new Object[] { "minecraft:" + _mat.name().toLowerCase() + this.dataModern });
-        MirrorSafe.invokeMethod(Block.class, blk, "setBlockData", data, false);
-      } else {
-        blk.setType(_mat, false);
-        if (this.dataLegacy != 0) {
-          blk.setData(this.dataLegacy);
-        }
-      }
-    }
-  }
-
-  public final int getX() {
-    return x;
-  }
-
-  public final int getY() {
-    return y;
-  }
-
-  public final int getZ() {
-    return z;
-  }
-
-  public final XMaterial getMaterial() {
-    return mat;
-  }
-
-  public final Material getBukkitMaterial() {
-    return mat.parseMaterial();
-  }
-
-  public final String getDataModern() {
-    return dataModern;
-  }
-
-  public final byte getDataLegacy() {
-    return dataLegacy;
+  public BlockRelative(int x, int y, int z, Material mat, byte dataLegacy) {
+    super(x, y, z, XMaterial.matchXMaterial(mat), dataLegacy);
+    warnDeprecatedUsage();
   }
 }

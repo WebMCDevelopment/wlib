@@ -16,35 +16,63 @@ package xyz.webmc.wlib.internal.command;
 import xyz.webmc.wlib.api.command.WCommand;
 import xyz.webmc.wlib.api.util.CommandUtil;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
 
+import dev.colbster937.reflect.MirrorSafe;
 import org.bukkit.command.CommandSender;
 
 public final class AliasCommand extends WCommand {
+  private static final ThreadLocal<Deque<AliasCommand>> CURRENT = ThreadLocal.withInitial(ArrayDeque::new);
   private final String cmd;
 
-  public AliasCommand(final String cmd, final String name) {
+  public AliasCommand(String cmd, String name) {
     super(name);
     this.cmd = cmd;
   }
 
   @Override
-  public final boolean run(final CommandSender sender, final String label, final String[] args) {
-    return CommandUtil.dispatch(sender, getFullCommand(args));
+  public boolean run(CommandSender sender, String label, String[] args) {
+    return exec("dispatch", sender, args);
   }
 
   @Override
-  public final List<String> tab(final CommandSender sender, final String label, final String[] args) {
-    return CommandUtil.tabComplete(sender, getFullCommand(args));
+  public List<String> tab(CommandSender sender, String label, String[] args) {
+    return exec("tabComplete", sender, args);
   }
 
-  private String getFullCommand(final String[] args) {
-    String ret = this.cmd;
+  private <T> T exec(String method, CommandSender sender, String[] args) {
+    Deque<AliasCommand> stack = CURRENT.get();
 
-    if (args.length > 0) {
-      ret += ' ' + String.join(" ", args);
+    if (stack == null) {
+      stack = new ArrayDeque<>();
+      CURRENT.set(stack);
     }
 
-    return ret;
+    stack.push(this);
+
+    String arg = this.cmd;
+    if (args.length > 0) {
+      arg += " " + String.join(" ", args);
+    }
+
+    try {
+      return MirrorSafe.invokeMethod(CommandUtil.class, method, sender, arg);
+    } finally {
+      stack.pop();
+      if (stack.isEmpty()) {
+        CURRENT.remove();
+      }
+    }
+  }
+
+  public static AliasCommand get() {
+    final Deque<AliasCommand> stack = CURRENT.get();
+    if (stack != null) {
+      return stack.peek();
+    } else {
+      return null;
+    }
   }
 }

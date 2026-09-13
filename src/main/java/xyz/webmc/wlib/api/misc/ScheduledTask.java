@@ -18,7 +18,7 @@ import com.tcoded.folialib.wrapper.task.WrappedTask;
 public final class ScheduledTask {
   private final WrappedTask task;
 
-  private ScheduledTask(final WrappedTask task) {
+  private ScheduledTask(WrappedTask task) {
     this.task = task;
   }
 
@@ -26,19 +26,19 @@ public final class ScheduledTask {
     this.task.cancel();
   }
 
-  public final boolean isCancelled() {
+  public boolean isCancelled() {
     return this.task.isCancelled();
   }
 
-  public final boolean isAsync() {
+  public boolean isAsync() {
     return this.task.isAsync();
   }
 
-  public final WrappedTask getWrappedTask() {
+  public WrappedTask getWrappedTask() {
     return this.task;
   }
 
-  public static ScheduledTask from(final WrappedTask task) {
+  public static ScheduledTask from(WrappedTask task) {
     return new ScheduledTask(task);
   }
 }

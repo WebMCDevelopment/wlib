@@ -18,27 +18,27 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 public final class JSONUtil {
-  public static String serialize(final Object obj) {
+  public static String serialize(Object obj) {
     validateObject(obj);
     return JSONObject.valueToString(obj);
   }
 
-  public static Object deserialize(final String json) {
+  public static Object deserialize(String json) {
     final Object ret = new JSONTokener(json).nextValue();
     validateObject(ret);
     return ret;
   }
 
-  public static boolean isJSON(final String json) {
+  public static boolean isJSON(String json) {
     try {
       deserialize(json);
       return true;
-    } catch (final Exception ex) {
+    } catch (Exception ex) {
       return false;
     }
   }
 
-  private static void validateObject(final Object obj) throws IllegalArgumentException {
+  private static void validateObject(Object obj) throws IllegalArgumentException {
     if (!(obj instanceof JSONObject || obj instanceof JSONArray)) {
       throw new IllegalArgumentException();
     }

@@ -11,10 +11,11 @@
  * See the LICENSE file for details.
  */
 
-package xyz.webmc.wlib;
+package xyz.webmc.wlib.internal;
 
 import xyz.webmc.wlib.api.WLIB;
-import xyz.webmc.wlib.api.misc.CaptureSender;
+import xyz.webmc.wlib.api.plugin.WPlugin;
+import xyz.webmc.wlib.api.plugin.WPluginMeta;
 import xyz.webmc.wlib.api.util.CommandUtil;
 import xyz.webmc.wlib.api.util.DatapackUtil;
 import xyz.webmc.wlib.api.util.EventUtil;
@@ -24,8 +25,12 @@ import xyz.webmc.wlib.api.util.SchedulerUtil;
 import xyz.webmc.wlib.api.util.TextUtil;
 import xyz.webmc.wlib.internal.command.WLIBBlankCommand;
 import xyz.webmc.wlib.internal.command.WLIBCommand;
+import xyz.webmc.wlib.internal.util.MetricsUtil;
+import xyz.webmc.wlib.internal.util.TestStructureUtil;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import dev.colbster937.reflect.Mirror;
 import dev.colbster937.reflect.MirrorSafe;
@@ -35,77 +40,94 @@ import org.apache.logging.log4j.core.config.Configurator;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.event.world.WorldInitEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 
-public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
-  private static final List<String> DISABLE_LOGGERS = List.of(SchematicLoader.class.getPackageName());
+@WPluginMeta(shutdownOnFailure = true)
+public final class WLIBBukkitPlugin extends WPlugin implements Listener {
+  private static final Set<Class<?>> DISABLE_LOGGERS = Set.of(SchematicLoader.class);
 
   @Override
-  public void onEnable() {
+  protected void enable() {
     WLIB._init(this);
+
+    MetricsUtil._init(this);
+    TestStructureUtil._init();
+
     CommandUtil._init(this);
     DatapackUtil._init(this);
     EventUtil._init(this);
     PermissionUtil._init();
     PlaceholderUtil._init();
     SchedulerUtil._init(this);
-    WLIB.initPlugin(this);
-    CommandUtil.registerCommand(new WLIBCommand(this));
-    CommandUtil.registerCommand(new WLIBBlankCommand());
-    EventUtil.registerEvents(this);
 
+    CommandUtil.registerCommand(new WLIBCommand());
+    CommandUtil.registerCommand(new WLIBBlankCommand(WLIB.getBlankCommandName()));
     CommandUtil.registerCommandAliases("wlib:wlib plugins", "wplugins", "wpl");
+    CommandUtil.registerCommandAliases("wlib:wlib debug", "wdebug", "wdbg");
+    // CommandUtil.registerCommandAliases("wlib:wlib alerts", "walerts");
+    CommandUtil.registerCommandAliases("wlib:wlib debug alert", "walert");
+    CommandUtil.registerCommandAliases("wlib:wlib version", "wversion", "wver");
 
-    PermissionUtil.setGroupPermission("default", "wlib.alerts.dev.muted.*", false);
+    final Class<?> clazz = MirrorSafe.getClass("org.bukkit.event.player.PlayerCommandSendEvent");
+    if (clazz != null) {
+      final Class<? extends Event> ev = clazz.asSubclass(Event.class);
+      EventUtil.registerEvent(ev, new Listener() {}, EventPriority.MONITOR, (a, b) -> {
+        final Collection<String> commands = MirrorSafe.invokeMethod(b, "getCommands");
+        commands.remove(WLIB.getBlankCommandName());
+        commands.remove(WLIB.getBlankCommandKey());
+      }, this);
+    }
+
+    PermissionUtil.setGroupPermission("default", "wlib.alerts.muted.*", false);
   }
 
   @Override
-  public void onDisable() {
+  protected void disable() {
+    MetricsUtil._shutdown();
     SchedulerUtil.cancelAllTasks();
   }
 
   @EventHandler
-  public void onServerCommand(final ServerCommandEvent ev) {
+  public void onServerCommand(ServerCommandEvent ev) {
     if (handleCommandEvent(ev.getSender(), ev.getCommand())) {
-      if (Mirror.hasMethod(ev.getClass(), "setCancelled", boolean.class)) {
+      if (Mirror.hasMethod(ev, "setCancelled", boolean.class)) {
         MirrorSafe.invokeMethod(ev, "setCancelled", true);
       } else {
-        ev.setCommand(WLIBBlankCommand.getBlankRandomCommandKey());
+        ev.setCommand(WLIB.getBlankCommandKey());
       }
     }
   }
 
   @EventHandler
-  public void onPlayerCommand(final PlayerCommandPreprocessEvent ev) {
+  public void onPlayerCommand(PlayerCommandPreprocessEvent ev) {
     if (handleCommandEvent(ev.getPlayer(), ev.getMessage())) {
       ev.setCancelled(true);
     }
   }
 
   @EventHandler
-  public void onWorldInit(final WorldInitEvent ev) {
+  public void onWorldInit(WorldInitEvent ev) {
     if (WLIB.getIsModernServer()) {
-      DatapackUtil.initWorld(ev.getWorld());
+      DatapackUtil._initWorld(ev.getWorld());
     }
   }
 
-  private static boolean handleCommandEvent(final CommandSender sender, final String cmdLine) {
-    String commandStr = cmdLine;
+  private static boolean handleCommandEvent(CommandSender sender, String cmd) {
+    cmd = cmd.trim();
 
-    if (commandStr.startsWith("/")) {
-      commandStr = commandStr.substring(1);
+    if (cmd.startsWith("/")) {
+      cmd = cmd.substring(1);
     }
 
     if (sender.hasPermission("bukkit.command.plugins")) {
-      final String[] split = commandStr.split("\\s+", 2)[0].split(":", 2);
-
+      final String[] split = cmd.split("\\s+", 2)[0].split(":", 2);
       final String ctx;
-      final String cmd;
 
       if (split.length == 1) {
         ctx = "bukkit".trim();
@@ -126,9 +148,7 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
             });
           }
         } else {
-          final CaptureSender capture = new CaptureSender(sender);
-          CommandUtil.dispatch(capture, commandStr);
-          final String[] msg = capture.getMessages().get(0).split(": ");
+          final String[] msg = CommandUtil.dispatchCapture(sender, cmd).get(0).split(": ");
           sender.sendMessage(ChatColor.GOLD + "Bukkit " + msg[0] + ":");
           sender.sendMessage(ChatColor.DARK_GRAY + " - " + msg[1]);
           TextUtil.sendStringListMessageType3(sender, name, plugins);
@@ -141,8 +161,8 @@ public final class WLIBBukkitPlugin extends JavaPlugin implements Listener {
   }
 
   static {
-    for (final String logger : DISABLE_LOGGERS) {
-      Configurator.setLevel(logger, Level.OFF);
+    for (Class<?> clazz : DISABLE_LOGGERS) {
+      Configurator.setLevel(clazz.getPackageName(), Level.OFF);
     }
   }
 }

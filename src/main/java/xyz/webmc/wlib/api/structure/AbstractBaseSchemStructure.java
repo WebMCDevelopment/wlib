@@ -11,17 +11,19 @@
  * See the LICENSE file for details.
  */
 
-package xyz.webmc.wlib.internal.structure;
-
-import xyz.webmc.wlib.api.structure.AbstractBaseSchemStructure;
-import xyz.webmc.wlib.api.structure.iface.TestStructure;
+package xyz.webmc.wlib.api.structure;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import net.sandrohc.schematic4j.exception.ParsingException;
 
-public final class RickQRCodeTestSchemStructure extends AbstractBaseSchemStructure implements TestStructure {
-  public RickQRCodeTestSchemStructure() throws IOException, ParsingException {
-    super("rick_qr", "/schematics/rick.schem");
+public abstract class AbstractBaseSchemStructure extends AbstractBaseStructure {
+  public AbstractBaseSchemStructure(String name, String resource) throws IOException, ParsingException {
+    super(name);
+
+    try (InputStream is = this.getClass().getResourceAsStream(resource)) {
+      super.loadSchematic(is);
+    }
   }
 }

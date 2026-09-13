@@ -11,8 +11,8 @@
  * See the LICENSE file for details.
  */
 
-package xyz.webmc.wlib.api.interfaces;
+package xyz.webmc.wlib.api.misc.iface;
 
-@Deprecated(forRemoval = true)
-public interface Deserializable<T> extends xyz.webmc.wlib.api.misc.iface.Deserializable<T> {
+public interface Deserializable<T> {
+  T deserialize(String data);
 }

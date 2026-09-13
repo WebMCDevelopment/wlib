@@ -1,0 +1,33 @@
+/*
+ * Copyright (C) 2026 Colbster937
+ *
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * See the LICENSE file for details.
+ */
+
+package xyz.webmc.wlib.api.plugin;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Inherited
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface WPluginMeta {
+  String requiredWLIBVersion() default "";
+
+  String datapackPath() default "";
+
+  boolean requireModernServer() default false;
+
+  boolean shutdownOnFailure() default false;
+}

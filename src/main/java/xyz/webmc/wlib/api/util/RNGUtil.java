@@ -13,14 +13,13 @@
 
 package xyz.webmc.wlib.api.util;
 
-import xyz.webmc.wlib.api.WLIB;
 
 import java.util.SplittableRandom;
 
 public final class RNGUtil {
   private static final SplittableRandom RNG = new SplittableRandom();
 
-  public static SplittableRandom getRandom(final long seed) {
+  public static SplittableRandom getRandom(long seed) {
     return new SplittableRandom(seed);
   }
 
@@ -32,7 +31,7 @@ public final class RNGUtil {
     return RNG.nextLong();
   }
 
-  public static String getRandomString(final String chars, final int len, final long seed) {
+  public static String getRandomString(String chars, int len, long seed) {
     final StringBuilder sb = new StringBuilder(len);
     final SplittableRandom rng = getRandom(seed);
 
@@ -43,27 +42,15 @@ public final class RNGUtil {
     return sb.toString();
   }
 
-  public static String getRandomStringLowercaseAZ(final int len, final long seed) {
+  public static String getRandomStringLowercaseAZ(int len, long seed) {
     return getRandomString("abcdefghijklmnopqrstuvwxyz", len, seed);
   }
 
-  public static String getRandomString(final String chars, final int len) {
+  public static String getRandomString(String chars, int len) {
     return getRandomString(chars, len, getRandomSeed());
   }
 
-  public static String getRandomStringLowercaseAZ(final int len) {
+  public static String getRandomStringLowercaseAZ(int len) {
     return getRandomStringLowercaseAZ(len, getRandomSeed());
-  }
-
-  @Deprecated(forRemoval = true)
-  public static int mix32(final int z) {
-    WLIB.warnDeprecatedUsage();
-    return HashUtil.mix32(z);
-  }
-
-  @Deprecated(forRemoval = true)
-  public static long mix64(final long z) {
-    WLIB.warnDeprecatedUsage();
-    return HashUtil.mix64(z);
   }
 }

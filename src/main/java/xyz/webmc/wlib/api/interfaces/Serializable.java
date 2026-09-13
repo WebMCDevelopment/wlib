@@ -13,6 +13,6 @@
 
 package xyz.webmc.wlib.api.interfaces;
 
-public interface Serializable {
-  String serialize();
+@Deprecated(forRemoval = true)
+public interface Serializable extends xyz.webmc.wlib.api.misc.iface.Serializable {
 }

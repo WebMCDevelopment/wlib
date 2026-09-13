@@ -25,9 +25,11 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
 
 public abstract class ExtendableCommandSender implements CommandSender {
+  protected final CommandSender parent;
   private final PermissibleBase perm;
 
-  protected ExtendableCommandSender(final CommandSender parent) {
+  protected ExtendableCommandSender(CommandSender parent) {
+    this.parent = parent;
     if (parent != null) {
       this.perm = new PermissibleBase(parent);
     } else {
@@ -40,48 +42,47 @@ public abstract class ExtendableCommandSender implements CommandSender {
   }
 
   @Override
-  public final boolean isPermissionSet(final String name) {
+  public final boolean isPermissionSet(String name) {
     return this.perm.isPermissionSet(name);
   }
 
   @Override
-  public final boolean isPermissionSet(final Permission perm) {
+  public final boolean isPermissionSet(Permission perm) {
     return this.perm.isPermissionSet(perm);
   }
 
   @Override
-  public final boolean hasPermission(final String name) {
+  public final boolean hasPermission(String name) {
     return this.perm.hasPermission(name);
   }
 
   @Override
-  public final boolean hasPermission(final Permission perm) {
+  public final boolean hasPermission(Permission perm) {
     return this.perm.hasPermission(perm);
   }
 
   @Override
-  public final PermissionAttachment addAttachment(final Plugin plugin, final String name, final boolean value) {
+  public final PermissionAttachment addAttachment(Plugin plugin, String name, boolean value) {
     return this.perm.addAttachment(plugin, name, value);
   }
 
   @Override
-  public final PermissionAttachment addAttachment(final Plugin plugin) {
+  public final PermissionAttachment addAttachment(Plugin plugin) {
     return this.perm.addAttachment(plugin);
   }
 
   @Override
-  public final PermissionAttachment addAttachment(final Plugin plugin, final String name, final boolean value,
-      final int ticks) {
+  public final PermissionAttachment addAttachment(Plugin plugin, String name, boolean value, final int ticks) {
     return this.perm.addAttachment(plugin, name, value, ticks);
   }
 
   @Override
-  public final PermissionAttachment addAttachment(final Plugin plugin, final int ticks) {
+  public final PermissionAttachment addAttachment(Plugin plugin, int ticks) {
     return this.perm.addAttachment(plugin, ticks);
   }
 
   @Override
-  public void removeAttachment(final PermissionAttachment attachment) {
+  public void removeAttachment(PermissionAttachment attachment) {
     this.perm.removeAttachment(attachment);
   }
 
@@ -101,7 +102,7 @@ public abstract class ExtendableCommandSender implements CommandSender {
   }
 
   @Override
-  public void setOp(final boolean value) {
+  public void setOp(boolean value) {
     this.perm.setOp(value);
   }
 

@@ -11,14 +11,7 @@
  * See the LICENSE file for details.
  */
 
-package xyz.webmc.wlib.internal.util;
+package xyz.webmc.wlib.api.misc.iface;
 
-import xyz.webmc.wlib.api.WLIB;
-
-public abstract class ModernServerRequiredUtil {
-  protected static final void checkIsModernServer() throws IllegalStateException {
-    if (!WLIB.getIsModernServer()) {
-      throw new IllegalStateException();
-    }
-  }
+public interface SerializableDeserializable<T> extends Serializable, Deserializable<T> {
 }

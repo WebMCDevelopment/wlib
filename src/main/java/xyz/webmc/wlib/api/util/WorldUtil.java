@@ -34,26 +34,26 @@ public final class WorldUtil {
   private static final Class<?> BLOCK_DATA = MirrorSafe.getClass("org.bukkit.block.data.BlockData");
   private static final Plugin ESSENTIALS = PluginUtil.getPlugin("Essentials");
 
-  public static String getChunkKey(final Chunk chnk) {
+  public static String getChunkKey(Chunk chnk) {
     final String w = getWorldKey(chnk.getWorld());
     final int x = chnk.getX();
     final int z = chnk.getZ();
     return w + ":" + x + ":" + z;
   }
 
-  public static String getChunkKey(final Location loc) {
+  public static String getChunkKey(Location loc) {
     return getChunkKey(loc.getChunk());
   }
 
-  public static String getChunkKeyH(final Chunk chnk) {
+  public static String getChunkKeyH(Chunk chnk) {
     return HashUtil.hash64S(getChunkKey(chnk));
   }
 
-  public static String getChunkKeyH(final Location loc) {
+  public static String getChunkKeyH(Location loc) {
     return getChunkKeyH(loc.getChunk());
   }
 
-  public static String getLocKey(final Location loc) {
+  public static String getLocKey(Location loc) {
     final String w = getWorldKey(loc.getWorld());
     final int x = loc.getBlockX();
     final int y = loc.getBlockY();
@@ -61,19 +61,19 @@ public final class WorldUtil {
     return w + ":" + x + ":" + y + ":" + z;
   }
 
-  public static String getLocKeyH(final Location loc) {
+  public static String getLocKeyH(Location loc) {
     return HashUtil.hash64S(getLocKey(loc));
   }
 
-  public static String getWorldKey(final World wrld) {
+  public static String getWorldKey(World wrld) {
     return wrld.getName();
   }
 
-  public static void dropItem(final ItemStack item, final Location loc) {
+  public static void dropItem(ItemStack item, Location loc) {
     loc.getWorld().dropItemNaturally(loc.clone().add(0.5D, 0.5D, 0.5D), item);
   }
 
-  public static void teleportPlayer(final Player plr, final Location loc) {
+  public static void teleportPlayer(Player plr, Location loc) {
     final Location prev = plr.getLocation().clone();
 
     SchedulerUtil.teleportAsync(plr, loc);
@@ -86,27 +86,25 @@ public final class WorldUtil {
     }
   }
 
-  public static void teleportPlayer(final Player plr, final World world, final double x, final double y, final double z,
-      final float yaw, final float pitch) {
+  public static void teleportPlayer(Player plr, World world, double x, double y, double z, final float yaw, float pitch) {
     teleportPlayer(plr, new Location(world, x, y, z, yaw, pitch));
   }
 
-  public static void teleportPlayer(final Player plr, final World world, final double x, final double y, final double z) {
+  public static void teleportPlayer(Player plr, World world, double x, double y, double z) {
     final Location prev = plr.getLocation().clone();
     teleportPlayer(plr, world, x, y, z, prev.getYaw(), prev.getPitch());
   }
 
-  public static void teleportPlayer(final Player plr, final double x, final double y, final double z, final float yaw,
-      final float pitch) {
+  public static void teleportPlayer(Player plr, double x, double y, double z, float yaw, final float pitch) {
     teleportPlayer(plr, plr.getWorld(), x, y, z, yaw, pitch);
   }
 
-  public static void teleportPlayer(final Player plr, final double x, final double y, final double z) {
+  public static void teleportPlayer(Player plr, double x, double y, double z) {
     final Location prev = plr.getLocation().clone();
     teleportPlayer(plr, plr.getWorld(), x, y, z, prev.getYaw(), prev.getPitch());
   }
 
-  public static List<Chunk> getPlayerLoadedChunks(final Player plr) {
+  public static List<Chunk> getPlayerLoadedChunks(Player plr) {
     final List<Chunk> ret = new ArrayList<>();
 
     final Location loc = plr.getLocation();
@@ -160,7 +158,7 @@ public final class WorldUtil {
     return ret;
   }
 
-  public static void sendFakeBlock(final Player plr, final Location loc, final Material mat, final byte dat) {
+  public static void sendFakeBlock(Player plr, Location loc, Material mat, byte dat) {
     final World wrld = loc.getWorld();
     final Chunk chnk = wrld.getChunkAt(loc);
 
@@ -179,24 +177,24 @@ public final class WorldUtil {
         final Object blockData = MirrorSafe.invokeMethod(unsafe, "fromLegacy", mat, dat);
         try {
           Mirror.getMethod(plr, "sendBlockChange", Location.class, BLOCK_DATA).invoke(plr, loc, blockData);
-        } catch (final ReflectiveOperationException ex) {}
+        } catch (ReflectiveOperationException ex) {}
       } else {
         plr.sendBlockChange(loc, mat.getId(), dat);
       }
     }
   }
 
-  public static void sendFakeBlock(final Player plr, final Location loc, final Material mat) {
+  public static void sendFakeBlock(Player plr, Location loc, Material mat) {
     sendFakeBlock(plr, loc, mat, (byte) 0);
   }
 
-  public static void sendFakeBlock(final Location loc, final Material mat, final byte dat) {
-    for (final Player plr : loc.getWorld().getPlayers()) {
+  public static void sendFakeBlock(Location loc, Material mat, byte dat) {
+    for (Player plr : loc.getWorld().getPlayers()) {
       sendFakeBlock(plr, loc, mat, dat);
     }
   }
 
-  public static void sendFakeBlock(final Location loc, final Material mat) {
+  public static void sendFakeBlock(Location loc, Material mat) {
     sendFakeBlock(loc, mat, (byte) 0);
   }
 }

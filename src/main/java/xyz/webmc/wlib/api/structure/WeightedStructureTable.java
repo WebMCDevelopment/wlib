@@ -23,34 +23,34 @@ import dev.colbster937.util.WeightedObjectTable;
 import org.bukkit.Location;
 
 public final class WeightedStructureTable extends WeightedObjectTable<AbstractBaseStructure> {
-  public WeightedStructureTable(final long seed, final WeightedStructure... structures) {
+  public WeightedStructureTable(long seed, WeightedStructure... structures) {
     super(seed, structures);
   }
 
-  public WeightedStructureTable(final WeightedStructure... structures) {
+  public WeightedStructureTable(WeightedStructure... structures) {
     this(RNGUtil.getRandomSeed(), structures);
   }
 
   @SafeVarargs
-  public WeightedStructureTable(final long seed, final Class<? extends AbstractBaseStructure>... structures) {
+  public WeightedStructureTable(long seed, Class<? extends AbstractBaseStructure>... structures) {
     this(seed, weigh(structures));
   }
 
   @SafeVarargs
-  public WeightedStructureTable(final Class<? extends AbstractBaseStructure>... structures) {
+  public WeightedStructureTable(Class<? extends AbstractBaseStructure>... structures) {
     this(weigh(structures));
   }
 
-  public void place(final Location loc) {
+  public void place(Location loc) {
     this.computeRandomObject().place(loc);
   }
 
   @SafeVarargs
-  private static WeightedStructure[] weigh(final Class<? extends AbstractBaseStructure>... structures) {
+  private static WeightedStructure[] weigh(Class<? extends AbstractBaseStructure>... structures) {
     final List<WeightedStructure> lst = new ArrayList<>();
     final int chance = 100 / structures.length;
 
-    for (final Class<? extends AbstractBaseStructure> clazz : structures) {
+    for (Class<? extends AbstractBaseStructure> clazz : structures) {
       lst.add(new WeightedStructure(MirrorSafe.invokeConstructor(clazz), chance));
     }
 

@@ -13,17 +13,15 @@
 
 package xyz.webmc.wlib.api.util;
 
-import xyz.webmc.wlib.internal.util.ModernServerRequiredUtil;
+import xyz.webmc.wlib.api.plugin.WPlugin;
+import xyz.webmc.wlib.internal.util.ModernServerUtil;
 
-import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 import dev.colbster937.reflect.MirrorSafe;
 import org.bukkit.World;
@@ -32,21 +30,27 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
-public final class DatapackUtil extends ModernServerRequiredUtil {
+import static xyz.webmc.wlib.internal.util.ModernServerUtil.requireModernServer;
+
+public final class DatapackUtil implements ModernServerUtil {
   private static final List<Plugin> INIT_QUEUE = new ArrayList<>();
   private static Path DATAPACK_FOLDER;
 
-  public static void _init(final Plugin plugin) {
-    if (MirrorSafe.getClassExists("org.bukkit.event.server.ServerLoadEvent")) {
-      final Class<?> clazz = MirrorSafe.getClass("org.bukkit.event.server.ServerLoadEvent");
-      final Class<? extends Event> ev = clazz.asSubclass(Event.class);
-      final Listener listener = new Listener() {};
-      EventUtil.registerEvent(ev, listener, EventPriority.NORMAL, (x, y) -> processQueue(), plugin);
+  public static void _init(Plugin plugin) {
+    final Class<?> clazz = MirrorSafe.getClass("org.bukkit.event.server.ServerLoadEvent");
+    if (clazz != null) {
+      EventUtil.registerEvent(
+        clazz.asSubclass(Event.class),
+        new Listener() {},
+        EventPriority.NORMAL,
+        (a, b) -> processQueue(),
+        plugin
+      );
     }
   }
 
-  public static void initWorld(final World world) {
-    checkIsModernServer();
+  public static void _initWorld(World world) {
+    requireModernServer();
 
     if (DATAPACK_FOLDER == null) {
       DATAPACK_FOLDER = world.getWorldFolder().toPath()
@@ -55,31 +59,41 @@ public final class DatapackUtil extends ModernServerRequiredUtil {
     }
   }
 
-  public static void initPlugin(final Plugin plugin) {
-    checkIsModernServer();
+  public static void _initPlugin(Plugin plugin) {
+    requireModernServer();
 
     if (DATAPACK_FOLDER != null) {
-      _initPlugin(plugin);
+      __initPlugin(plugin);
     } else {
       INIT_QUEUE.add(plugin);
     }
   }
 
-  public static void enable(final String datapack) {
-    checkIsModernServer();
+  public static void _shutdownPlugin(Plugin plugin) {
+    requireModernServer();
+
+    CommandUtil.dispatchConsole("minecraft:datapack disable " + getPluginDatapackString(plugin));
+  }
+
+  public static void enable(String datapack) {
+    requireModernServer();
 
     CommandUtil.dispatchConsole("minecraft:datapack list available");
     CommandUtil.dispatchConsole("minecraft:datapack enable " + datapackString(datapack));
   }
 
-  public static void disable(final String datapack) {
-    checkIsModernServer();
+  public static void disable(String datapack) {
+    requireModernServer();
 
     CommandUtil.dispatchConsole("minecraft:datapack disable " + datapackString(datapack));
   }
 
-  private static String datapackString(final String datapack) {
+  private static String datapackString(String datapack) {
     return "\"file/" + datapack + "\"";
+  }
+
+  private static String getPluginDatapackString(Plugin plugin) {
+    return datapackString(plugin.getName() + ".zip");
   }
 
   private static void processQueue() {
@@ -91,28 +105,35 @@ public final class DatapackUtil extends ModernServerRequiredUtil {
     }
   }
 
-  private static void _initPlugin(final Plugin plugin) {
-    try (final JarFile jar = new JarFile(Path.of(plugin.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toAbsolutePath().toString())) {
-      final JarEntry packEntry = jar.getJarEntry("datapack.zip");
-      if (packEntry != null) {
-        final byte[] pack = jar.getInputStream(packEntry).readAllBytes();
-        final long hash = HashUtil.hash64(pack);
+  private static void __initPlugin(Plugin plugin) {
+    final WPlugin wPlugin = PluginUtil.getWPlugin(plugin);
 
-        final String outName = plugin.getName() + ".zip";
-        final Path out = DATAPACK_FOLDER.resolve(outName).toAbsolutePath();
-        final boolean outExists = Files.exists(out);
+    String resource = "datapack.zip";
+    if (wPlugin != null) {
+      final String path = wPlugin.getWPluginMeta().datapackPath();
+      if (path != null && !path.isBlank()) {
+        resource = path;
+      }
+    }
 
-        if (!outExists || hash != HashUtil.hash64(Files.readAllBytes(out))) {
-          if (outExists) {
-            disable(outName);
+    try (InputStream is = plugin.getResource(resource)) {
+      if (is != null) {
+        final byte[] pack = is.readAllBytes();
+        final String name = getPluginDatapackString(plugin);
+        final Path out = DATAPACK_FOLDER.resolve(name).toAbsolutePath();
+        final boolean exists = Files.exists(out);
+
+        if (!exists || HashUtil.hash64(pack) != HashUtil.hash64(Files.readAllBytes(out))) {
+          if (exists) {
+            disable(name);
           }
 
-          Files.copy(new ByteArrayInputStream(pack), out, StandardCopyOption.REPLACE_EXISTING);
+          Files.write(out, pack);
         }
 
-        enable(outName);
+        enable(name);
       }
-    } catch (final Throwable t) {
+    } catch (Throwable t) {
     }
   }
 }

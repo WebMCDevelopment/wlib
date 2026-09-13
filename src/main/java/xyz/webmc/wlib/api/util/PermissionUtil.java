@@ -13,8 +13,8 @@
 
 package xyz.webmc.wlib.api.util;
 
-import xyz.webmc.wlib.internal.util.AbstractPluginRequiredUtil;
 import xyz.webmc.wlib.internal.util.LPUtil;
+import xyz.webmc.wlib.internal.util.RequiredPluginUtil;
 
 import java.util.UUID;
 
@@ -22,14 +22,16 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public final class PermissionUtil extends AbstractPluginRequiredUtil {
+import static xyz.webmc.wlib.internal.util.RequiredPluginUtil.checkPlugins;
+
+public final class PermissionUtil implements RequiredPluginUtil {
   private static boolean bool = false;
 
   public static void _init() {
-    bool = check("LuckPerms");
+    bool = checkPlugins("LuckPerms");
   }
 
-  public static boolean hasPermission(final UUID uuid, final String node) {
+  public static boolean hasPermission(UUID uuid, String node) {
     if (bool) {
       return LPUtil.hasPermission(uuid, node);
     } else {
@@ -37,7 +39,7 @@ public final class PermissionUtil extends AbstractPluginRequiredUtil {
     }
   }
 
-  public static boolean hasGroupPermission(final String name, final String node) {
+  public static boolean hasGroupPermission(String name, String node) {
     if (bool) {
       return LPUtil.hasGroupPermission(name, node);
     } else {
@@ -45,11 +47,11 @@ public final class PermissionUtil extends AbstractPluginRequiredUtil {
     }
   }
 
-  public static boolean hasPermission(final OfflinePlayer player, final String node) {
+  public static boolean hasPermission(OfflinePlayer player, String node) {
     return hasPermission(player.getUniqueId(), node);
   }
 
-  public static boolean hasPermissionC(final CommandSender sender, final String node) {
+  public static boolean hasPermissionC(CommandSender sender, String node) {
     if (sender instanceof Player player) {
       return hasPermission(player, node);
     } else {
@@ -57,7 +59,7 @@ public final class PermissionUtil extends AbstractPluginRequiredUtil {
     }
   }
 
-  public static boolean setUserPermission(final UUID uuid, final String node, final boolean value) {
+  public static boolean setUserPermission(UUID uuid, String node, boolean value) {
     if (bool) {
       return LPUtil.setUserPermission(uuid, node, value);
     } else {
@@ -65,11 +67,11 @@ public final class PermissionUtil extends AbstractPluginRequiredUtil {
     }
   }
 
-  public static boolean setUserPermission(final OfflinePlayer player, final String node, final boolean value) {
+  public static boolean setUserPermission(OfflinePlayer player, String node, boolean value) {
     return setUserPermission(player.getUniqueId(), node, value);
   }
 
-  public static boolean setUserPermissionC(final CommandSender sender, final String node, final boolean value) {
+  public static boolean setUserPermissionC(CommandSender sender, String node, boolean value) {
     if (sender instanceof Player player) {
       return setUserPermission(player, node, value);
     } else {
@@ -77,7 +79,7 @@ public final class PermissionUtil extends AbstractPluginRequiredUtil {
     }
   }
 
-  public static boolean unsetUserPermission(final UUID uuid, final String node) {
+  public static boolean unsetUserPermission(UUID uuid, String node) {
     if (bool) {
       return LPUtil.unsetUserPermission(uuid, node);
     } else {
@@ -85,11 +87,11 @@ public final class PermissionUtil extends AbstractPluginRequiredUtil {
     }
   }
 
-  public static boolean unsetUserPermission(final OfflinePlayer player, final String node) {
+  public static boolean unsetUserPermission(OfflinePlayer player, String node) {
     return unsetUserPermission(player.getUniqueId(), node);
   }
 
-  public static boolean unsetUserPermissionC(final CommandSender sender, final String node) {
+  public static boolean unsetUserPermissionC(CommandSender sender, String node) {
     if (sender instanceof Player player) {
       return unsetUserPermission(player, node);
     } else {
@@ -97,7 +99,7 @@ public final class PermissionUtil extends AbstractPluginRequiredUtil {
     }
   }
 
-  public static int toggleUserPermission(final UUID uuid, final String node) {
+  public static int toggleUserPermission(UUID uuid, String node) {
     if (!hasPermission(uuid, node)) {
       if (setUserPermission(uuid, node, true)) {
         return 1;
@@ -111,11 +113,11 @@ public final class PermissionUtil extends AbstractPluginRequiredUtil {
     return -1;
   }
 
-  public static int toggleUserPermission(final OfflinePlayer player, final String node) {
+  public static int toggleUserPermission(OfflinePlayer player, String node) {
     return toggleUserPermission(player.getUniqueId(), node);
   }
 
-  public static int toggleUserPermissionC(final CommandSender sender, final String node) {
+  public static int toggleUserPermissionC(CommandSender sender, String node) {
     if (sender instanceof Player player) {
       return toggleUserPermission(player, node);
     } else {
@@ -123,7 +125,7 @@ public final class PermissionUtil extends AbstractPluginRequiredUtil {
     }
   }
 
-  public static boolean setGroupPermission(final String name, final String node, final boolean value) {
+  public static boolean setGroupPermission(String name, String node, boolean value) {
     if (bool) {
       return LPUtil.setGroupPermission(name, node, value);
     } else {
@@ -131,7 +133,7 @@ public final class PermissionUtil extends AbstractPluginRequiredUtil {
     }
   }
 
-  public static boolean unsetGroupPermission(final String name, final String node) {
+  public static boolean unsetGroupPermission(String name, String node) {
     if (bool) {
       return LPUtil.unsetGroupPermission(name, node);
     } else {
@@ -139,7 +141,7 @@ public final class PermissionUtil extends AbstractPluginRequiredUtil {
     }
   }
 
-  public static int toggleGroupPermission(final String name, final String node) {
+  public static int toggleGroupPermission(String name, String node) {
     if (!hasGroupPermission(name, node)) {
       if (setGroupPermission(name, node, true)) {
         return 1;

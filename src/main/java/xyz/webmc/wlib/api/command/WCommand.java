@@ -13,69 +13,70 @@
 
 package xyz.webmc.wlib.api.command;
 
+import xyz.webmc.wlib.api.WLIB;
+import xyz.webmc.wlib.api.util.CommandUtil;
 import xyz.webmc.wlib.api.util.TextUtil;
+import xyz.webmc.wlib.internal.command.AliasCommand;
 
 import java.util.List;
-import java.util.logging.Level;
 
 import dev.colbster937.reflect.MirrorSafe;
 import dev.colbster937.util.ExceptionStacker;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public abstract class WCommand extends Command {
-  protected WCommand(final String name, final String... aliases) {
+  protected WCommand(String name, String... aliases) {
     super(name, "", ChatColor.RED + "Incorrect usage for /" + name + ".", List.of(aliases));
     super.setPermissionMessage(ChatColor.RED + "You don't have permission to use this command.");
   }
 
-  protected abstract boolean run(final CommandSender sender, final String label, final String[] args);
+  protected abstract boolean run(CommandSender sender, String label, String[] args);
 
-  protected List<String> tab(final CommandSender sender, final String label, final String[] args) {
+  protected List<String> tab(CommandSender sender, String label, String[] args) {
     return List.of();
   }
 
   @Override
-  public final boolean execute(final CommandSender sender, final String label, final String[] args) {
+  public final boolean execute(CommandSender sender, String label, String[] args) {
     try {
       return this.run(sender, label, args);
-    } catch (final Throwable t) {
+    } catch (Throwable t) {
       this.showStack(sender, t);
       return true;
     }
   }
 
   @Override
-  public final List<String> tabComplete(final CommandSender sender, final String label, final String[] args) {
+  public final List<String> tabComplete(CommandSender sender, String label, String[] args) {
     try {
       return this.tab(sender, label, args);
-    } catch (final Throwable t) {
+    } catch (Throwable t) {
       this.showStack(sender, t);
       return List.of();
     }
   }
 
-  public final void sendUsageMessage(final CommandSender sender, final String alias) {
+  public final void sendUsageMessage(CommandSender sender, String alias) {
     sender.sendMessage(this.replaceUsedAlias(super.getUsage(), alias));
   }
 
-  public final void sendPermissionMessage(final CommandSender sender, final String alias) {
+  public final void sendPermissionMessage(CommandSender sender, String alias) {
     sender.sendMessage(this.replaceUsedAlias(super.getPermission(), alias));
   }
 
-  public final void sendUsageMessage(final CommandSender sender) {
+  public final void sendUsageMessage(CommandSender sender) {
     sendUsageMessage(sender, "");
   }
 
-  public final void sendPermissionMessage(final CommandSender sender) {
+  public final void sendPermissionMessage(CommandSender sender) {
     sendPermissionMessage(sender, "");
   }
 
-  protected final boolean checkIsPlayer(final CommandSender sender) {
-    if (!(sender instanceof Player)) {
+  protected final boolean checkIsPlayer(CommandSender sender) {
+    if (!CommandUtil.isPlayer(sender)) {
       sendOnlyPlayersMessage(sender);
       return false;
     } else {
@@ -83,7 +84,7 @@ public abstract class WCommand extends Command {
     }
   }
 
-  protected final boolean checkHasPermission(final CommandSender sender, final String perm) {
+  protected final boolean checkHasPermission(CommandSender sender, String perm) {
     if (!sender.hasPermission(perm)) {
       this.sendPermissionMessage(sender);
       return false;
@@ -92,32 +93,54 @@ public abstract class WCommand extends Command {
     }
   }
 
-  private void showStack(final CommandSender sender, final Throwable t) {
-    Bukkit.getLogger().log(Level.SEVERE, t.getMessage(), t);
+  private void showStack(CommandSender sender, Throwable t) {
+    final String stack = ExceptionStacker.getFullStackString(t);
+
+    WLIB.getLogger().severe(stack);
+
     if (sender instanceof Player) {
-      final String stack = ExceptionStacker.getFullStackString(t);
       final String[] lines = TextUtil.serializeExceptionStackStringMultiline(stack);
-      for (final String line : lines) {
+      for (String line : lines) {
         sender.sendMessage(ChatColor.DARK_RED + line);
       }
     }
   }
 
-  private String replaceUsedAlias(final String str, final String alias) {
-    if (!str.isBlank()) {
-      return str.replace("/" + super.getName(), "/" + alias);
+  private String replaceUsedAlias(String str, String alias) {
+    final AliasCommand aliasCommand = WLIB.getCurrentAlias();
+    String replace = null;
+
+    if (aliasCommand != null) {
+      replace = aliasCommand.getName();
+    } else {
+      replace = alias;
+    }
+
+    if (str != null && !str.isBlank() && replace != null) {
+      return str.replace("/" + super.getName(), "/" + replace);
     } else {
       return str;
     }
   }
 
-  public static final void sendUnknownCommandMessage(final CommandSender sender) {
+  public static void sendUnknownCommandMessage(CommandSender sender) {
+    boolean bool = true;
+
     final Class<?> clazz = MirrorSafe.getClass("org.spigotmc.SpigotConfig");
-    final String msg = MirrorSafe.getFieldValue(clazz, "unknownCommandMessage");
-    sender.sendMessage(msg);
+    if (clazz != null) {
+      final String msg = MirrorSafe.getFieldValue(clazz, "unknownCommandMessage");
+      if (msg != null) {
+        sender.sendMessage(msg);
+        bool = false;
+      }
+    }
+
+    if (bool) {
+      sender.sendMessage(ChatColor.RED + "Unknown command.");
+    }
   }
 
-  public static final void sendOnlyPlayersMessage(final CommandSender sender) {
+  public static void sendOnlyPlayersMessage(CommandSender sender) {
     sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
   }
 }
