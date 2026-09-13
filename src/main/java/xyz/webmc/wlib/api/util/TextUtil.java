@@ -53,7 +53,7 @@ public final class TextUtil {
     sender.sendMessage(ChatColor.DARK_GRAY + " - [" + getStringListMessage(ChatColor.DARK_GRAY, lst) + ChatColor.DARK_GRAY + "]");
   }
 
-  public static String getStringListMessage(ChatColor strColor, ChatColor sepColor, final List<String> lst) {
+  public static String getStringListMessage(ChatColor strColor, ChatColor sepColor, List<String> lst) {
     Collections.sort(lst, String.CASE_INSENSITIVE_ORDER);
     return strColor + String.join(sepColor + ", " + strColor, lst);
   }

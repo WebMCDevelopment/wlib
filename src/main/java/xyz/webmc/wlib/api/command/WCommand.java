@@ -16,7 +16,6 @@ package xyz.webmc.wlib.api.command;
 import xyz.webmc.wlib.api.WLIB;
 import xyz.webmc.wlib.api.util.CommandUtil;
 import xyz.webmc.wlib.api.util.TextUtil;
-import xyz.webmc.wlib.internal.command.AliasCommand;
 
 import java.util.List;
 
@@ -107,7 +106,7 @@ public abstract class WCommand extends Command {
   }
 
   private String replaceUsedAlias(String str, String alias) {
-    final AliasCommand aliasCommand = WLIB.getCurrentAlias();
+    final Command aliasCommand = WLIB.getCurrentAlias();
     String replace = null;
 
     if (aliasCommand != null) {

@@ -72,7 +72,7 @@ public final class SchedulerUtil {
     return runLater(plugin, task, delayTicks);
   }
 
-  public static ScheduledTask runTimer(Plugin plugin, Runnable task, long delayTicks, final long periodTicks) {
+  public static ScheduledTask runTimer(Plugin plugin, Runnable task, long delayTicks, long periodTicks) {
     return task(plugin, sch.runTimer(task, delayTicks, periodTicks));
   }
 
@@ -92,7 +92,7 @@ public final class SchedulerUtil {
     return runLaterAsync(plugin, task, delayTicks);
   }
 
-  public static ScheduledTask runLaterAsync(Plugin plugin, Runnable task, long delay, final TimeUnit unit) {
+  public static ScheduledTask runLaterAsync(Plugin plugin, Runnable task, long delay, TimeUnit unit) {
     return task(plugin, sch.runLaterAsync(task, delay, unit));
   }
 
@@ -100,7 +100,7 @@ public final class SchedulerUtil {
     return runLaterAsync(plugin, task, delay, unit);
   }
 
-  public static ScheduledTask runTimerAsync(Plugin plugin, Runnable task, long delayTicks, final long periodTicks) {
+  public static ScheduledTask runTimerAsync(Plugin plugin, Runnable task, long delayTicks, long periodTicks) {
     return task(plugin, sch.runTimerAsync(task, delayTicks, periodTicks));
   }
 
@@ -108,11 +108,11 @@ public final class SchedulerUtil {
     return runTimerAsync(plugin, task, delayTicks, periodTicks);
   }
 
-  public static ScheduledTask runTimerAsync(Plugin plugin, Runnable task, long delay, final long period, TimeUnit unit) {
+  public static ScheduledTask runTimerAsync(Plugin plugin, Runnable task, long delay, long period, TimeUnit unit) {
     return task(plugin, sch.runTimerAsync(task, delay, period, unit));
   }
 
-  public static ScheduledTask runTimerAsync(Runnable task, long delay, long period, final TimeUnit unit) {
+  public static ScheduledTask runTimerAsync(Runnable task, long delay, long period, TimeUnit unit) {
     return runTimerAsync(plugin, task, delay, period, unit);
   }
 
@@ -144,11 +144,11 @@ public final class SchedulerUtil {
     return future;
   }
 
-  public static ScheduledTask runAtLocationTimer(Plugin plugin, Location loc, Runnable task, final long delayTicks, long periodTicks) {
+  public static ScheduledTask runAtLocationTimer(Plugin plugin, Location loc, Runnable task, long delayTicks, long periodTicks) {
     return task(plugin, sch.runAtLocationTimer(loc, task, delayTicks, periodTicks));
   }
 
-  public static ScheduledTask runAtLocationTimer(Location loc, Runnable task, long delayTicks, final long periodTicks) {
+  public static ScheduledTask runAtLocationTimer(Location loc, Runnable task, long delayTicks, long periodTicks) {
     return runAtLocationTimer(plugin, loc, task, delayTicks, periodTicks);
   }
 
@@ -156,7 +156,7 @@ public final class SchedulerUtil {
     return sch.runAtEntity(ent, t -> task.run());
   }
 
-  public static ScheduledTask runAtEntityLater(Plugin plugin, Entity ent, Runnable task, final long delayTicks) {
+  public static ScheduledTask runAtEntityLater(Plugin plugin, Entity ent, Runnable task, long delayTicks) {
     return task(plugin, sch.runAtEntityLater(ent, task, delayTicks));
   }
 
@@ -179,11 +179,11 @@ public final class SchedulerUtil {
     return future;
   }
 
-  public static ScheduledTask runAtEntityTimer(Plugin plugin, Entity ent, Runnable task, final long delayTicks, long periodTicks) {
+  public static ScheduledTask runAtEntityTimer(Plugin plugin, Entity ent, Runnable task, long delayTicks, long periodTicks) {
     return task(plugin, sch.runAtEntityTimer(ent, task, delayTicks, periodTicks));
   }
 
-  public static ScheduledTask runAtEntityTimer(Entity ent, Runnable task, long delayTicks, final long periodTicks) {
+  public static ScheduledTask runAtEntityTimer(Entity ent, Runnable task, long delayTicks, long periodTicks) {
     return runAtEntityTimer(plugin, ent, task, delayTicks, periodTicks);
   }
 

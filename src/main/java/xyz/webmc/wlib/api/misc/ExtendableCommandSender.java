@@ -72,7 +72,7 @@ public abstract class ExtendableCommandSender implements CommandSender {
   }
 
   @Override
-  public final PermissionAttachment addAttachment(Plugin plugin, String name, boolean value, final int ticks) {
+  public final PermissionAttachment addAttachment(Plugin plugin, String name, boolean value, int ticks) {
     return this.perm.addAttachment(plugin, name, value, ticks);
   }
 

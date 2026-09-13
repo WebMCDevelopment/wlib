@@ -37,11 +37,11 @@ public final class EventUtil {
     registerEvents(listener, plugin);
   }
 
-  public static void registerEvent(Class<? extends Event> event, Listener listener, final EventPriority priority, EventExecutor executor, Plugin plugin) {
+  public static void registerEvent(Class<? extends Event> event, Listener listener, EventPriority priority, EventExecutor executor, Plugin plugin) {
     pm.registerEvent(event, listener, priority, executor, plugin);
   }
 
-  public static void registerEvent(Class<? extends Event> event, Listener listener, final EventPriority priority, EventExecutor executor) {
+  public static void registerEvent(Class<? extends Event> event, Listener listener, EventPriority priority, EventExecutor executor) {
     registerEvent(event, listener, priority, executor, plugin);
   }
 

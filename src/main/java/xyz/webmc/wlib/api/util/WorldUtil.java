@@ -86,7 +86,7 @@ public final class WorldUtil {
     }
   }
 
-  public static void teleportPlayer(Player plr, World world, double x, double y, double z, final float yaw, float pitch) {
+  public static void teleportPlayer(Player plr, World world, double x, double y, double z, float yaw, float pitch) {
     teleportPlayer(plr, new Location(world, x, y, z, yaw, pitch));
   }
 
@@ -95,7 +95,7 @@ public final class WorldUtil {
     teleportPlayer(plr, world, x, y, z, prev.getYaw(), prev.getPitch());
   }
 
-  public static void teleportPlayer(Player plr, double x, double y, double z, float yaw, final float pitch) {
+  public static void teleportPlayer(Player plr, double x, double y, double z, float yaw, float pitch) {
     teleportPlayer(plr, plr.getWorld(), x, y, z, yaw, pitch);
   }
 

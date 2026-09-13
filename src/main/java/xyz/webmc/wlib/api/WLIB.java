@@ -33,6 +33,7 @@ import java.util.logging.Logger;
 import dev.colbster937.reflect.MirrorSafe;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.semver4j.Semver;
@@ -264,7 +265,7 @@ public final class WLIB {
     return MirrorSafe.getClassExists("org.bukkit.block.data.BlockData");
   }
 
-  public static AliasCommand getCurrentAlias() {
+  public static Command getCurrentAlias() {
     return AliasCommand.get();
   }
 
