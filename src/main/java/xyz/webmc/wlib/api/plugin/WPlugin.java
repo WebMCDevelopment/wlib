@@ -32,12 +32,20 @@ public abstract class WPlugin extends JavaPlugin {
   public final void onLoad() {
     try {
       meta = this.getWPluginMeta();
+      this.load();
+    } catch (Throwable t) {
+      this.handleThrowable("load", t);
+    }
+  }
 
+  @Override
+  public final void onEnable() {
+    try {
       String error = null;
 
       if (!this.getClass().equals(WLIBBukkitPlugin.class)) {
         final String req = this.meta.requiredWLIBVersion();
-        if (req != null && !WLIB.requireWLIBVersion(req)) {
+        if (req != null && !req.isBlank() && !WLIB.requireWLIBVersion(req)) {
           error = "WLIB version " + WLIB.getWLIBVersionString() + " is not supported, please use " + req + " or newer";
         }
 
@@ -47,22 +55,13 @@ public abstract class WPlugin extends JavaPlugin {
       }
 
       if (error == null || error.isBlank()) {
-        this.load();
+        this.enable();
+        WLIB.initPlugin(this);
+        if (this instanceof Listener listener) {
+          EventUtil.registerEvents(listener, this);
+        }
       } else {
         throw new IllegalStateException(error);
-      }
-    } catch (Throwable t) {
-      this.handleThrowable("load", t);
-    }
-  }
-
-  @Override
-  public final void onEnable() {
-    try {
-      this.enable();
-      WLIB.initPlugin(this);
-      if (this instanceof Listener listener) {
-        EventUtil.registerEvents(listener, this);
       }
     } catch (Throwable t) {
       this.handleThrowable("enable", t);
