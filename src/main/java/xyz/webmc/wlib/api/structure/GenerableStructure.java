@@ -11,7 +11,15 @@
  * See the LICENSE file for details.
  */
 
-package xyz.webmc.wlib.api.structure.iface;
+package xyz.webmc.wlib.api.structure;
 
-public interface TestStructure {
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+
+public interface GenerableStructure extends BaseStructure {
+  int SEARCH_RADIUS = 64;
+
+  boolean canGenerate(Location loc);
+  boolean canGenerate(Chunk chunk);
+  boolean canGenerate(BuilderChunk chk);
 }

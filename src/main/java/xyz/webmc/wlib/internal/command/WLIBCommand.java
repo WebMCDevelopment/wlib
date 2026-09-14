@@ -15,7 +15,7 @@ package xyz.webmc.wlib.internal.command;
 
 import xyz.webmc.wlib.api.WLIB;
 import xyz.webmc.wlib.api.command.WCommand;
-import xyz.webmc.wlib.api.structure.AbstractBaseStructure;
+import xyz.webmc.wlib.api.structure.BaseStructure;
 import xyz.webmc.wlib.api.util.CommandUtil;
 import xyz.webmc.wlib.api.util.SchedulerUtil;
 import xyz.webmc.wlib.api.util.TextUtil;
@@ -47,27 +47,32 @@ public final class WLIBCommand extends WCommand {
       if ((arg.equals("plugins") || arg.equals("pl")) && (bool2 = sender.hasPermission("wlib.command.plugins"))) {
         TextUtil.sendStringListMessageType3(sender, "WLIB Plugins", WLIB.getWLIBPluginNames());
         bool1 = false;
-      } else if ((arg.equals("version") || arg.equals("ver")) && (bool2 = sender.hasPermission("wlib.command.version"))) {
+      } else if ((arg.equals("version") || arg.equals("ver"))
+          && (bool2 = sender.hasPermission("wlib.command.version"))) {
         sender.sendMessage("Running WLIB Version " + ChatColor.BLUE + WLIB.getWLIBVersionString());
         bool1 = false;
       } else if (args.length > 1) {
-        /* if (arg.equals("alerts") && (bool2 = sender.hasPermission("wlib.alerts"))) {
-          final String ctx = args[1].trim();
-          final int ret = PermissionUtil.toggleUserPermissionC(sender, "wlib.alerts.muted." + ctx);
-          bool1 = ret < 0;
-
-          if (!bool1) {
-            final String state;
-
-            if (ret > 0) {
-              state = ChatColor.RED + "DISABLED";
-            } else {
-              state = ChatColor.GREEN + "ENABLED";
-            }
-
-            sender.sendMessage(state + ChatColor.RESET + " alerts for " + ChatColor.AQUA + ctx);
-          }
-        } else */
+        /*
+         * if (arg.equals("alerts") && (bool2 = sender.hasPermission("wlib.alerts"))) {
+         * final String ctx = args[1].trim();
+         * final int ret = PermissionUtil.toggleUserPermissionC(sender,
+         * "wlib.alerts.muted." + ctx);
+         * bool1 = ret < 0;
+         *
+         * if (!bool1) {
+         * final String state;
+         *
+         * if (ret > 0) {
+         * state = ChatColor.RED + "DISABLED";
+         * } else {
+         * state = ChatColor.GREEN + "ENABLED";
+         * }
+         *
+         * sender.sendMessage(state + ChatColor.RESET + " alerts for " + ChatColor.AQUA
+         * + ctx);
+         * }
+         * } else
+         */
         if (arg.equals("debug") && (bool2 = sender.hasPermission("wlib.command.debug"))) {
           final String act = args[1].trim();
           if (act.equals("throw")) {
@@ -77,12 +82,13 @@ public final class WLIBCommand extends WCommand {
             bool1 = false;
             if (sender instanceof Player plr) {
               final String struct = args[2].trim();
-              final AbstractBaseStructure structure = TestStructureUtil.getTestStructure(struct);
+              final BaseStructure structure = TestStructureUtil.getTestStructure(struct);
 
               if (structure != null) {
                 final Location loc = plr.getLocation();
                 structure.place(loc.clone());
-                SchedulerUtil.teleportAsync(plr, loc.clone().add(1, 1, 0).getBlock().getLocation().clone().add(0.5D, 0, 0.5D));
+                SchedulerUtil.teleportAsync(plr,
+                    loc.clone().add(1, 1, 0).getBlock().getLocation().clone().add(0.5D, 0, 0.5D));
                 sender.sendMessage(ChatColor.GREEN + "Placed structure " + structure.getName());
               } else {
                 bool3 = true;
@@ -128,45 +134,53 @@ public final class WLIBCommand extends WCommand {
 
   @Override
   public List<String> tab(CommandSender sender, String label, String[] args) {
-    if (args.length > 0) {
-      final List<String> ret = new ArrayList<>();
+    final List<String> ret = new ArrayList<>();
 
-      if (args.length == 1) {
-        if (sender.hasPermission("wlib.command.plugins")) {
-          ret.add("plugins");
+    if (args.length == 1) {
+      if (sender.hasPermission("wlib.command.plugins")) {
+        ret.add("plugins");
+      }
+
+      if (sender.hasPermission("wlib.command.version")) {
+        ret.add("version");
+      }
+
+      /*
+       * if (sender.hasPermission("wlib.alerts")) {
+       * ret.add("alerts");
+       * }
+       */
+
+      if (sender.hasPermission("wlib.command.debug")) {
+        ret.add("debug");
+      }
+    } else if (args.length == 2) {
+      if (args[0].equals("debug") && sender.hasPermission("wlib.command.debug")) {
+        ret.add("throw");
+
+        if (CommandUtil.isPlayer(sender)) {
+          ret.add("place");
         }
 
-        if (sender.hasPermission("wlib.command.version")) {
-          ret.add("version");
-        }
-
-        /* if (sender.hasPermission("wlib.alerts")) {
-          ret.add("alerts");
-        } */
-
-        if (sender.hasPermission("wlib.command.debug")) {
-          ret.add("debug");
-        }
-      } else if (args.length == 2) {
-        if (args[0].equals("debug") && sender.hasPermission("wlib.command.debug")) {
-          ret.add("throw");
-
-          if (CommandUtil.isPlayer(sender)) {
-            ret.add("place");
-          }
-
-          ret.add("alert");
-          ret.add("deprecation");
-        }
-      } else if (args.length == 3) {
-        if (args[0].equals("debug") && args[1].equals("place") && CommandUtil.isPlayer(sender) && sender.hasPermission("wlib.command.debug")) {
-          ret.addAll(TestStructureUtil.getStructureNames());
+        ret.add("alert");
+        ret.add("deprecation");
+      }
+    } else if (args.length == 3) {
+      if (args[0].equals("debug") && args[1].equals("place") && CommandUtil.isPlayer(sender)
+          && sender.hasPermission("wlib.command.debug")) {
+        ret.addAll(TestStructureUtil.getStructureNames());
+        if (args[0].equals("debug") && args[1].equals("place") && sender.hasPermission("wlib.debug")) {
+          ret.add("shrine");
+          ret.add("rick");
+          ret.add("coord");
         }
       }
 
       return ret;
     } else {
-      return List.of();
+      return ret;
     }
+
+    return List.of();
   }
 }

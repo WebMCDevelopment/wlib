@@ -121,7 +121,7 @@ public final class SchedulerUtil {
   }
 
   public static ScheduledTask runAtLocationLater(Plugin plugin, Location loc, Runnable task,
-      final long delayTicks) {
+      long delayTicks) {
     return task(plugin, sch.runAtLocationLater(loc, task, delayTicks));
   }
 

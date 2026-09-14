@@ -13,14 +13,20 @@
 
 package xyz.webmc.wlib.api.structure;
 
+import xyz.webmc.wlib.api.WLIB;
+
 import java.io.IOException;
 import java.io.InputStream;
 
 import net.sandrohc.schematic4j.exception.ParsingException;
 
+@SuppressWarnings({ "removal" })
+@Deprecated(forRemoval = true)
 public abstract class AbstractBaseSchemStructure extends AbstractBaseStructure {
+  @Deprecated(forRemoval = true)
   public AbstractBaseSchemStructure(String name, String resource) throws IOException, ParsingException {
     super(name);
+    WLIB.warnDeprecatedUsage();
 
     try (InputStream is = this.getClass().getResourceAsStream(resource)) {
       super.loadSchematic(is);

@@ -13,9 +13,10 @@
 
 package xyz.webmc.wlib.internal.util;
 
-import xyz.webmc.wlib.api.structure.AbstractBaseStructure;
+import xyz.webmc.wlib.api.structure.BaseStructure;
+import xyz.webmc.wlib.internal.structure.CoordinateStructure;
 import xyz.webmc.wlib.internal.structure.HerobrineShrineTestStructure;
-import xyz.webmc.wlib.internal.structure.RickQRCodeTestSchemStructure;
+import xyz.webmc.wlib.internal.structure.RickQRCodeTestStructure;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,52 +24,71 @@ import java.util.Set;
 import dev.colbster937.reflect.MirrorSafe;
 
 public final class TestStructureUtil {
-  private static final Set<Class<? extends AbstractBaseStructure>> WLIB_TEST_STRUCTURES = Set.of(
-    HerobrineShrineTestStructure.class,
-    RickQRCodeTestSchemStructure.class
-  );
+  private static final Set<Class<? extends BaseStructure>> WLIB_TEST_STRUCTURES = Set.of(
+      HerobrineShrineTestStructure.class,
+      RickQRCodeTestStructure.class,
+      CoordinateStructure.class);
 
-  private static final Set<AbstractBaseStructure> STRUCTURES = new HashSet<>();
+  private static final Set<BaseStructure> STRUCTURES = new HashSet<>();
 
   public static void _init() {
-    for (Class<? extends AbstractBaseStructure> clazz : WLIB_TEST_STRUCTURES) {
-      AbstractBaseStructure.getInstance(clazz);
+    for (Class<? extends BaseStructure> clazz : WLIB_TEST_STRUCTURES) {
+      getInstance(clazz);
     }
   }
 
-  public static void register(AbstractBaseStructure structure) {
+  public static <T extends BaseStructure> T getInstance(Class<T> clazz, Object... params) {
+    for (BaseStructure structure : STRUCTURES) {
+      if (structure.getClass().equals(clazz)) {
+        return clazz.cast(structure);
+      }
+    }
+
+    T structure = MirrorSafe.invokeConstructor(clazz, params);
+    registerInstance(structure);
+    return structure;
+  }
+
+  public static <T extends BaseStructure> void registerInstance(Class<T> clazz, Object... params) {
+    getInstance(clazz, params);
+  }
+
+  private static void registerInstance(BaseStructure structure) {
     STRUCTURES.add(structure);
   }
 
-  public static AbstractBaseStructure getTestStructure(String name) {
-    return getTestStructure(name, "getName");
-  }
-
-  public static AbstractBaseStructure getTestStructure(Class<?> clazz) {
-    return getTestStructure(clazz, "getClass");
-  }
-
-  public static Set<AbstractBaseStructure> getStructures() {
-    return STRUCTURES;
-  }
-
-  public static Set<String> getStructureNames() {
-    final Set<String> names = new HashSet<>();
-
-    for (AbstractBaseStructure structure : getStructures()) {
-      names.add(structure.getName());
-    }
-
-    return names;
-  }
-
-  private static <T> AbstractBaseStructure getTestStructure(T obj, String method) {
-    for (AbstractBaseStructure structure : getStructures()) {
-      if (MirrorSafe.invokeMethod(structure, method).equals(obj)) {
+  public static BaseStructure getTestStructure(String name) {
+    for (BaseStructure structure : getStructures()) {
+      if (structure.getName().equals(name)) {
         return structure;
       }
     }
 
     return null;
   }
+
+  public static BaseStructure getTestStructure(Class<?> clazz) {
+    for (BaseStructure structure : getStructures()) {
+      if (structure.getClass().equals(clazz)) {
+        return structure;
+      }
+    }
+
+    return null;
+  }
+
+  public static Set<BaseStructure> getStructures() {
+    return STRUCTURES;
+  }
+
+  public static Set<String> getStructureNames() {
+    Set<String> names = new HashSet<>();
+
+    for (BaseStructure structure : getStructures()) {
+      names.add(structure.getName());
+    }
+
+    return names;
+  }
+
 }

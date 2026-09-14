@@ -13,32 +13,63 @@
 
 package xyz.webmc.wlib.internal.structure;
 
-import xyz.webmc.wlib.api.structure.AbstractBaseStructure;
-import xyz.webmc.wlib.api.structure.block.BlockRelative;
-import xyz.webmc.wlib.api.structure.iface.TestStructure;
+import xyz.webmc.wlib.api.structure.BuilderChunk;
+import xyz.webmc.wlib.api.structure.GenerableStructure;
+import xyz.webmc.wlib.api.structure.RelativeStructure;
+import xyz.webmc.wlib.api.structure.block.RelativeBlock;
+import xyz.webmc.wlib.api.structure.placeable.RelativePlaceableStructure;
+import xyz.webmc.wlib.internal.util.TestStructureUtil;
 
 import com.cryptomorin.xseries.XMaterial;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
 
-public final class HerobrineShrineTestStructure extends AbstractBaseStructure implements TestStructure {
-  public HerobrineShrineTestStructure() {
-    super("herobrine_shrine");
+public final class HerobrineShrineTestStructure extends RelativeStructure implements GenerableStructure {
+  @Override
+  public boolean canGenerate(Location loc) {
+    return true;
+  }
+
+  @Override
+  public boolean canGenerate(Chunk chunk) {
+    return true;
+  }
+
+  @Override
+  public boolean canGenerate(BuilderChunk chunk) {
+    return true;
+  }
+
+  @Override
+  public RelativePlaceableStructure build() {
+    final RelativePlaceableStructure structure = new RelativePlaceableStructure();
 
     for (int y = 0; y < 3; y++) {
       for (int x = -1; x < 2; x++) {
         for (int z = -1; z < 2; z++) {
           if (y == 0) {
-            super.addBlock(new BlockRelative(x, y, z, XMaterial.GOLD_BLOCK));
+            structure.addBlock(new RelativeBlock(x, y, z, XMaterial.GOLD_BLOCK));
           } else if (y == 1) {
             if (x != z && x + z != 0) {
-              super.addBlock(new BlockRelative(x, y, z, XMaterial.REDSTONE_TORCH));
+              structure.addBlock(new RelativeBlock(x, y, z, XMaterial.REDSTONE_TORCH));
             } else if (x == 0 && z == 0) {
-              super.addBlock(new BlockRelative(x, y, z, XMaterial.NETHERRACK));
+              structure.addBlock(new RelativeBlock(x, y, z, XMaterial.NETHERRACK));
             }
           } else if (y == 2 && x == 0 && z == 0) {
-            super.addBlock(new BlockRelative(x, y, z, XMaterial.FIRE));
+            structure.addBlock(new RelativeBlock(x, y, z, XMaterial.FIRE));
           }
         }
       }
     }
+
+    return structure;
+  }
+
+  public static HerobrineShrineTestStructure getInstance() {
+    return TestStructureUtil.getInstance(HerobrineShrineTestStructure.class);
+  }
+
+  static {
+    TestStructureUtil.registerInstance(HerobrineShrineTestStructure.class);
   }
 }

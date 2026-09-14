@@ -67,11 +67,11 @@ public abstract class WCommand extends Command {
   }
 
   public final void sendUsageMessage(CommandSender sender) {
-    sendUsageMessage(sender, "");
+    this.sendUsageMessage(sender, "");
   }
 
   public final void sendPermissionMessage(CommandSender sender) {
-    sendPermissionMessage(sender, "");
+    this.sendPermissionMessage(sender, "");
   }
 
   protected final boolean checkIsPlayer(CommandSender sender) {
@@ -90,6 +90,27 @@ public abstract class WCommand extends Command {
     } else {
       return true;
     }
+  }
+
+  public static void sendUnknownCommandMessage(CommandSender sender) {
+    boolean bool = true;
+
+    final Class<?> clazz = MirrorSafe.getClass("org.spigotmc.SpigotConfig");
+    if (clazz != null) {
+      final String msg = MirrorSafe.getFieldValue(clazz, "unknownCommandMessage");
+      if (msg != null) {
+        sender.sendMessage(msg);
+        bool = false;
+      }
+    }
+
+    if (bool) {
+      sender.sendMessage(ChatColor.RED + "Unknown command.");
+    }
+  }
+
+  public static void sendOnlyPlayersMessage(CommandSender sender) {
+    sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
   }
 
   private void showStack(CommandSender sender, Throwable t) {
@@ -120,26 +141,5 @@ public abstract class WCommand extends Command {
     } else {
       return str;
     }
-  }
-
-  public static void sendUnknownCommandMessage(CommandSender sender) {
-    boolean bool = true;
-
-    final Class<?> clazz = MirrorSafe.getClass("org.spigotmc.SpigotConfig");
-    if (clazz != null) {
-      final String msg = MirrorSafe.getFieldValue(clazz, "unknownCommandMessage");
-      if (msg != null) {
-        sender.sendMessage(msg);
-        bool = false;
-      }
-    }
-
-    if (bool) {
-      sender.sendMessage(ChatColor.RED + "Unknown command.");
-    }
-  }
-
-  public static void sendOnlyPlayersMessage(CommandSender sender) {
-    sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
   }
 }

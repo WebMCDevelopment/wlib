@@ -13,16 +13,12 @@
 
 package xyz.webmc.wlib.api.structure;
 
-import xyz.webmc.wlib.api.WLIB;
+import org.bukkit.Location;
 
-import dev.colbster937.util.WeightedObject;
+public interface BaseStructure {
+  void place(Location loc, Object... chunks);
 
-@SuppressWarnings({ "removal" })
-@Deprecated(forRemoval = true)
-public final class WeightedStructure extends WeightedObject<AbstractBaseStructure> {
-  @Deprecated(forRemoval = true)
-  public WeightedStructure(AbstractBaseStructure structure, int weight) {
-    super(structure, weight);
-    WLIB.warnDeprecatedUsage();
+  default String getName() {
+    return this.getClass().getSimpleName();
   }
 }

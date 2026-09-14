@@ -11,7 +11,7 @@
  * See the LICENSE file for details.
  */
 
-package xyz.webmc.wlib.api.structure.block;
+package xyz.webmc.wlib.api.structure.blocks;
 
 import xyz.webmc.wlib.api.WLIB;
 import xyz.webmc.wlib.api.structure.BuilderChunk;
@@ -23,72 +23,55 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-
-public abstract sealed class AbstractBlockBase permits AbsoluteBlock, BlockRelative, RelativeBlock {
+public abstract class AbstractBlockBase {
   protected final XMaterial mat;
   protected final String dataModern;
   protected final byte dataLegacy;
 
   protected AbstractBlockBase(XMaterial mat, String dataModern, byte dataLegacy) {
-    WLIB.warnDeprecatedUsage();
     this.mat = mat;
     this.dataModern = dataModern;
     this.dataLegacy = dataLegacy;
   }
 
-  protected AbstractBlockBase(XMaterial mat, String data) {
-    this(mat, data, (byte) 0);
-    WLIB.warnDeprecatedUsage();
-  }
-
-  protected AbstractBlockBase(XMaterial mat, byte data) {
-    this(mat, null, data);
-    WLIB.warnDeprecatedUsage();
-  }
-
   protected void place(Location loc) {
-    final Material material = this.getBukkitMaterial();
-    if (material == null) {
-      return;
-    }
+    final Block blk = loc.getBlock();
+    final Material _mat = this.mat.get();
 
-    final Block block = loc.getBlock();
-    if (WLIB.getIsModernServer() && this.dataModern != null) {
-      final Object data = MirrorSafe.invokeMethod(Bukkit.class, "createBlockData",
-          new Object[] { "minecraft:" + material.name().toLowerCase() + this.dataModern });
-      MirrorSafe.invokeMethod(Block.class, block, "setBlockData", data, false);
-    } else {
-      block.setType(material, false);
-      if (this.dataLegacy != 0) {
-        block.setData(this.dataLegacy);
+    if (this.mat != null) {
+      if (WLIB.getIsModernServer() && this.dataModern != null && _mat != null) {
+        final Object data = MirrorSafe.invokeMethod(Bukkit.class, "createBlockData", new Object[] { "minecraft:" + _mat.name().toLowerCase() + this.dataModern });
+        MirrorSafe.invokeMethod(Block.class, blk, "setBlockData", data, false);
+      } else {
+        blk.setType(_mat, false);
       }
     }
   }
 
   protected void place(Location loc, Object chunk) {
     if (chunk instanceof org.bukkit.Chunk liveChunk) {
-      if (loc.getWorld() == liveChunk.getWorld()
-          && loc.getBlockX() >> 4 == liveChunk.getX()
-          && loc.getBlockZ() >> 4 == liveChunk.getZ()) {
-        this.place(loc);
+      if (!isInChunk(loc, liveChunk)) {
+        return;
       }
+
+      this.place(loc);
       return;
     }
 
     if (chunk instanceof BuilderChunk builderChunk) {
-      if (loc.getBlockX() >> 4 != builderChunk.x()
-          || loc.getBlockZ() >> 4 != builderChunk.z()) {
-        return;
-      }
-
-      final Material material = this.getBukkitMaterial();
-      if (material == null) {
+      if (!isInChunk(loc, builderChunk)) {
         return;
       }
 
       final int x = loc.getBlockX() - (builderChunk.x() << 4);
       final int y = loc.getBlockY();
       final int z = loc.getBlockZ() - (builderChunk.z() << 4);
+      final Material material = this.mat.get();
+
+      if (material == null) {
+        return;
+      }
+
       if (this.dataModern != null) {
         final Object data = MirrorSafe.invokeMethod(Bukkit.class, "createBlockData",
             new Object[] { "minecraft:" + material.name().toLowerCase() + this.dataModern });
@@ -102,28 +85,30 @@ public abstract sealed class AbstractBlockBase permits AbsoluteBlock, BlockRelat
     throw new IllegalArgumentException("Unsupported chunk type: " + chunk);
   }
 
-  public final XMaterial getXMaterial() {
-    WLIB.warnDeprecatedUsage();
+  public final XMaterial getMaterial() {
     return this.mat;
   }
 
-  public final XMaterial getMaterial() {
-    WLIB.warnDeprecatedUsage();
-    return this.getXMaterial();
-  }
-
   public final Material getBukkitMaterial() {
-    WLIB.warnDeprecatedUsage();
-    return this.mat == null ? null : this.mat.get();
+    return this.mat.get();
   }
 
   public final String getDataModern() {
-    WLIB.warnDeprecatedUsage();
     return this.dataModern;
   }
 
   public final byte getDataLegacy() {
-    WLIB.warnDeprecatedUsage();
     return this.dataLegacy;
+  }
+
+  private static boolean isInChunk(Location location, org.bukkit.Chunk chunk) {
+    return location.getWorld() == chunk.getWorld()
+        && location.getBlockX() >> 4 == chunk.getX()
+        && location.getBlockZ() >> 4 == chunk.getZ();
+  }
+
+  private static boolean isInChunk(Location location, BuilderChunk chunk) {
+    return location.getBlockX() >> 4 == chunk.x()
+        && location.getBlockZ() >> 4 == chunk.z();
   }
 }

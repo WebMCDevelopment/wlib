@@ -13,16 +13,10 @@
 
 package xyz.webmc.wlib.api.structure;
 
-import xyz.webmc.wlib.api.WLIB;
+import xyz.webmc.wlib.internal.util.ModernServerUtil;
 
-import dev.colbster937.util.WeightedObject;
-
-@SuppressWarnings({ "removal" })
-@Deprecated(forRemoval = true)
-public final class WeightedStructure extends WeightedObject<AbstractBaseStructure> {
-  @Deprecated(forRemoval = true)
-  public WeightedStructure(AbstractBaseStructure structure, int weight) {
-    super(structure, weight);
-    WLIB.warnDeprecatedUsage();
+public record BuilderChunk(Object chunkData, int x, int z) {
+  public BuilderChunk {
+    ModernServerUtil.requireModernServer();
   }
 }

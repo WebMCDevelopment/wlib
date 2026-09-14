@@ -20,7 +20,7 @@ import java.util.Properties;
 public final class BuildUtil {
   private static final Properties properties = new Properties();
 
-  public static String getProperty(final String key) {
+  public static String getProperty(String key) {
     return properties.getProperty(key).trim();
   }
 
