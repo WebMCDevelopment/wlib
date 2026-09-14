@@ -14,19 +14,21 @@
 package xyz.webmc.wlib.api.structure.block;
 
 import xyz.webmc.wlib.api.WLIB;
+import xyz.webmc.wlib.api.structure.BuilderChunk;
 
 import com.cryptomorin.xseries.XMaterial;
+import dev.colbster937.reflect.MirrorSafe;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 
-@SuppressWarnings({ "removal" })
-@Deprecated(forRemoval = true)
-public abstract sealed class AbstractBlockBase permits BlockRelative {
+
+public abstract sealed class AbstractBlockBase permits AbsoluteBlock, BlockRelative, RelativeBlock {
   protected final XMaterial mat;
   protected final String dataModern;
   protected final byte dataLegacy;
 
-  @Deprecated(forRemoval = true)
   protected AbstractBlockBase(XMaterial mat, String dataModern, byte dataLegacy) {
     WLIB.warnDeprecatedUsage();
     this.mat = mat;
@@ -34,46 +36,92 @@ public abstract sealed class AbstractBlockBase permits BlockRelative {
     this.dataLegacy = dataLegacy;
   }
 
-  @Deprecated(forRemoval = true)
   protected AbstractBlockBase(XMaterial mat, String data) {
     this(mat, data, (byte) 0);
     WLIB.warnDeprecatedUsage();
   }
 
-  @Deprecated(forRemoval = true)
   protected AbstractBlockBase(XMaterial mat, byte data) {
     this(mat, null, data);
     WLIB.warnDeprecatedUsage();
   }
 
-  @Deprecated(forRemoval = true)
-  protected abstract void place(Location loc);
+  protected void place(Location loc) {
+    final Material material = this.getBukkitMaterial();
+    if (material == null) {
+      return;
+    }
 
-  @Deprecated(forRemoval = true)
+    final Block block = loc.getBlock();
+    if (WLIB.getIsModernServer() && this.dataModern != null) {
+      final Object data = MirrorSafe.invokeMethod(Bukkit.class, "createBlockData",
+          new Object[] { "minecraft:" + material.name().toLowerCase() + this.dataModern });
+      MirrorSafe.invokeMethod(Block.class, block, "setBlockData", data, false);
+    } else {
+      block.setType(material, false);
+      if (this.dataLegacy != 0) {
+        block.setData(this.dataLegacy);
+      }
+    }
+  }
+
+  protected void place(Location loc, Object chunk) {
+    if (chunk instanceof org.bukkit.Chunk liveChunk) {
+      if (loc.getWorld() == liveChunk.getWorld()
+          && loc.getBlockX() >> 4 == liveChunk.getX()
+          && loc.getBlockZ() >> 4 == liveChunk.getZ()) {
+        this.place(loc);
+      }
+      return;
+    }
+
+    if (chunk instanceof BuilderChunk builderChunk) {
+      if (loc.getBlockX() >> 4 != builderChunk.x()
+          || loc.getBlockZ() >> 4 != builderChunk.z()) {
+        return;
+      }
+
+      final Material material = this.getBukkitMaterial();
+      if (material == null) {
+        return;
+      }
+
+      final int x = loc.getBlockX() - (builderChunk.x() << 4);
+      final int y = loc.getBlockY();
+      final int z = loc.getBlockZ() - (builderChunk.z() << 4);
+      if (this.dataModern != null) {
+        final Object data = MirrorSafe.invokeMethod(Bukkit.class, "createBlockData",
+            new Object[] { "minecraft:" + material.name().toLowerCase() + this.dataModern });
+        MirrorSafe.invokeMethod(builderChunk.chunkData().getClass(), builderChunk.chunkData(), "setBlockData", x, y, z, data);
+      } else {
+        MirrorSafe.invokeMethod(builderChunk.chunkData().getClass(), builderChunk.chunkData(), "setBlock", x, y, z, material);
+      }
+      return;
+    }
+
+    throw new IllegalArgumentException("Unsupported chunk type: " + chunk);
+  }
+
   public final XMaterial getXMaterial() {
     WLIB.warnDeprecatedUsage();
     return this.mat;
   }
 
-  @Deprecated(forRemoval = true)
   public final XMaterial getMaterial() {
     WLIB.warnDeprecatedUsage();
     return this.getXMaterial();
   }
 
-  @Deprecated(forRemoval = true)
   public final Material getBukkitMaterial() {
     WLIB.warnDeprecatedUsage();
-    return this.mat.get();
+    return this.mat == null ? null : this.mat.get();
   }
 
-  @Deprecated(forRemoval = true)
   public final String getDataModern() {
     WLIB.warnDeprecatedUsage();
     return this.dataModern;
   }
 
-  @Deprecated(forRemoval = true)
   public final byte getDataLegacy() {
     WLIB.warnDeprecatedUsage();
     return this.dataLegacy;

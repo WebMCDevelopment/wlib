@@ -13,7 +13,7 @@
 
 package xyz.webmc.wlib.api.structure.placeable;
 
-import xyz.webmc.wlib.api.structure.blocks.AbstractBlockBase;
+import xyz.webmc.wlib.api.structure.block.AbstractBlockBase;
 
 import java.io.File;
 import java.io.FileInputStream;

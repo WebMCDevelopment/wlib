@@ -14,8 +14,8 @@
 package xyz.webmc.wlib.api.structure.placeable;
 
 import xyz.webmc.wlib.api.structure.BuilderChunk;
-import xyz.webmc.wlib.api.structure.blocks.LocatedBlock;
-import xyz.webmc.wlib.api.structure.blocks.RelativeBlock;
+import xyz.webmc.wlib.api.structure.block.AbsoluteBlock;
+import xyz.webmc.wlib.api.structure.block.RelativeBlock;
 import xyz.webmc.wlib.api.util.SchemUtil;
 
 import java.io.InputStream;
@@ -29,22 +29,22 @@ import net.sandrohc.schematic4j.schematic.types.SchematicBlockPos;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 
-public class LocatedPlaceableStructure extends AbstractPlaceableStructureBase<LocatedBlock> {
+public class AbsolutePlaceableStructure extends AbstractPlaceableStructureBase<AbsoluteBlock> {
   private final Location location;
 
-  public LocatedPlaceableStructure(Location location) {
+  public AbsolutePlaceableStructure(Location location) {
     super(new ArrayList<>());
     this.location = location;
   }
 
   public void place() {
-    for (final LocatedBlock block : this.blocks) {
+    for (final AbsoluteBlock block : this.blocks) {
       block.place();
     }
   }
 
   public void place(Object chunk) {
-    for (final LocatedBlock block : this.blocks) {
+    for (final AbsoluteBlock block : this.blocks) {
       final Location blockLocation = block.getLocation();
       if (isInChunk(blockLocation, chunk)) {
         block.place(chunk);
@@ -80,7 +80,7 @@ public class LocatedPlaceableStructure extends AbstractPlaceableStructureBase<Lo
                   z - offset.z + offsetz,
                   material,
                   "[" + data + "]");
-              this.blocks.add(relativeBlock.toLocated(this.location));
+              this.blocks.add(relativeBlock.toAbsolute(this.location));
             }
           }
         }

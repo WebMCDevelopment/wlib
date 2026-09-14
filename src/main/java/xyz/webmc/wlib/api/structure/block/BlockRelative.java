@@ -16,11 +16,8 @@ package xyz.webmc.wlib.api.structure.block;
 import xyz.webmc.wlib.api.WLIB;
 
 import com.cryptomorin.xseries.XMaterial;
-import dev.colbster937.reflect.MirrorSafe;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 
 @SuppressWarnings({ "removal" })
 @Deprecated(forRemoval = true)
@@ -29,6 +26,7 @@ public non-sealed class BlockRelative extends AbstractBlockBase {
   private final int y;
   private final int z;
 
+  @Deprecated(forRemoval = true)
   protected BlockRelative(int x, int y, int z, XMaterial mat, String dataModern, byte dataLegacy) {
     super(mat, dataModern, dataLegacy);
     WLIB.warnDeprecatedUsage();
@@ -37,67 +35,62 @@ public non-sealed class BlockRelative extends AbstractBlockBase {
     this.z = z;
   }
 
+  @Deprecated(forRemoval = true)
   public BlockRelative(int x, int y, int z, XMaterial mat) {
     this(x, y, z, mat, null, (byte) 0);
     WLIB.warnDeprecatedUsage();
   }
 
+  @Deprecated(forRemoval = true)
   public BlockRelative(int x, int y, int z, Material mat) {
     this(x, y, z, XMaterial.matchXMaterial(mat));
     WLIB.warnDeprecatedUsage();
   }
 
+  @Deprecated(forRemoval = true)
   public BlockRelative(int x, int y, int z, XMaterial mat, String dataModern) {
     this(x, y, z, mat, dataModern, (byte) 0);
     WLIB.warnDeprecatedUsage();
   }
 
+  @Deprecated(forRemoval = true)
   public BlockRelative(int x, int y, int z, Material mat, String dataModern) {
     this(x, y, z, XMaterial.matchXMaterial(mat), dataModern);
     WLIB.warnDeprecatedUsage();
   }
 
+  @Deprecated(forRemoval = true)
   public BlockRelative(int x, int y, int z, XMaterial mat, byte dataLegacy) {
     this(x, y, z, mat, null, dataLegacy);
     WLIB.warnDeprecatedUsage();
   }
 
+  @Deprecated(forRemoval = true)
   public BlockRelative(int x, int y, int z, Material mat, byte dataLegacy) {
     this(x, y, z, XMaterial.matchXMaterial(mat), dataLegacy);
     WLIB.warnDeprecatedUsage();
   }
 
+  @Deprecated(forRemoval = true)
   @Override
   public void place(Location loc) {
     WLIB.warnDeprecatedUsage();
-    if (this.mat != null) {
-      final Location rel = loc.clone().add(this.x, this.y, this.z);
-      final Block blk = rel.getBlock();
-      final Material _mat = this.getBukkitMaterial();
-      if (_mat != null) {
-        if (WLIB.getIsModernServer() && this.dataModern != null) {
-          final Object data = MirrorSafe.invokeMethod(Bukkit.class, "createBlockData", new Object[] { "minecraft:" + _mat.name().toLowerCase() + this.dataModern });
-          MirrorSafe.invokeMethod(Block.class, blk, "setBlockData", data, false);
-        } else {
-          blk.setType(_mat, false);
-          if (this.dataLegacy != 0) {
-            blk.setData(this.dataLegacy);
-          }
-        }
-      }
-    }
+    super.place(loc.clone().add(this.x, this.y, this.z));
   }
 
+  @Deprecated(forRemoval = true)
   public final int getX() {
     WLIB.warnDeprecatedUsage();
     return this.x;
   }
 
+  @Deprecated(forRemoval = true)
   public final int getY() {
     WLIB.warnDeprecatedUsage();
     return this.y;
   }
 
+  @Deprecated(forRemoval = true)
   public final int getZ() {
     WLIB.warnDeprecatedUsage();
     return this.z;

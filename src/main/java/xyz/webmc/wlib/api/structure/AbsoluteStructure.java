@@ -13,17 +13,17 @@
 
 package xyz.webmc.wlib.api.structure;
 
-import xyz.webmc.wlib.api.structure.placeable.LocatedPlaceableStructure;
+import xyz.webmc.wlib.api.structure.placeable.AbsolutePlaceableStructure;
 
 import org.bukkit.Location;
 
-public abstract class LocatedStructure implements BaseStructure {
-  public abstract LocatedPlaceableStructure build(Location loc);
+public abstract class AbsoluteStructure implements BaseStructure {
+  public abstract AbsolutePlaceableStructure build(Location loc);
 
   @Override
   public final void place(Location loc, Object... chunks) {
     if (chunks.length > 0) {
-      final LocatedPlaceableStructure builder = this.build(loc);
+      final AbsolutePlaceableStructure builder = this.build(loc);
       for (Object chk: chunks){
         builder.place(chk);
       }

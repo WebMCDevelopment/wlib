@@ -14,7 +14,7 @@
 package xyz.webmc.wlib.api.structure.placeable;
 
 import xyz.webmc.wlib.api.structure.BuilderChunk;
-import xyz.webmc.wlib.api.structure.blocks.RelativeBlock;
+import xyz.webmc.wlib.api.structure.block.RelativeBlock;
 import xyz.webmc.wlib.api.util.SchemUtil;
 
 import java.io.InputStream;

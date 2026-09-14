@@ -2,29 +2,20 @@
  * Copyright (C) 2026 Colbster937
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * See the LICENSE file for details.
  */
 
-package xyz.webmc.wlib.api.structure.blocks;
+package xyz.webmc.wlib.api.structure.block;
 
 import com.cryptomorin.xseries.XMaterial;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-public class RelativeBlock extends AbstractBlockBase {
+public non-sealed class RelativeBlock extends AbstractBlockBase {
   private final int x;
   private final int y;
   private final int z;
 
-    public RelativeBlock(int x, int y, int z, XMaterial mat, String dataModern,
-      byte dataLegacy) {
+  public RelativeBlock(int x, int y, int z, XMaterial mat, String dataModern, byte dataLegacy) {
     super(mat, dataModern, dataLegacy);
     this.x = x;
     this.y = y;

@@ -11,8 +11,9 @@
  * See the LICENSE file for details.
  */
 
-package xyz.webmc.wlib.api.structure;
+package xyz.webmc.wlib.api.util;
 
+import xyz.webmc.wlib.api.structure.GenerableStructure;
 import xyz.webmc.wlib.internal.util.TestStructureUtil;
 
 import org.bukkit.Chunk;

@@ -13,18 +13,18 @@
 
 package xyz.webmc.wlib.internal.structure;
 
-import xyz.webmc.wlib.api.structure.LocatedStructure;
-import xyz.webmc.wlib.api.structure.blocks.LocatedBlock;
-import xyz.webmc.wlib.api.structure.placeable.LocatedPlaceableStructure;
+import xyz.webmc.wlib.api.structure.AbsoluteStructure;
+import xyz.webmc.wlib.api.structure.block.AbsoluteBlock;
+import xyz.webmc.wlib.api.structure.placeable.AbsolutePlaceableStructure;
 import xyz.webmc.wlib.internal.util.TestStructureUtil;
 
 import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Location;
 
-public final class CoordinateStructure extends LocatedStructure {
+public final class CoordinateStructure extends AbsoluteStructure {
   @Override
-  public LocatedPlaceableStructure build(Location loc) {
-    final LocatedPlaceableStructure structure = new LocatedPlaceableStructure(loc);
+  public AbsolutePlaceableStructure build(Location loc) {
+    final AbsolutePlaceableStructure structure = new AbsolutePlaceableStructure(loc);
     final int x = loc.getBlockX();
     final int z = loc.getBlockZ();
     final int y = loc.getBlockY();
@@ -34,8 +34,8 @@ public final class CoordinateStructure extends LocatedStructure {
       final int xBit = (x >> bit) & 1;
       final int zBit = (z >> bit) & 1;
 
-      structure.addBlock(new LocatedBlock(x + 1 + bit, y, z, bitToMaterial(xBit)));
-      structure.addBlock(new LocatedBlock(x, y, z + 1 + bit, bitToMaterial(zBit)));
+      structure.addBlock(new AbsoluteBlock(x + 1 + bit, y, z, bitToMaterial(xBit)));
+      structure.addBlock(new AbsoluteBlock(x, y, z + 1 + bit, bitToMaterial(zBit)));
     }
 
     return structure;
