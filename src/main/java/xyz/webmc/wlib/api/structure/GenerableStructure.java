@@ -21,5 +21,5 @@ public interface GenerableStructure extends BaseStructure {
 
   boolean canGenerate(Location loc);
   boolean canGenerate(Chunk chunk);
-
+  boolean canGenerate(BuilderChunk chk);
 }

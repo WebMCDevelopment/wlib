@@ -13,6 +13,7 @@
 
 package xyz.webmc.wlib.internal.structure;
 
+import xyz.webmc.wlib.api.structure.BuilderChunk;
 import xyz.webmc.wlib.api.structure.GenerableStructure;
 import xyz.webmc.wlib.api.structure.RelativeStructure;
 import xyz.webmc.wlib.api.structure.blocks.RelativeBlock;
@@ -31,6 +32,11 @@ public final class HerobrineShrineTestStructure extends RelativeStructure implem
 
   @Override
   public boolean canGenerate(Chunk chunk) {
+    return true;
+  }
+
+  @Override
+  public boolean canGenerate(BuilderChunk chunk) {
     return true;
   }
 
