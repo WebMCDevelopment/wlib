@@ -22,7 +22,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-@SuppressWarnings({ "removal" })
 @Deprecated(forRemoval = true)
 public class BlockRelative {
   private final int x;
