@@ -42,15 +42,16 @@ public abstract class AbstractBaseStructure {
   private final String name;
 
   @Deprecated(forRemoval = true)
-  protected AbstractBaseStructure(final String name) {
+  protected AbstractBaseStructure(String name) {
+    WLIB.warnDeprecatedUsage();
     this.name = name;
   }
 
   @Deprecated(forRemoval = true)
-  public final void place(final Location loc) {
+  public final void place(Location loc) {
     WLIB.warnDeprecatedUsage();
     final Location offset = loc.clone().add(this.getOffsetX(), this.getOffsetY(), this.getOffsetZ());
-    for (final BlockRelative blk : blocks) {
+    for (BlockRelative blk : blocks) {
       blk.place(offset);
     }
   }
@@ -80,13 +81,13 @@ public abstract class AbstractBaseStructure {
   }
 
   @Deprecated(forRemoval = true)
-  protected final void addBlock(final BlockRelative blk) {
+  protected final void addBlock(BlockRelative blk) {
     WLIB.warnDeprecatedUsage();
     this.blocks.add(blk);
   }
 
   @Deprecated(forRemoval = true)
-  protected final void loadSchematic(final InputStream is) throws IOException, ParsingException {
+  protected final void loadSchematic(InputStream is) throws IOException, ParsingException {
     WLIB.warnDeprecatedUsage();
     try (is) {
       final Schematic schematic = SchemUtil.readSchematic(is);
@@ -106,7 +107,7 @@ public abstract class AbstractBaseStructure {
               if (mat != null) {
                 final StringBuilder sb = new StringBuilder();
 
-                for (final Map.Entry<String, String> entry : block.states().entrySet()) {
+                for (Map.Entry<String, String> entry : block.states().entrySet()) {
                   if (sb.length() > 0) {
                     sb.append(",");
                   }
@@ -126,12 +127,13 @@ public abstract class AbstractBaseStructure {
   }
 
   @Deprecated(forRemoval = true)
-  protected final void loadSchematic(final File file) throws IOException, ParsingException {
+  protected final void loadSchematic(File file) throws IOException, ParsingException {
+    WLIB.warnDeprecatedUsage();
     loadSchematic(new FileInputStream(file));
   }
 
   @Deprecated(forRemoval = true)
-  public static final <T extends AbstractBaseStructure> T getInstance(final Class<T> clazz, final Object... params) {
+  public static final <T extends AbstractBaseStructure> T getInstance(Class<T> clazz, Object... params) {
     WLIB.warnDeprecatedUsage();
     AbstractBaseStructure structure = INSTANCES.get(clazz);
 

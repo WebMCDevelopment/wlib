@@ -13,19 +13,21 @@
 
 package xyz.webmc.wlib.api.util;
 
-import xyz.webmc.wlib.internal.util.AbstractPluginRequiredUtil;
+import xyz.webmc.wlib.internal.util.RequiredPluginUtil;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 
-public final class PlaceholderUtil extends AbstractPluginRequiredUtil {
+import static xyz.webmc.wlib.internal.util.RequiredPluginUtil.checkPlugins;
+
+public final class PlaceholderUtil implements RequiredPluginUtil {
   private static boolean bool = false;
 
   public static void _init() {
-    bool = check("PlaceholderAPI");
+    bool = checkPlugins("PlaceholderAPI");
   }
 
-  public static String parsePlaceholders(final Player plr, final String txt) {
+  public static String parsePlaceholders(Player plr, String txt) {
     if (bool) {
       return PlaceholderAPI.setPlaceholders(plr, txt);
     } else {

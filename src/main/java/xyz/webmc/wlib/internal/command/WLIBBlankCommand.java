@@ -14,34 +14,23 @@
 package xyz.webmc.wlib.internal.command;
 
 import xyz.webmc.wlib.api.command.WCommand;
-import xyz.webmc.wlib.api.util.RNGUtil;
 
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
 public final class WLIBBlankCommand extends WCommand {
-  private static final String NAME = RNGUtil.getRandomStringLowercaseAZ(16);
-
-  public WLIBBlankCommand() {
-    super(NAME);
-  }
-
-  public static String getBlankRandomCommandName() {
-    return NAME;
-  }
-
-  public static String getBlankRandomCommandKey() {
-    return "wlib:" + getBlankRandomCommandName();
+  public WLIBBlankCommand(String name) {
+    super(name);
   }
 
   @Override
-  public final boolean run(final CommandSender sender, final String label, final String[] args) {
+  public boolean run(CommandSender sender, String label, String[] args) {
     return true;
   }
 
   @Override
-  public final List<String> tab(final CommandSender sender, final String label, final String[] args) {
+  public List<String> tab(CommandSender sender, String label, String[] args) {
     return List.of();
   }
 }

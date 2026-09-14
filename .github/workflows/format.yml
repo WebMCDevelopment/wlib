@@ -12,14 +12,17 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  format:
+  main:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - id: vars
+        run: |
+          echo "JAVA=$(mvn help:evaluate -Dexpression=maven.compiler.release -q -DforceStdout)" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-java@v5
         with:
           distribution: liberica
-          java-version: 17
+          java-version: ${{ steps.vars.outputs.JAVA }}
       - run: |
           ./src/build/scripts/FormatCode.sh
           git config user.name "github-actions[bot]"

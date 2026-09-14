@@ -21,54 +21,52 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public final class TextUtil {
-  public static String parsePlaceholders(final Player plr, final String txt) {
+  public static String parsePlaceholders(Player plr, String txt) {
     return PlaceholderUtil.parsePlaceholders(plr, txt);
   }
 
-  public static String serializeExceptionStackString(final String stack) {
+  public static String serializeExceptionStackString(String stack) {
     return stack
         .replaceAll("\t", "    ")
         .replaceAll("[\\p{Cntrl}&&[^\\r\\n]]", "");
   }
 
-  public static String[] serializeExceptionStackStringMultiline(final String stack) {
+  public static String[] serializeExceptionStackStringMultiline(String stack) {
     return serializeExceptionStackString(stack).split("\\R");
   }
 
-  public static void sendStringListMessageType1(final CommandSender sender, final String name, final List<String> lst) {
+  public static void sendStringListMessageType1(CommandSender sender, String name, List<String> lst) {
     sender.sendMessage(name + " (" + lst.size() + "): " + getStringListMessage(lst));
   }
 
-  public static void sendStringListMessageType2(final CommandSender sender, final String name, final List<String> lst) {
+  public static void sendStringListMessageType2(CommandSender sender, String name, List<String> lst) {
     sendPluginName24(sender, name);
     sender.sendMessage(ChatColor.DARK_GRAY + " - " + getStringListMessage(lst));
   }
 
-  public static void sendStringListMessageType3(final CommandSender sender, final String name, final List<String> lst) {
+  public static void sendStringListMessageType3(CommandSender sender, String name, List<String> lst) {
     sendStringListMessageType2(sender, name + " (" + lst.size() + ")", lst);
   }
 
-  public static void sendStringListMessageType4(final CommandSender sender, final String name, final List<String> lst) {
+  public static void sendStringListMessageType4(CommandSender sender, String name, List<String> lst) {
     sendPluginName24(sender, name);
-    sender.sendMessage(
-        ChatColor.DARK_GRAY + " - [" + getStringListMessage(ChatColor.DARK_GRAY, lst) + ChatColor.DARK_GRAY + "]");
+    sender.sendMessage(ChatColor.DARK_GRAY + " - [" + getStringListMessage(ChatColor.DARK_GRAY, lst) + ChatColor.DARK_GRAY + "]");
   }
 
-  public static String getStringListMessage(final ChatColor strColor, final ChatColor sepColor,
-      final List<String> lst) {
+  public static String getStringListMessage(ChatColor strColor, ChatColor sepColor, List<String> lst) {
     Collections.sort(lst, String.CASE_INSENSITIVE_ORDER);
     return strColor + String.join(sepColor + ", " + strColor, lst);
   }
 
-  public static String getStringListMessage(final ChatColor sepColor, final List<String> lst) {
+  public static String getStringListMessage(ChatColor sepColor, List<String> lst) {
     return getStringListMessage(ChatColor.GREEN, sepColor, lst);
   }
 
-  public static String getStringListMessage(final List<String> lst) {
+  public static String getStringListMessage(List<String> lst) {
     return getStringListMessage(ChatColor.RESET, lst);
   }
 
-  private static void sendPluginName24(final CommandSender sender, final String name) {
+  private static void sendPluginName24(CommandSender sender, String name) {
     sender.sendMessage(ChatColor.BLUE + name + ":");
   }
 }

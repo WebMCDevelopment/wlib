@@ -21,26 +21,38 @@ import org.bukkit.command.CommandSender;
 
 public final class CaptureSender extends ExtendableCommandSender {
   private final List<String> messages = new ArrayList<>();
+  private final boolean forward;
 
-  public CaptureSender(final CommandSender parent) {
+  public CaptureSender(CommandSender parent, boolean forward) {
     super(parent);
+    this.forward = forward;
+  }
+
+  public CaptureSender(CommandSender parent) {
+    this(parent, false);
   }
 
   public CaptureSender() {
     this(null);
   }
 
-  public final List<String> getMessages() {
+  public List<String> getMessages() {
     return this.messages;
   }
 
   @Override
-  public void sendMessage(final String message) {
+  public void sendMessage(String message) {
     this.messages.add(message);
+    if (this.forward) {
+      super.parent.sendMessage(message);
+    }
   }
 
   @Override
-  public void sendMessage(final String[] messages) {
+  public void sendMessage(String[] messages) {
     this.messages.addAll(Arrays.asList(messages));
+    if (this.forward) {
+      super.parent.sendMessage(messages);
+    }
   }
 }

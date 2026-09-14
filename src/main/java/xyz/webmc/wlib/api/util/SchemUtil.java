@@ -14,6 +14,7 @@
 package xyz.webmc.wlib.api.util;
 
 import xyz.webmc.wlib.api.WLIB;
+import xyz.webmc.wlib.internal.util.ModernServerUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,20 +27,19 @@ import net.sandrohc.schematic4j.exception.ParsingException;
 import net.sandrohc.schematic4j.schematic.Schematic;
 import org.bukkit.Bukkit;
 
-public final class SchemUtil {
-  public static Schematic readSchematic(final InputStream is) throws IOException, ParsingException {
+public final class SchemUtil implements ModernServerUtil {
+  public static Schematic readSchematic(InputStream is) throws IOException, ParsingException {
     warnSchemUnsupportedServerVersion();
     return SchematicLoader.load(is);
   }
 
-  public static Schematic readSchematic(final File file) throws IOException, ParsingException {
+  public static Schematic readSchematic(File file) throws IOException, ParsingException {
     return readSchematic(new FileInputStream(file));
   }
 
   public static void warnSchemUnsupportedServerVersion() {
     if (!WLIB.getIsModernServer()) {
-      WLIB.getLogger().log(Level.WARNING, "Schematic loading is unsupported on server version {0}.",
-          Bukkit.getVersion());
+      WLIB.getLogger().log(Level.WARNING, "Schematic loading is unsupported on server version {0}.", Bukkit.getVersion());
     }
   }
 }

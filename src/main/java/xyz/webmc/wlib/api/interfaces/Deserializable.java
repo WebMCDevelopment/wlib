@@ -13,6 +13,6 @@
 
 package xyz.webmc.wlib.api.interfaces;
 
-public interface Deserializable<T> {
-  T deserialize(String data);
+@Deprecated(forRemoval = true)
+public interface Deserializable<T> extends xyz.webmc.wlib.api.misc.iface.Deserializable<T> {
 }

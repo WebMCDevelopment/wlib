@@ -22,6 +22,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
+@SuppressWarnings({ "removal" })
 @Deprecated(forRemoval = true)
 public class BlockRelative {
   private final int x;
@@ -33,7 +34,8 @@ public class BlockRelative {
   private final byte dataLegacy;
 
   @Deprecated(forRemoval = true)
-  private BlockRelative(final int x, final int y, final int z, final XMaterial mat, final String dataModern, final byte dataLegacy) {
+  private BlockRelative(int x, int y, int z, XMaterial mat, String dataModern, byte dataLegacy) {
+    WLIB.warnDeprecatedUsage();
     this.x = x;
     this.y = y;
     this.z = z;
@@ -43,43 +45,43 @@ public class BlockRelative {
   }
 
   @Deprecated(forRemoval = true)
-  public BlockRelative(final int x, final int y, final int z, final XMaterial mat) {
+  public BlockRelative(int x, int y, int z, XMaterial mat) {
     this(x, y, z, mat, null, (byte) 0);
     WLIB.warnDeprecatedUsage();
   }
 
   @Deprecated(forRemoval = true)
-  public BlockRelative(final int x, final int y, final int z, final Material mat) {
+  public BlockRelative(int x, int y, int z, Material mat) {
     this(x, y, z, XMaterial.matchXMaterial(mat));
     WLIB.warnDeprecatedUsage();
   }
 
   @Deprecated(forRemoval = true)
-  public BlockRelative(final int x, final int y, final int z, final XMaterial mat, final String dataModern) {
+  public BlockRelative(int x, int y, int z, XMaterial mat, String dataModern) {
     this(x, y, z, mat, dataModern, (byte) 0);
     WLIB.warnDeprecatedUsage();
   }
 
   @Deprecated(forRemoval = true)
-  public BlockRelative(final int x, final int y, final int z, final Material mat, final String dataModern) {
+  public BlockRelative(int x, int y, int z, Material mat, String dataModern) {
     this(x, y, z, XMaterial.matchXMaterial(mat), dataModern);
     WLIB.warnDeprecatedUsage();
   }
 
   @Deprecated(forRemoval = true)
-  public BlockRelative(final int x, final int y, final int z, final XMaterial mat, final byte dataLegacy) {
+  public BlockRelative(int x, int y, int z, XMaterial mat, byte dataLegacy) {
     this(x, y, z, mat, null, dataLegacy);
     WLIB.warnDeprecatedUsage();
   }
 
   @Deprecated(forRemoval = true)
-  public BlockRelative(final int x, final int y, final int z, final Material mat, final byte dataLegacy) {
+  public BlockRelative(int x, int y, int z, Material mat, byte dataLegacy) {
     this(x, y, z, XMaterial.matchXMaterial(mat), dataLegacy);
     WLIB.warnDeprecatedUsage();
   }
 
   @Deprecated(forRemoval = true)
-  public void place(final Location loc) {
+  public void place(Location loc) {
     WLIB.warnDeprecatedUsage();
     final Location rel = loc.clone().add(this.x, this.y, this.z);
     final Block blk = rel.getBlock();

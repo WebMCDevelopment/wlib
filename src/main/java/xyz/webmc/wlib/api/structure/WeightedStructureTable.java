@@ -27,44 +27,44 @@ import org.bukkit.Location;
 @Deprecated(forRemoval = true)
 public final class WeightedStructureTable extends WeightedObjectTable<AbstractBaseStructure> {
   @Deprecated(forRemoval = true)
-  public WeightedStructureTable(final long seed, final WeightedStructure... structures) {
+  public WeightedStructureTable(long seed, WeightedStructure... structures) {
     super(seed, structures);
     WLIB.warnDeprecatedUsage();
   }
 
   @Deprecated(forRemoval = true)
-  public WeightedStructureTable(final WeightedStructure... structures) {
+  public WeightedStructureTable(WeightedStructure... structures) {
     this(RNGUtil.getRandomSeed(), structures);
     WLIB.warnDeprecatedUsage();
   }
 
   @SafeVarargs
   @Deprecated(forRemoval = true)
-  public WeightedStructureTable(final long seed, final Class<? extends AbstractBaseStructure>... structures) {
+  public WeightedStructureTable(long seed, Class<? extends AbstractBaseStructure>... structures) {
     this(seed, weigh(structures));
     WLIB.warnDeprecatedUsage();
   }
 
   @SafeVarargs
   @Deprecated(forRemoval = true)
-  public WeightedStructureTable(final Class<? extends AbstractBaseStructure>... structures) {
+  public WeightedStructureTable(Class<? extends AbstractBaseStructure>... structures) {
     this(weigh(structures));
     WLIB.warnDeprecatedUsage();
   }
 
   @Deprecated(forRemoval = true)
-  public void place(final Location loc) {
+  public void place(Location loc) {
     WLIB.warnDeprecatedUsage();
     this.computeRandomObject().place(loc);
   }
 
   @SafeVarargs
   @Deprecated(forRemoval = true)
-  private static WeightedStructure[] weigh(final Class<? extends AbstractBaseStructure>... structures) {
+  private static WeightedStructure[] weigh(Class<? extends AbstractBaseStructure>... structures) {
     final List<WeightedStructure> lst = new ArrayList<>();
     final int chance = 100 / structures.length;
 
-    for (final Class<? extends AbstractBaseStructure> clazz : structures) {
+    for (Class<? extends AbstractBaseStructure> clazz : structures) {
       lst.add(new WeightedStructure(MirrorSafe.invokeConstructor(clazz), chance));
     }
 
