@@ -1,0 +1,35 @@
+on:
+  push:
+    paths:
+      - 'src/**'
+      - 'pom.xml'
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'pom.xml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - id: vars
+        run: |
+          echo "JAVA=$(mvn help:evaluate -Dexpression=maven.compiler.release -q -DforceStdout)" >> "$GITHUB_OUTPUT"
+          echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-java@v5
+        with:
+          distribution: liberica
+          java-version: ${{ steps.vars.outputs.JAVA }}
+      - run: ./src/build/scripts/TestCode.sh
+      - run: mvn -B package -DskipTests
+      - uses: actions/upload-artifact@v7
+        with:
+          name: wlib-${{ steps.vars.outputs.VERSION }}
+          path: target/wlib-${{ steps.vars.outputs.VERSION }}.jar
+          if-no-files-found: error
