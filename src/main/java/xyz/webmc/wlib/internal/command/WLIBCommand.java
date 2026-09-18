@@ -49,7 +49,7 @@ public final class WLIBCommand extends WCommand {
     if (args.length > 0) {
       final String arg = args[0].trim();
       if ((arg.equals("plugins") || arg.equals("pl")) && (bool2 = sender.hasPermission("wlib.command.plugins"))) {
-        TextUtil.sendStringListMessageType3(sender, "WLIB Plugins", WLIB.getWLIBPluginNames());
+        TextUtil.sendStringListMessageType3(sender, "WLIB Plugins", WLIB.getWLIBPluginNameSet());
         bool1 = false;
       } else if ((arg.equals("version") || arg.equals("ver")) && (bool2 = sender.hasPermission("wlib.command.version"))) {
         sender.sendMessage("Running WLIB Version " + ChatColor.BLUE + WLIB.getWLIBVersionString());

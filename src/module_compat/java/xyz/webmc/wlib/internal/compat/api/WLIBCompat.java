@@ -43,6 +43,11 @@ public abstract class WLIBCompat {
   }
 
   @Deprecated(forRemoval = true)
+  public static List<String> getWLIBPluginNames() {
+    return getWLIBPluginNameList();
+  }
+
+  @Deprecated(forRemoval = true)
   public static void devAlert(String... msg) {
     warnDeprecatedUsage();
     alert(msg);

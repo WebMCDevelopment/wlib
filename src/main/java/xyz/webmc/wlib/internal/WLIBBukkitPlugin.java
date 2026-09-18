@@ -32,7 +32,6 @@ import xyz.webmc.wlib.internal.util.MetricsUtil;
 import xyz.webmc.wlib.internal.util.TestStructureUtil;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 import dev.colbster937.reflect.Mirror;
@@ -146,7 +145,7 @@ public final class WLIBBukkitPlugin extends WPlugin implements Listener {
 
       if (ctx.equals("bukkit") && (cmd.equals("plugins") || cmd.equals("pl"))) {
         final String name = "WLIB Plugins";
-        final List<String> plugins = WLIB.getWLIBPluginNames();
+        final Set<String> plugins = WLIB.getWLIBPluginNameSet();
         if (MirrorSafe.getClassExists("io.papermc.paper.command.PaperPluginsCommand")) {
           final int type = !MirrorSafe.getClassExists("io.canvasmc.horizon.HorizonLoader") ? 3 : 4;
           if (type < 4 || !(sender instanceof ConsoleCommandSender)) {

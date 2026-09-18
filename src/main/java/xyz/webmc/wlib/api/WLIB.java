@@ -26,7 +26,6 @@ import java.lang.StackWalker.Option;
 import java.lang.StackWalker.StackFrame;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -99,21 +98,25 @@ public final class WLIB extends WLIBCompat {
   }
 
   public static Set<Plugin> getWLIBPluginSet() {
-    return PLUGINS;
+    return Set.copyOf(PLUGINS);
   }
 
   public static List<Plugin> getWLIBPluginList() {
     return List.copyOf(getWLIBPluginSet());
   }
 
-  public static List<String> getWLIBPluginNames() {
-    final List<String> ret = new ArrayList<>();
+  public static Set<String> getWLIBPluginNameSet() {
+    final Set<String> ret = new HashSet<>();
 
     for (Plugin plugin : getWLIBPluginSet()) {
       ret.add(plugin.getName());
     }
 
-    return ret;
+    return Set.copyOf(ret);
+  }
+
+  public static List<String> getWLIBPluginNameList() {
+    return List.copyOf(getWLIBPluginNameSet());
   }
 
   public static void alert(int index, String... msg) {
