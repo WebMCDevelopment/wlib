@@ -14,23 +14,27 @@
 package xyz.webmc.wlib.internal.command;
 
 import xyz.webmc.wlib.api.command.WCommand;
+import xyz.webmc.wlib.internal.iface.WInternal;
+import xyz.webmc.wlib.internal.util.InternalUtil;
 
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
+@WInternal
 public final class WLIBBlankCommand extends WCommand {
   public WLIBBlankCommand(String name) {
     super(name);
+    InternalUtil.checkInternalCaller();
   }
 
   @Override
-  public boolean run(CommandSender sender, String label, String[] args) {
+  protected boolean run(CommandSender sender, String label, String[] args) {
     return true;
   }
 
   @Override
-  public List<String> tab(CommandSender sender, String label, String[] args) {
+  protected List<String> tab(CommandSender sender, String label, String[] args) {
     return List.of();
   }
 }

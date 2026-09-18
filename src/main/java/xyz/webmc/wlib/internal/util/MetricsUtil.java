@@ -13,14 +13,18 @@
 
 package xyz.webmc.wlib.internal.util;
 
+import xyz.webmc.wlib.internal.iface.WInternal;
+
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.Plugin;
 
+@WInternal
 public final class MetricsUtil {
   private static final int PLUGIN_ID = 33913;
   private static Metrics metrics;
 
   public static void _init(Plugin plugin) {
+    InternalUtil.checkInternalCaller();
     _shutdown();
     metrics = new Metrics(plugin, PLUGIN_ID);
   }

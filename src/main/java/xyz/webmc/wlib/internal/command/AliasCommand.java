@@ -15,6 +15,8 @@ package xyz.webmc.wlib.internal.command;
 
 import xyz.webmc.wlib.api.command.WCommand;
 import xyz.webmc.wlib.api.util.CommandUtil;
+import xyz.webmc.wlib.internal.iface.WInternal;
+import xyz.webmc.wlib.internal.util.InternalUtil;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -23,23 +25,25 @@ import java.util.List;
 import dev.colbster937.reflect.MirrorSafe;
 import org.bukkit.command.CommandSender;
 
+@WInternal
 public final class AliasCommand extends WCommand {
   private static final ThreadLocal<Deque<AliasCommand>> CURRENT = ThreadLocal.withInitial(ArrayDeque::new);
   private final String cmd;
 
   public AliasCommand(String cmd, String name) {
     super(name);
+    InternalUtil.checkInternalCaller();
     this.cmd = cmd;
   }
 
   @Override
-  public boolean run(CommandSender sender, String label, String[] args) {
-    return exec("dispatch", sender, args);
+  protected boolean run(CommandSender sender, String label, String[] args) {
+    return this.exec("dispatch", sender, args);
   }
 
   @Override
-  public List<String> tab(CommandSender sender, String label, String[] args) {
-    return exec("tabComplete", sender, args);
+  protected List<String> tab(CommandSender sender, String label, String[] args) {
+    return this.exec("tabComplete", sender, args);
   }
 
   private <T> T exec(String method, CommandSender sender, String[] args) {

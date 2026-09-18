@@ -14,10 +14,12 @@
 package xyz.webmc.wlib.internal.util;
 
 import xyz.webmc.wlib.api.util.PluginUtil;
+import xyz.webmc.wlib.internal.iface.WInternal;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@WInternal
 public interface RequiredPluginUtil {
   static boolean checkPlugins(String... plugins) {
     final List<String> missing = new ArrayList<>();

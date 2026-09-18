@@ -18,6 +18,9 @@ import xyz.webmc.wlib.api.util.PluginUtil;
 import xyz.webmc.wlib.api.util.RNGUtil;
 import xyz.webmc.wlib.api.util.TextUtil;
 import xyz.webmc.wlib.internal.command.AliasCommand;
+import xyz.webmc.wlib.internal.compat.WCompat;
+import xyz.webmc.wlib.internal.compat.api.WLIBCompat;
+import xyz.webmc.wlib.internal.util.CompatUtil;
 
 import java.lang.StackWalker.Option;
 import java.lang.StackWalker.StackFrame;
@@ -39,7 +42,7 @@ import org.bukkit.plugin.Plugin;
 import org.semver4j.Semver;
 
 @SuppressWarnings({ "unused", "NonConstantLogger" })
-public final class WLIB {
+public final class WLIB extends WLIBCompat {
   private static final StackWalker STACK_WALKER = StackWalker.getInstance(Option.RETAIN_CLASS_REFERENCE);
   private static final String BLANK_COMMAND = RNGUtil.getRandomStringLowercaseAZ(16);
   private static final Set<Plugin> PLUGINS = new HashSet<>();
@@ -48,17 +51,11 @@ public final class WLIB {
 
   public static void _init(Plugin _plugin) {
     plugin = _plugin;
-    logger = _plugin.getLogger();
+    logger = plugin.getLogger();
   }
 
   public static boolean requireWLIBVersion(String ver) {
     return PluginUtil.requirePluginVersion(plugin, ver);
-  }
-
-  @Deprecated(forRemoval = true)
-  public static boolean requireWLIB(String ver) {
-    warnDeprecatedUsage();
-    return requireWLIBVersion(ver);
   }
 
   public static Semver getWLIBVersion() {
@@ -82,25 +79,23 @@ public final class WLIB {
   }
 
   public static void initPlugin(Plugin plugin) {
-    if (getIsModernServer()) {
-      DatapackUtil._initPlugin(plugin);
-    }
+    if (!PLUGINS.contains(plugin)) {
+      if (getIsModernServer()) {
+        DatapackUtil._initPlugin(plugin);
+      }
 
-    PLUGINS.add(plugin);
+      PLUGINS.add(plugin);
+    }
   }
 
   public static void shutdownPlugin(Plugin plugin) {
-    if (getIsModernServer()) {
-      DatapackUtil._shutdownPlugin(plugin);
+    if (PLUGINS.contains(plugin)) {
+      if (getIsModernServer()) {
+        DatapackUtil._shutdownPlugin(plugin);
+      }
+
+      PLUGINS.remove(plugin);
     }
-
-    PLUGINS.remove(plugin);
-  }
-
-  @Deprecated(forRemoval = true)
-  public static void registerPlugin(Plugin plugin) {
-    warnDeprecatedUsage();
-    initPlugin(plugin);
   }
 
   public static Set<Plugin> getWLIBPluginSet() {
@@ -109,11 +104,6 @@ public final class WLIB {
 
   public static List<Plugin> getWLIBPluginList() {
     return List.copyOf(getWLIBPluginSet());
-  }
-
-  @Deprecated(forRemoval = true)
-  public static List<Plugin> getWLIBPlugins() {
-    return getWLIBPluginList();
   }
 
   public static List<String> getWLIBPluginNames() {
@@ -129,7 +119,7 @@ public final class WLIB {
   public static void alert(int index, String... msg) {
     final Optional<StackFrame> optional = STACK_WALKER.walk(stream -> stream.skip(index).findFirst());
     optional.ifPresent(caller -> {
-      final String ctx = caller.getDeclaringClass().getSimpleName();
+      final String ctx = getClassNameFromFileName(caller.getFileName());
       final String str = ChatColor.DARK_GREEN +
         "[" + ChatColor.GREEN + ctx + ":" + caller.getLineNumber() + ChatColor.DARK_GREEN + "] " +
         ChatColor.RESET + ChatColor.GRAY +
@@ -147,12 +137,6 @@ public final class WLIB {
 
   public static void alert(String... msg) {
     alert(2, msg);
-  }
-
-  @Deprecated(forRemoval = true)
-  public static void devAlert(String... msg) {
-    warnDeprecatedUsage();
-    alert(msg);
   }
 
   public static void warnDeprecatedUsage() {
@@ -199,7 +183,15 @@ public final class WLIB {
 
         sb.append(" ");
 
-        final String clazzName = called.getClassName();
+        final WCompat compat = CompatUtil.getWCompat(clazz);
+        Class<?> _clazz = clazz;
+
+        if (compat != null) {
+          _clazz = compat.value();
+        }
+
+        final String clazzName = _clazz.getCanonicalName();
+
         if (!ctor) {
           sb.append(clazzName).append(".").append(name);
         } else {
@@ -279,5 +271,9 @@ public final class WLIB {
 
   public static Logger getLogger() {
     return logger;
+  }
+
+  private static String getClassNameFromFileName(String file) {
+    return file.substring(0, file.lastIndexOf('.'));
   }
 }

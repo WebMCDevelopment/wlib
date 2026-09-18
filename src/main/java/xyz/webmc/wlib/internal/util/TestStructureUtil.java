@@ -14,6 +14,7 @@
 package xyz.webmc.wlib.internal.util;
 
 import xyz.webmc.wlib.api.structure.AbstractBaseStructure;
+import xyz.webmc.wlib.internal.iface.WInternal;
 import xyz.webmc.wlib.internal.structure.HerobrineShrineTestStructure;
 import xyz.webmc.wlib.internal.structure.RickQRCodeTestSchemStructure;
 
@@ -22,6 +23,7 @@ import java.util.Set;
 
 import dev.colbster937.reflect.MirrorSafe;
 
+@WInternal
 public final class TestStructureUtil {
   private static final Set<Class<? extends AbstractBaseStructure>> WLIB_TEST_STRUCTURES = Set.of(
     HerobrineShrineTestStructure.class,
@@ -31,6 +33,7 @@ public final class TestStructureUtil {
   private static final Set<AbstractBaseStructure> STRUCTURES = new HashSet<>();
 
   public static void _init() {
+    InternalUtil.checkInternalCaller();
     for (Class<? extends AbstractBaseStructure> clazz : WLIB_TEST_STRUCTURES) {
       AbstractBaseStructure.getInstance(clazz);
     }

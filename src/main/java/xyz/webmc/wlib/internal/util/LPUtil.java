@@ -13,6 +13,8 @@
 
 package xyz.webmc.wlib.internal.util;
 
+import xyz.webmc.wlib.internal.iface.WInternal;
+
 import java.util.UUID;
 
 import net.luckperms.api.LuckPermsProvider;
@@ -21,6 +23,7 @@ import net.luckperms.api.model.group.GroupManager;
 import net.luckperms.api.model.user.UserManager;
 import net.luckperms.api.node.Node;
 
+@WInternal
 public final class LPUtil {
   public static boolean hasPermission(UUID uuid, String node) {
     return getUserManager().loadUser(uuid).thenApply(user -> {

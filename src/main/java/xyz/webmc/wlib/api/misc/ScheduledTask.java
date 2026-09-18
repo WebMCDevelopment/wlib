@@ -13,13 +13,22 @@
 
 package xyz.webmc.wlib.api.misc;
 
+import xyz.webmc.wlib.internal.compat.api.misc.ScheduledTaskCompat;
+
 import com.tcoded.folialib.wrapper.task.WrappedTask;
+import org.bukkit.plugin.Plugin;
 
-public final class ScheduledTask {
+public final class ScheduledTask extends ScheduledTaskCompat {
   private final WrappedTask task;
+  private final Plugin plugin;
 
-  private ScheduledTask(WrappedTask task) {
+  public ScheduledTask(WrappedTask task, Plugin plugin) {
     this.task = task;
+    this.plugin = plugin;
+  }
+
+  public ScheduledTask(WrappedTask task) {
+    this(task, task.getOwningPlugin());
   }
 
   public void cancel() {
@@ -34,11 +43,12 @@ public final class ScheduledTask {
     return this.task.isAsync();
   }
 
-  public WrappedTask getWrappedTask() {
-    return this.task;
+  public Plugin getOwningPlugin() {
+    return this.plugin;
   }
 
-  public static ScheduledTask from(WrappedTask task) {
-    return new ScheduledTask(task);
+  @Deprecated
+  public WrappedTask getWrappedTask() {
+    return this.task;
   }
 }

@@ -13,7 +13,6 @@
 
 package xyz.webmc.wlib.api.util;
 
-
 import java.util.SplittableRandom;
 
 public final class RNGUtil {
@@ -24,11 +23,15 @@ public final class RNGUtil {
   }
 
   public static SplittableRandom getRandom() {
-    return RNG.split();
+    synchronized (RNG) {
+      return RNG.split();
+    }
   }
 
   public static long getRandomSeed() {
-    return RNG.nextLong();
+    synchronized (RNG) {
+      return RNG.nextLong();
+    }
   }
 
   public static String getRandomString(String chars, int len, long seed) {

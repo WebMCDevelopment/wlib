@@ -13,6 +13,7 @@
 
 package xyz.webmc.wlib.api.util;
 
+import xyz.webmc.wlib.internal.util.InternalUtil;
 import xyz.webmc.wlib.internal.util.RequiredPluginUtil;
 
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -24,6 +25,7 @@ public final class PlaceholderUtil implements RequiredPluginUtil {
   private static boolean bool = false;
 
   public static void _init() {
+    InternalUtil.checkInternalCaller();
     bool = checkPlugins("PlaceholderAPI");
   }
 

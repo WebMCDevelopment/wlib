@@ -1,0 +1,28 @@
+/*
+ * Copyright (C) 2026 Colbster937
+ *
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * See the LICENSE file for details.
+ */
+
+package xyz.webmc.wlib.internal.compat;
+
+import xyz.webmc.wlib.internal.iface.WInternal;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@WInternal
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface WCompat {
+  Class<?> value();
+}

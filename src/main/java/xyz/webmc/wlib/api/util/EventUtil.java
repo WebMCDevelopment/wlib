@@ -13,6 +13,8 @@
 
 package xyz.webmc.wlib.api.util;
 
+import xyz.webmc.wlib.internal.util.InternalUtil;
+
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
@@ -22,15 +24,16 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 public final class EventUtil {
-  private static final PluginManager pm = Bukkit.getPluginManager();
+  private static final PluginManager PLUGIN_MANAGER = Bukkit.getPluginManager();
   private static Plugin plugin;
 
   public static void _init(Plugin _plugin) {
+    InternalUtil.checkInternalCaller();
     plugin = _plugin;
   }
 
   public static void registerEvents(Listener listener, Plugin plugin) {
-    pm.registerEvents(listener, plugin);
+    PLUGIN_MANAGER.registerEvents(listener, plugin);
   }
 
   public static void registerEvents(Listener listener) {
@@ -38,7 +41,7 @@ public final class EventUtil {
   }
 
   public static void registerEvent(Class<? extends Event> event, Listener listener, EventPriority priority, EventExecutor executor, Plugin plugin) {
-    pm.registerEvent(event, listener, priority, executor, plugin);
+    PLUGIN_MANAGER.registerEvent(event, listener, priority, executor, plugin);
   }
 
   public static void registerEvent(Class<? extends Event> event, Listener listener, EventPriority priority, EventExecutor executor) {
@@ -46,6 +49,6 @@ public final class EventUtil {
   }
 
   public static void callEvent(Event ev) {
-    pm.callEvent(ev);
+    PLUGIN_MANAGER.callEvent(ev);
   }
 }

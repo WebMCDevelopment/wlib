@@ -75,8 +75,17 @@ public final class PluginUtil {
   public static Plugin getProvidingPlugin(Class<?> clazz) {
     try {
       return JavaPlugin.getProvidingPlugin(clazz);
-    } catch (Throwable t) {
+    } catch (Exception ex) {
       return null;
+    }
+  }
+
+  public static boolean getOwnsClass(Plugin plugin, Class<?> clazz) {
+    final Plugin prov = getProvidingPlugin(clazz);
+    if (prov != null) {
+      return prov.equals(plugin);
+    } else {
+      return false;
     }
   }
 

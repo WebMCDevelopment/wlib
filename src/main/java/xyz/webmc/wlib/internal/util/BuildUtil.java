@@ -13,20 +13,23 @@
 
 package xyz.webmc.wlib.internal.util;
 
+import xyz.webmc.wlib.internal.iface.WInternal;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+@WInternal
 public final class BuildUtil {
-  private static final Properties properties = new Properties();
+  private static final Properties PROPERTIES = new Properties();
 
-  public static String getProperty(final String key) {
-    return properties.getProperty(key).trim();
+  public static String getProperty(String key) {
+    return PROPERTIES.getProperty(key).trim();
   }
 
   static {
-    try (InputStream is = BuildUtil.class.getClassLoader().getResourceAsStream("build.properties")) {
-      properties.load(is);
+    try (InputStream is = BuildUtil.class.getResourceAsStream("/build.properties")) {
+      PROPERTIES.load(is);
     } catch (IOException ex) {}
   }
 }

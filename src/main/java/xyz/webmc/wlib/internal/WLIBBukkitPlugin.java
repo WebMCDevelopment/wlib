@@ -25,6 +25,9 @@ import xyz.webmc.wlib.api.util.SchedulerUtil;
 import xyz.webmc.wlib.api.util.TextUtil;
 import xyz.webmc.wlib.internal.command.WLIBBlankCommand;
 import xyz.webmc.wlib.internal.command.WLIBCommand;
+import xyz.webmc.wlib.internal.iface.WInternal;
+import xyz.webmc.wlib.internal.util.InternalAgentUtil;
+import xyz.webmc.wlib.internal.util.InternalUtil;
 import xyz.webmc.wlib.internal.util.MetricsUtil;
 import xyz.webmc.wlib.internal.util.TestStructureUtil;
 
@@ -48,14 +51,17 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.event.world.WorldInitEvent;
 
+@WInternal
 @WPluginMeta(shutdownOnFailure = true)
 public final class WLIBBukkitPlugin extends WPlugin implements Listener {
   private static final Set<Class<?>> DISABLE_LOGGERS = Set.of(SchematicLoader.class);
 
   @Override
-  protected void enable() {
+  protected void enable() throws Exception {
     WLIB._init(this);
 
+    InternalAgentUtil._init(this);
+    InternalUtil._init(this);
     MetricsUtil._init(this);
     TestStructureUtil._init();
 
@@ -89,8 +95,9 @@ public final class WLIBBukkitPlugin extends WPlugin implements Listener {
 
   @Override
   protected void disable() {
+    InternalAgentUtil._shutdown();
     MetricsUtil._shutdown();
-    SchedulerUtil.cancelAllTasks();
+    SchedulerUtil._cancelAllTasks();
   }
 
   @EventHandler

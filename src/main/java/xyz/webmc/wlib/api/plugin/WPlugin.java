@@ -19,6 +19,8 @@ import xyz.webmc.wlib.api.util.PluginUtil;
 import xyz.webmc.wlib.api.util.SchedulerUtil;
 import xyz.webmc.wlib.internal.WLIBBukkitPlugin;
 
+import java.io.File;
+
 import dev.colbster937.util.ExceptionStacker;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -31,7 +33,7 @@ public abstract class WPlugin extends JavaPlugin {
   @Override
   public final void onLoad() {
     try {
-      meta = this.getWPluginMeta();
+      this.meta = this.getWPluginMeta();
       this.load();
     } catch (Throwable t) {
       this.handleThrowable("load", t);
@@ -79,12 +81,17 @@ public abstract class WPlugin extends JavaPlugin {
     }
   }
 
+  @Override
+  public final File getFile() {
+    return super.getFile();
+  }
+
   public final String getVersion() {
     return this.getDescription().getVersion();
   }
 
   public final boolean getOwnsClass(Class<?> clazz) {
-    return PluginUtil.getProvidingPlugin(clazz).equals(this);
+    return PluginUtil.getOwnsClass(this, clazz);
   }
 
   public final WPluginMeta getWPluginMeta() {

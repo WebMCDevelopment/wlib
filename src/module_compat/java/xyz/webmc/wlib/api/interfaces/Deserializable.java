@@ -13,6 +13,9 @@
 
 package xyz.webmc.wlib.api.interfaces;
 
+import xyz.webmc.wlib.internal.compat.WCompat;
+
 @Deprecated(forRemoval = true)
-public interface Serializable extends xyz.webmc.wlib.api.misc.iface.Serializable {
+@WCompat(xyz.webmc.wlib.api.misc.iface.Deserializable.class)
+public interface Deserializable<T> extends xyz.webmc.wlib.api.misc.iface.Deserializable<T> {
 }

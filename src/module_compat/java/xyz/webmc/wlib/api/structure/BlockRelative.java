@@ -13,12 +13,15 @@
 
 package xyz.webmc.wlib.api.structure;
 
+import xyz.webmc.wlib.internal.compat.WCompat;
+
 import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Material;
 
 import static xyz.webmc.wlib.api.WLIB.warnDeprecatedUsage;
 
 @Deprecated(forRemoval = true)
+@WCompat(xyz.webmc.wlib.api.structure.block.BlockRelative.class)
 public class BlockRelative extends xyz.webmc.wlib.api.structure.block.BlockRelative {
   public BlockRelative(int x, int y, int z, XMaterial mat) {
     super(x, y, z, mat, null, (byte) 0);

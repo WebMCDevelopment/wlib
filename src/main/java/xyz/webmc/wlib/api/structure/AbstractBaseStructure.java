@@ -23,9 +23,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.cryptomorin.xseries.XMaterial;
 import dev.colbster937.reflect.MirrorSafe;
@@ -37,7 +37,7 @@ import org.bukkit.Location;
 
 @SuppressWarnings({ "unchecked" })
 public abstract class AbstractBaseStructure {
-  private static final Map<Class<? extends AbstractBaseStructure>, AbstractBaseStructure> INSTANCES = new HashMap<>();
+  private static final Map<Class<? extends AbstractBaseStructure>, AbstractBaseStructure> INSTANCES = new ConcurrentHashMap<>();
 
   private final List<BlockRelative> blocks = new ArrayList<>();
   private final String name;
@@ -48,7 +48,7 @@ public abstract class AbstractBaseStructure {
 
   public final void place(Location loc) {
     final Location offset = loc.clone().add(this.getOffsetX(), this.getOffsetY(), this.getOffsetZ());
-    for (BlockRelative blk : blocks) {
+    for (BlockRelative blk : this.blocks) {
       blk.place(offset);
     }
   }
@@ -112,20 +112,18 @@ public abstract class AbstractBaseStructure {
   }
 
   protected final void loadSchematic(File file) throws IOException, ParsingException {
-    loadSchematic(new FileInputStream(file));
+    this.loadSchematic(new FileInputStream(file));
   }
 
   public static <T extends AbstractBaseStructure> T getInstance(Class<T> clazz, Object... params) {
-    AbstractBaseStructure structure = INSTANCES.get(clazz);
+    return (T) INSTANCES.computeIfAbsent(clazz, k -> {
+      final AbstractBaseStructure structure = MirrorSafe.invokeConstructor(k, params);
 
-    if (structure == null) {
-      structure = MirrorSafe.invokeConstructor(clazz, params);
-      INSTANCES.put(clazz, structure);
       if (structure instanceof TestStructure) {
         TestStructureUtil.register(structure);
       }
-    }
 
-    return (T) structure;
+      return structure;
+    });
   }
 }

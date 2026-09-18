@@ -32,9 +32,9 @@ public abstract class WCommand extends Command {
     super.setPermissionMessage(ChatColor.RED + "You don't have permission to use this command.");
   }
 
-  protected abstract boolean run(CommandSender sender, String label, String[] args);
+  protected abstract boolean run(CommandSender sender, String label, String[] args) throws Exception;
 
-  protected List<String> tab(CommandSender sender, String label, String[] args) {
+  protected List<String> tab(CommandSender sender, String label, String[] args) throws Exception {
     return List.of();
   }
 
@@ -42,8 +42,8 @@ public abstract class WCommand extends Command {
   public final boolean execute(CommandSender sender, String label, String[] args) {
     try {
       return this.run(sender, label, args);
-    } catch (Throwable t) {
-      this.showStack(sender, t);
+    } catch (Exception ex) {
+      this.showStack(sender, ex);
       return true;
     }
   }
@@ -52,8 +52,8 @@ public abstract class WCommand extends Command {
   public final List<String> tabComplete(CommandSender sender, String label, String[] args) {
     try {
       return this.tab(sender, label, args);
-    } catch (Throwable t) {
-      this.showStack(sender, t);
+    } catch (Exception ex) {
+      this.showStack(sender, ex);
       return List.of();
     }
   }
@@ -67,11 +67,11 @@ public abstract class WCommand extends Command {
   }
 
   public final void sendUsageMessage(CommandSender sender) {
-    sendUsageMessage(sender, "");
+    this.sendUsageMessage(sender, "");
   }
 
   public final void sendPermissionMessage(CommandSender sender) {
-    sendPermissionMessage(sender, "");
+    this.sendPermissionMessage(sender, "");
   }
 
   protected final boolean checkIsPlayer(CommandSender sender) {

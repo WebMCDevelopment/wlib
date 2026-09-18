@@ -11,8 +11,14 @@
  * See the LICENSE file for details.
  */
 
-package xyz.webmc.wlib.api.interfaces;
+package xyz.webmc.wlib.internal.iface;
 
-@Deprecated(forRemoval = true)
-public interface Deserializable<T> extends xyz.webmc.wlib.api.misc.iface.Deserializable<T> {
-}
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@WInternal
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface WInternal {}

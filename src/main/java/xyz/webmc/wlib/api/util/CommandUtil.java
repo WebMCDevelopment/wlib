@@ -15,11 +15,12 @@ package xyz.webmc.wlib.api.util;
 
 import xyz.webmc.wlib.api.misc.CaptureSender;
 import xyz.webmc.wlib.internal.command.AliasCommand;
+import xyz.webmc.wlib.internal.util.InternalUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import dev.colbster937.reflect.MirrorSafe;
 import org.bukkit.Bukkit;
@@ -31,10 +32,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public final class CommandUtil {
-  private static final Map<String, String[]> ALIASES = new HashMap<>();
+  private static final Map<String, String[]> ALIASES = new ConcurrentHashMap<>();
   private static Plugin plugin;
 
   public static void _init(Plugin plugin) {
+    InternalUtil.checkInternalCaller();
     CommandUtil.plugin = plugin;
   }
 

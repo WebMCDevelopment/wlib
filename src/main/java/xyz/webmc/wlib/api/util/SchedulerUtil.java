@@ -14,12 +14,14 @@
 package xyz.webmc.wlib.api.util;
 
 import xyz.webmc.wlib.api.misc.ScheduledTask;
+import xyz.webmc.wlib.internal.compat.api.util.SchedulerUtilCompat;
+import xyz.webmc.wlib.internal.util.InternalUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import com.tcoded.folialib.FoliaLib;
@@ -30,16 +32,22 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
-public final class SchedulerUtil {
-  private static final Map<Plugin, List<ScheduledTask>> tasks = new HashMap<>();
+public final class SchedulerUtil extends SchedulerUtilCompat {
+  private static final Map<Plugin, List<ScheduledTask>> TASKS = new ConcurrentHashMap<>();
   private static Plugin plugin;
   private static FoliaLib lib;
   private static PlatformScheduler sch;
 
   public static void _init(Plugin _plugin) {
+    InternalUtil.checkInternalCaller();
     plugin = _plugin;
     lib = new FoliaLib(plugin);
     sch = lib.getScheduler();
+  }
+
+  public static void _cancelAllTasks() {
+    InternalUtil.checkInternalCaller();
+    sch.cancelAllTasks();
   }
 
   public static boolean isFolia() {
@@ -47,17 +55,14 @@ public final class SchedulerUtil {
   }
 
   public static void cancelPluginTasks(Plugin plugin) {
-    if (tasks.containsKey(plugin)) {
-      for (ScheduledTask task : tasks.get(plugin)) {
+    final List<ScheduledTask> tasks = TASKS.get(plugin);
+    if (tasks != null) {
+      for (ScheduledTask task : tasks) {
         task.cancel();
       }
 
-      tasks.remove(plugin);
+      TASKS.remove(plugin);
     }
-  }
-
-  public static void cancelAllTasks() {
-    sch.cancelAllTasks();
   }
 
   public static CompletableFuture<Void> runNextTick(Runnable task) {
@@ -120,8 +125,7 @@ public final class SchedulerUtil {
     return sch.runAtLocation(loc, t -> task.run());
   }
 
-  public static ScheduledTask runAtLocationLater(Plugin plugin, Location loc, Runnable task,
-      final long delayTicks) {
+  public static ScheduledTask runAtLocationLater(Plugin plugin, Location loc, Runnable task, long delayTicks) {
     return task(plugin, sch.runAtLocationLater(loc, task, delayTicks));
   }
 
@@ -136,8 +140,8 @@ public final class SchedulerUtil {
       try {
         task.run();
         future.complete(null);
-      } catch (Throwable t) {
-        future.completeExceptionally(t);
+      } catch (Exception ex) {
+        future.completeExceptionally(ex);
       }
     }, 1L);
 
@@ -171,8 +175,8 @@ public final class SchedulerUtil {
       try {
         task.run();
         future.complete(null);
-      } catch (Throwable t) {
-        future.completeExceptionally(t);
+      } catch (Exception ex) {
+        future.completeExceptionally(ex);
       }
     }, 1L);
 
@@ -196,13 +200,14 @@ public final class SchedulerUtil {
   }
 
   private static ScheduledTask task(Plugin plugin, WrappedTask task) {
-    final ScheduledTask scheduled = ScheduledTask.from(task);
+    final ScheduledTask scheduled = new ScheduledTask(task, plugin);
 
-    if (!tasks.containsKey(plugin)) {
-      tasks.put(plugin, new ArrayList<>());
+    final List<ScheduledTask> tasks = TASKS.get(plugin);
+    if (tasks != null) {
+      tasks.add(scheduled);
+    } else {
+      TASKS.put(plugin, new ArrayList<>(List.of(scheduled)));
     }
-
-    tasks.get(plugin).add(scheduled);
 
     return scheduled;
   }

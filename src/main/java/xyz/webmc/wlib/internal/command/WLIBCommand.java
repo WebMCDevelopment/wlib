@@ -19,6 +19,8 @@ import xyz.webmc.wlib.api.structure.AbstractBaseStructure;
 import xyz.webmc.wlib.api.util.CommandUtil;
 import xyz.webmc.wlib.api.util.SchedulerUtil;
 import xyz.webmc.wlib.api.util.TextUtil;
+import xyz.webmc.wlib.internal.iface.WInternal;
+import xyz.webmc.wlib.internal.util.InternalUtil;
 import xyz.webmc.wlib.internal.util.TestStructureUtil;
 
 import java.util.ArrayList;
@@ -31,13 +33,15 @@ import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+@WInternal
 public final class WLIBCommand extends WCommand {
   public WLIBCommand() {
     super("wlib");
+    InternalUtil.checkInternalCaller();
   }
 
   @Override
-  public boolean run(CommandSender sender, String label, String[] args) {
+  protected boolean run(CommandSender sender, String label, String[] args) {
     boolean bool1 = true;
     boolean bool2 = false;
     boolean bool3 = false;
@@ -127,7 +131,7 @@ public final class WLIBCommand extends WCommand {
   }
 
   @Override
-  public List<String> tab(CommandSender sender, String label, String[] args) {
+  protected List<String> tab(CommandSender sender, String label, String[] args) {
     if (args.length > 0) {
       final List<String> ret = new ArrayList<>();
 

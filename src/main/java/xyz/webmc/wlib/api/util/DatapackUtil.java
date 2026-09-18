@@ -14,13 +14,13 @@
 package xyz.webmc.wlib.api.util;
 
 import xyz.webmc.wlib.api.plugin.WPlugin;
+import xyz.webmc.wlib.internal.util.InternalUtil;
 import xyz.webmc.wlib.internal.util.ModernServerUtil;
 
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import dev.colbster937.reflect.MirrorSafe;
@@ -37,6 +37,7 @@ public final class DatapackUtil implements ModernServerUtil {
   private static Path DATAPACK_FOLDER;
 
   public static void _init(Plugin plugin) {
+    InternalUtil.checkInternalCaller();
     final Class<?> clazz = MirrorSafe.getClass("org.bukkit.event.server.ServerLoadEvent");
     if (clazz != null) {
       EventUtil.registerEvent(
@@ -65,7 +66,9 @@ public final class DatapackUtil implements ModernServerUtil {
     if (DATAPACK_FOLDER != null) {
       __initPlugin(plugin);
     } else {
-      INIT_QUEUE.add(plugin);
+      synchronized (INIT_QUEUE) {
+        INIT_QUEUE.add(plugin);
+      }
     }
   }
 
@@ -97,11 +100,15 @@ public final class DatapackUtil implements ModernServerUtil {
   }
 
   private static void processQueue() {
-    final Iterator<Plugin> it = INIT_QUEUE.iterator();
-    while (it.hasNext()) {
-      final Plugin plugin = it.next();
+    final List<Plugin> queue;
+
+    synchronized (INIT_QUEUE) {
+      queue = new ArrayList<>(INIT_QUEUE);
+      INIT_QUEUE.clear();
+    }
+
+    for (Plugin plugin : queue) {
       _initPlugin(plugin);
-      it.remove();
     }
   }
 
@@ -133,7 +140,6 @@ public final class DatapackUtil implements ModernServerUtil {
 
         enable(name);
       }
-    } catch (Throwable t) {
-    }
+    } catch (Exception ex) {}
   }
 }

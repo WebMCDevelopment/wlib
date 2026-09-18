@@ -13,13 +13,13 @@
 
 package xyz.webmc.wlib.api.structure.block;
 
-import xyz.webmc.wlib.api.WLIB;
+import xyz.webmc.wlib.internal.compat.api.structure.block.AbstractBlockBaseCompat;
 
 import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-public abstract sealed class AbstractBlockBase permits BlockRelative {
+public abstract sealed class AbstractBlockBase extends AbstractBlockBaseCompat permits BlockRelative {
   protected final XMaterial mat;
   protected final String dataModern;
   protected final byte dataLegacy;
@@ -42,12 +42,6 @@ public abstract sealed class AbstractBlockBase permits BlockRelative {
 
   public final XMaterial getXMaterial() {
     return this.mat;
-  }
-
-  @Deprecated(forRemoval = true)
-  public final XMaterial getMaterial() {
-    WLIB.warnDeprecatedUsage();
-    return this.getXMaterial();
   }
 
   public final Material getBukkitMaterial() {

@@ -1,0 +1,21 @@
+/*
+ * Copyright (C) 2026 Colbster937
+ *
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * See the LICENSE file for details.
+ */
+
+package xyz.webmc.wlib.api.interfaces;
+
+import xyz.webmc.wlib.internal.compat.WCompat;
+
+@Deprecated(forRemoval = true)
+@WCompat(xyz.webmc.wlib.api.misc.iface.SerializableDeserializable.class)
+public interface SerializableDeserializable<T> extends xyz.webmc.wlib.api.misc.iface.SerializableDeserializable<T> {
+}

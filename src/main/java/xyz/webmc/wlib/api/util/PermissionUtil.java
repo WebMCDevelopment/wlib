@@ -13,6 +13,7 @@
 
 package xyz.webmc.wlib.api.util;
 
+import xyz.webmc.wlib.internal.util.InternalUtil;
 import xyz.webmc.wlib.internal.util.LPUtil;
 import xyz.webmc.wlib.internal.util.RequiredPluginUtil;
 
@@ -28,6 +29,7 @@ public final class PermissionUtil implements RequiredPluginUtil {
   private static boolean bool = false;
 
   public static void _init() {
+    InternalUtil.checkInternalCaller();
     bool = checkPlugins("LuckPerms");
   }
 
