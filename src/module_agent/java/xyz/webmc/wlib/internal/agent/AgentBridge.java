@@ -14,6 +14,7 @@
 package xyz.webmc.wlib.internal.agent;
 
 import xyz.webmc.wlib.api.WLIB;
+import xyz.webmc.wlib.internal.util.InternalAgentUtil;
 
 import java.lang.instrument.ClassFileTransformer;
 import java.nio.file.Path;
@@ -31,6 +32,7 @@ import dev.colbster937.reflect.MirrorSafe;
 
 import static xyz.webmc.wlib.internal.agent.AgentMain.inst;
 
+@SuppressWarnings({ "unused" })
 public final class AgentBridge {
   private static final List<Runnable> CALLBACKS = Collections.synchronizedList(new ArrayList<>());
   private static Function<String, Class<?>> classGetter;
@@ -112,12 +114,12 @@ public final class AgentBridge {
     final Set<Class<?>> transform = new HashSet<>();
 
     for (String clazz : classes) {
-      matchers.add(invokePluginBridge("getClassMatcher", clazz));
+      matchers.add(InternalAgentUtil.getClassMatcher(clazz));
     }
 
     for (Class<?> clazz : inst.getAllLoadedClasses()) {
       if (clazz != null && inst.isModifiableClass(clazz)) {
-        final Path path = invokePluginBridge("getPackageFSPath", clazz.getName());
+        final Path path = InternalAgentUtil.getPackageFSPath(clazz.getName());
         for (PathMatcher matcher : matchers) {
           if (matcher.matches(path)) {
             transform.add(clazz);

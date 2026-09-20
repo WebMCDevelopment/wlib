@@ -15,7 +15,7 @@ package xyz.webmc.wlib.internal.agent;
 
 import java.util.logging.Level;
 
-public final class AgentLogger {
+final class AgentLogger {
   static void info(String str, Object... params) {
     AgentBridge.log(Level.INFO, str, params);
   }
