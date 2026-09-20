@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Level;
 
 import net.sandrohc.schematic4j.SchematicLoader;
 import net.sandrohc.schematic4j.exception.ParsingException;
@@ -37,9 +36,9 @@ public final class SchemUtil implements ModernServerUtil {
     return readSchematic(new FileInputStream(file));
   }
 
-  public static void warnSchemUnsupportedServerVersion() {
+  private static void warnSchemUnsupportedServerVersion() {
     if (!WLIB.getIsModernServer()) {
-      WLIB.getLogger().log(Level.WARNING, "Schematic loading is unsupported on server version {0}.", Bukkit.getVersion());
+      LoggerUtil.warn("Schematic loading is unsupported on server version {0}.", Bukkit.getVersion());
     }
   }
 }

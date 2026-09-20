@@ -13,8 +13,6 @@
 
 package xyz.webmc.wlib.internal.agent;
 
-import xyz.webmc.wlib.api.WLIB;
-
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.Instrumentation;
 import java.util.Collections;
@@ -67,6 +65,5 @@ public final class AgentMain {
   }
 
   private static void ready() {
-    AgentBridge.retransformClasses(AgentBridge.getLoaderClass(WLIB.class));
   }
 }

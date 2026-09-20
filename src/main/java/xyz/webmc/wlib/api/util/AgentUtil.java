@@ -16,6 +16,7 @@ package xyz.webmc.wlib.api.util;
 import xyz.webmc.wlib.internal.util.InternalAgentUtil;
 
 import java.lang.instrument.ClassFileTransformer;
+import java.util.Collection;
 
 public final class AgentUtil {
   public static void onReady(Runnable callback) {
@@ -38,7 +39,27 @@ public final class AgentUtil {
     InternalAgentUtil.retransformClasses(classes);
   }
 
+  public static void retransformClasses(Collection<Class<?>> classes) {
+    retransformClasses(classes.toArray(new Class<?>[0]));
+  }
+
   public static void retransformAllClasses(Class<?>... classes) {
     InternalAgentUtil.retransformAllClasses(classes);
+  }
+
+  public static void retransformAllClasses(Collection<Class<?>> classes) {
+    retransformAllClasses(classes.toArray(new Class<?>[0]));
+  }
+
+  public static void retransformAllClasses(String... classes) {
+    InternalAgentUtil.retransformAllClasses(classes);
+  }
+
+  public static void retransformAllClassesStr(Collection<String> classes) {
+    retransformAllClasses(classes.toArray(new String[0]));
+  }
+
+  public static void retransformAllClasses() {
+    InternalAgentUtil.retransformAllClasses();
   }
 }

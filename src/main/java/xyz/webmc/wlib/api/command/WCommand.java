@@ -15,6 +15,7 @@ package xyz.webmc.wlib.api.command;
 
 import xyz.webmc.wlib.api.WLIB;
 import xyz.webmc.wlib.api.util.CommandUtil;
+import xyz.webmc.wlib.api.util.LoggerUtil;
 import xyz.webmc.wlib.api.util.TextUtil;
 
 import java.util.List;
@@ -95,7 +96,7 @@ public abstract class WCommand extends Command {
   private void showStack(CommandSender sender, Throwable t) {
     final String stack = ExceptionStacker.getFullStackString(t);
 
-    WLIB.getLogger().severe(stack);
+    LoggerUtil.error(stack);
 
     if (sender instanceof Player) {
       final String[] lines = TextUtil.serializeExceptionStackStringMultiline(stack);

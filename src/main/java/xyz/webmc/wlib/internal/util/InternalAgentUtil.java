@@ -15,15 +15,18 @@ package xyz.webmc.wlib.internal.util;
 
 import xyz.webmc.wlib.api.agent.transformer.WClassTransformer;
 import xyz.webmc.wlib.api.plugin.WPlugin;
+import xyz.webmc.wlib.api.util.LoggerUtil;
 import xyz.webmc.wlib.internal.agent.AgentBootstrap;
 import xyz.webmc.wlib.internal.agent.AgentBridge;
 import xyz.webmc.wlib.internal.iface.WInternal;
 
 import java.lang.instrument.ClassFileTransformer;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.CompletionException;
 import java.util.function.Function;
 
@@ -67,22 +70,13 @@ public final class InternalAgentUtil {
         initBridge();
       }
     } catch (Exception ex) {
-      plugin.getLogger().severe(ExceptionStacker.getFullStackString(ex));
+      LoggerUtil.error(ExceptionStacker.getFullStackString(ex));
     }
   }
 
   public static void _shutdown() {
     InternalUtil.checkInternalCaller();
     invokeBridge("_shutdown");
-  }
-
-  public static void _ready() {
-    ready = true;
-    synchronized (CALLBACKS) {
-      for (Runnable callback : CALLBACKS) {
-        callback.run();
-      }
-    }
   }
 
   public static void onReady(Runnable callback) {
@@ -106,10 +100,7 @@ public final class InternalAgentUtil {
   public static void addClassTransformer(ClassFileTransformer transformer) {
     invokeBridge("addClassTransformer", transformer);
     if (transformer instanceof WClassTransformer wtransformer) {
-      final Set<Class<?>> classes = wtransformer.getTransformClasses();
-      if (!classes.isEmpty()) {
-        retransformClasses(classes.toArray(new Class<?>[0]));
-      }
+      onReady(wtransformer::_ready);
     }
   }
 
@@ -121,8 +112,29 @@ public final class InternalAgentUtil {
     invokeBridge("retransformAllClasses", (Object) classes);
   }
 
+  public static void retransformAllClasses(String... classes) {
+    invokeBridge("retransformAllClasses", (Object) classes);
+  }
+
+  public static void retransformAllClasses() {
+    invokeBridge("retransformAllClasses");
+  }
+
+  public static String getPackageFS(String pckg) {
+    return pckg.replaceAll("\\.", "/").trim();
+  }
+
+  public static Path getPackageFSPath(String pckg) {
+    return Path.of(getPackageFS(pckg));
+  }
+
+  public static PathMatcher getClassMatcher(String glob) {
+    return FileSystems.getDefault().getPathMatcher("glob:" + getPackageFS(glob));
+  }
+
   private static void initBridge() throws Exception {
     setBridge("ClassGetter", (Function<String, Class<?>>) InternalAgentUtil::getLoaderClass);
+    setBridge("ReadyCallback", (Runnable) InternalAgentUtil::ready);
     setBridge("PluginBridgeClass", InternalAgentUtil.class);
     setBridge("Logger", plugin.getLogger());
   }
@@ -133,6 +145,15 @@ public final class InternalAgentUtil {
 
   private static <T> T invokeBridge(String method, Object... params) {
     return MirrorSafe.invokeMethod(bridge, method, params);
+  }
+
+  private static void ready() {
+    ready = true;
+    synchronized (CALLBACKS) {
+      for (Runnable callback : CALLBACKS) {
+        callback.run();
+      }
+    }
   }
 
   private static Class<?> getLoaderClass(String name) {

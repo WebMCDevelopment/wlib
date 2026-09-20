@@ -16,6 +16,8 @@ package xyz.webmc.wlib.internal.agent;
 import xyz.webmc.wlib.api.WLIB;
 
 import java.lang.instrument.ClassFileTransformer;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -32,6 +34,7 @@ import static xyz.webmc.wlib.internal.agent.AgentMain.inst;
 public final class AgentBridge {
   private static final List<Runnable> CALLBACKS = Collections.synchronizedList(new ArrayList<>());
   private static Function<String, Class<?>> classGetter;
+  private static Runnable readyCallback;
   private static Class<?> pluginBridge;
   private static Logger logger;
 
@@ -42,6 +45,7 @@ public final class AgentBridge {
     CALLBACKS.clear();
 
     classGetter = null;
+    readyCallback = null;
     pluginBridge = null;
     logger = null;
 
@@ -53,6 +57,11 @@ public final class AgentBridge {
 
   public static void _setClassGetter(Function<String, Class<?>> _classGetter) {
     classGetter = _classGetter;
+    checkReady();
+  }
+
+  public static void _setReadyCallback(Runnable _readyCallback) {
+    readyCallback = _readyCallback;
     checkReady();
   }
 
@@ -96,6 +105,33 @@ public final class AgentBridge {
     }
 
     retransformClasses(transform.toArray(new Class<?>[0]));
+  }
+
+  public static void retransformAllClasses(String... classes) {
+    final Set<PathMatcher> matchers = new HashSet<>();
+    final Set<Class<?>> transform = new HashSet<>();
+
+    for (String clazz : classes) {
+      matchers.add(invokePluginBridge("getClassMatcher", clazz));
+    }
+
+    for (Class<?> clazz : inst.getAllLoadedClasses()) {
+      if (clazz != null && inst.isModifiableClass(clazz)) {
+        final Path path = invokePluginBridge("getPackageFSPath", clazz.getName());
+        for (PathMatcher matcher : matchers) {
+          if (matcher.matches(path)) {
+            transform.add(clazz);
+            break;
+          }
+        }
+      }
+    }
+
+    retransformClasses(transform.toArray(new Class<?>[0]));
+  }
+
+  public static void retransformAllClasses() {
+    retransformAllClasses("**");
   }
 
   static void retransformClasses(boolean add, Class<?>... classes) {
@@ -155,11 +191,15 @@ public final class AgentBridge {
     }
   }
 
+  private static <T> T invokePluginBridge(String method, Object... params) {
+    return invoke(pluginBridge, method, params);
+  }
+
   private static void checkReady() {
     final boolean ready = !checkNull(classGetter, pluginBridge, logger, wlib, pckg);
 
     if (ready) {
-      MirrorSafe.invokeMethod(pluginBridge, "_ready");
+      readyCallback.run();
     }
 
     synchronized (CALLBACKS) {

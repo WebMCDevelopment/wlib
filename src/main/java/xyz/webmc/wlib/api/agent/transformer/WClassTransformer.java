@@ -13,27 +13,35 @@
 
 package xyz.webmc.wlib.api.agent.transformer;
 
+import xyz.webmc.wlib.api.util.AgentUtil;
+import xyz.webmc.wlib.internal.compat.api.agent.transformer.WClassTransformerCompat;
+import xyz.webmc.wlib.internal.util.InternalAgentUtil;
+
 import java.lang.instrument.ClassFileTransformer;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.security.ProtectionDomain;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class WClassTransformer implements ClassFileTransformer {
+@SuppressWarnings({ "deprecation" })
+public abstract class WClassTransformer extends WClassTransformerCompat implements ClassFileTransformer {
   protected abstract Set<String> getTransformList();
   protected abstract byte[] transform(ClassLoader loader, String name, Class<?> clazz, byte[] bytes) throws Exception;
 
-  private final Set<Class<?>> classes = new HashSet<>();
+  private final Set<String> transformList = this.getTransformList();
   private final Set<PathMatcher> matchers = this.getTransformMatchers();
 
+  public final void _ready() {
+    this.ready();
+    AgentUtil.retransformAllClassesStr(this.transformList);
+  }
+
   @Override
-  public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) {
+  public final byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) {
     try {
       if (className != null) {
-        final Path path = Path.of(className);
+        final Path path = InternalAgentUtil.getPackageFSPath(className);
         for (PathMatcher matcher : this.matchers) {
           if (matcher.matches(path)) {
             return this.transform(loader, className, classBeingRedefined, classfileBuffer);
@@ -47,8 +55,7 @@ public abstract class WClassTransformer implements ClassFileTransformer {
     return null;
   }
 
-  public final Set<Class<?>> getTransformClasses() {
-    return Set.copyOf(this.classes);
+  protected void ready() {
   }
 
   protected Set<String> transformList(Object... args) {
@@ -60,28 +67,27 @@ public abstract class WClassTransformer implements ClassFileTransformer {
       if (obj instanceof String str) {
         add = str;
       } else if (obj instanceof Class clazz) {
-        add = getClassPath(clazz);
+        add = clazz.getName();
         this.classes.add(clazz);
       } else {
         add = String.valueOf(obj);
       }
 
-      ret.add(add);
+      ret.add(getPackagePath(add));
     }
 
     return Set.copyOf(ret);
   }
 
-  private static String getClassPath(Class<?> clazz) {
-    return clazz.getName().replaceAll("\\.", "/").trim();
+  protected static String getPackagePath(String pckg) {
+    return InternalAgentUtil.getPackageFS(pckg);
   }
 
   private Set<PathMatcher> getTransformMatchers() {
     final Set<PathMatcher> ret = new HashSet<>();
-    final FileSystem fs = FileSystems.getDefault();
 
-    for (String transform : this.getTransformList()) {
-      ret.add(fs.getPathMatcher("glob:" + transform));
+    for (String transform : this.transformList) {
+      ret.add(InternalAgentUtil.getClassMatcher(transform));
     }
 
     return Set.copyOf(ret);

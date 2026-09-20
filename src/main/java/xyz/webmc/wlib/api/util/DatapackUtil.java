@@ -123,12 +123,13 @@ public final class DatapackUtil implements ModernServerUtil {
       }
     }
 
+    final String name = getPluginDatapackString(plugin);
+    final Path out = DATAPACK_FOLDER.resolve(name).toAbsolutePath();
+    final boolean exists = Files.exists(out);
+
     try (InputStream is = plugin.getResource(resource)) {
       if (is != null) {
         final byte[] pack = is.readAllBytes();
-        final String name = getPluginDatapackString(plugin);
-        final Path out = DATAPACK_FOLDER.resolve(name).toAbsolutePath();
-        final boolean exists = Files.exists(out);
 
         if (!exists || HashUtil.hash64(pack) != HashUtil.hash64(Files.readAllBytes(out))) {
           if (exists) {
@@ -139,6 +140,9 @@ public final class DatapackUtil implements ModernServerUtil {
         }
 
         enable(name);
+      } else if (exists) {
+        disable(name);
+        Files.delete(out);
       }
     } catch (Exception ex) {}
   }

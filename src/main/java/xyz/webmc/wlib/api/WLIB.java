@@ -204,7 +204,7 @@ public final class WLIB extends WLIBCompat {
         sb.append("!");
 
         final Plugin plugin = PluginUtil.getProvidingPlugin(caller.getDeclaringClass());
-        Logger log = logger;
+        final Logger log;
 
         if (plugin != null) {
           log = plugin.getLogger();
@@ -223,6 +223,8 @@ public final class WLIB extends WLIBCompat {
           }
 
           sb.append(" to update their plugin!");
+        } else {
+          log = logger;
         }
 
         for (int i = 2; i < frames.length; i++) {

@@ -89,7 +89,7 @@ public final class WLIBBukkitPlugin extends WPlugin implements Listener {
       }, this);
     }
 
-    PermissionUtil.setGroupPermission("default", "wlib.alerts.muted.*", false);
+    // PermissionUtil.setGroupPermission("default", "wlib.alerts.muted.*", false);
   }
 
   @Override
