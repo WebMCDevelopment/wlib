@@ -18,6 +18,7 @@ import xyz.webmc.wlib.api.util.EventUtil;
 import xyz.webmc.wlib.api.util.PluginUtil;
 import xyz.webmc.wlib.api.util.SchedulerUtil;
 import xyz.webmc.wlib.internal.WLIBBukkitPlugin;
+import xyz.webmc.wlib.internal.agent.transformer.MixinTransformer;
 
 import java.io.File;
 
@@ -35,6 +36,8 @@ public abstract class WPlugin extends JavaPlugin {
     try {
       this.meta = this.getWPluginMeta();
       this.load();
+
+      MixinTransformer._addMixins(this.meta.mixins());
     } catch (Throwable t) {
       this.handleThrowable("load", t);
     }

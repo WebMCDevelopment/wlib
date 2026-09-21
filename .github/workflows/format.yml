@@ -1,7 +1,10 @@
 on:
   push:
+    branches:
+      - main
     paths:
       - 'src/**'
+      - '.github/workflows/format.yml'
   workflow_dispatch:
 
 permissions:

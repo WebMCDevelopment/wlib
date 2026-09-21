@@ -16,6 +16,7 @@ package xyz.webmc.wlib.internal;
 import xyz.webmc.wlib.api.WLIB;
 import xyz.webmc.wlib.api.plugin.WPlugin;
 import xyz.webmc.wlib.api.plugin.WPluginMeta;
+import xyz.webmc.wlib.api.util.AgentUtil;
 import xyz.webmc.wlib.api.util.CommandUtil;
 import xyz.webmc.wlib.api.util.DatapackUtil;
 import xyz.webmc.wlib.api.util.EventUtil;
@@ -23,6 +24,7 @@ import xyz.webmc.wlib.api.util.PermissionUtil;
 import xyz.webmc.wlib.api.util.PlaceholderUtil;
 import xyz.webmc.wlib.api.util.SchedulerUtil;
 import xyz.webmc.wlib.api.util.TextUtil;
+import xyz.webmc.wlib.internal.agent.transformer.MixinTransformer;
 import xyz.webmc.wlib.internal.command.WLIBBlankCommand;
 import xyz.webmc.wlib.internal.command.WLIBCommand;
 import xyz.webmc.wlib.internal.iface.WInternal;
@@ -54,6 +56,13 @@ import org.bukkit.event.world.WorldInitEvent;
 @WPluginMeta(shutdownOnFailure = true)
 public final class WLIBBukkitPlugin extends WPlugin implements Listener {
   private static final Set<Class<?>> DISABLE_LOGGERS = Set.of(SchematicLoader.class);
+
+  @Override
+  protected void load() throws Exception {
+    AgentUtil.onReady(() -> {
+      AgentUtil.addClassTransformer(new MixinTransformer());
+    });
+  }
 
   @Override
   protected void enable() throws Exception {

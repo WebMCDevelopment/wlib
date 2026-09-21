@@ -32,9 +32,21 @@ public abstract class WClassTransformer extends WClassTransformerCompat implemen
   private final Set<String> transformList = this.getTransformList();
   private final Set<PathMatcher> matchers = this.getTransformMatchers();
 
+  private final boolean autoTransform;
+
+  protected WClassTransformer(boolean autoTransform) {
+    this.autoTransform = autoTransform;
+  }
+
+  protected WClassTransformer() {
+    this(true);
+  }
+
   public final void _ready() {
     this.ready();
-    AgentUtil.retransformAllClassesStr(this.transformList);
+    if (this.autoTransform) {
+      AgentUtil.retransformAllClassesStr(this.transformList);
+    }
   }
 
   @Override
