@@ -13,12 +13,12 @@
 
 package xyz.webmc.wlib.internal.util;
 
+import xyz.webmc.wlib.devkit.annotation.InternalClass;
 import xyz.webmc.wlib.internal.compat.WCompat;
-import xyz.webmc.wlib.internal.iface.WInternal;
 
 import dev.colbster937.reflect.MirrorSafe;
 
-@WInternal
+@InternalClass
 public final class CompatUtil {
   public static WCompat getWCompat(Class<?> clazz) {
     return clazz.getAnnotation(WCompat.class);

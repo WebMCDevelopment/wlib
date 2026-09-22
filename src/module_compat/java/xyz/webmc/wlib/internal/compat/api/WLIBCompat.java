@@ -20,7 +20,12 @@ import java.util.List;
 
 import org.bukkit.plugin.Plugin;
 
-import static xyz.webmc.wlib.api.WLIB.*;
+import static xyz.webmc.wlib.api.WLIB.alert;
+import static xyz.webmc.wlib.api.WLIB.getWLIBPluginList;
+import static xyz.webmc.wlib.api.WLIB.getWLIBPluginNameList;
+import static xyz.webmc.wlib.api.WLIB.initPlugin;
+import static xyz.webmc.wlib.api.WLIB.requireWLIBVersion;
+import static xyz.webmc.wlib.api.WLIB.warnDeprecatedUsage;
 
 @WCompat(WLIB.class)
 public abstract class WLIBCompat {

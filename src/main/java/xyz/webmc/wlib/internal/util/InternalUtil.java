@@ -15,11 +15,11 @@ package xyz.webmc.wlib.internal.util;
 
 import xyz.webmc.wlib.api.WLIB;
 import xyz.webmc.wlib.api.plugin.WPlugin;
-import xyz.webmc.wlib.internal.iface.WInternal;
+import xyz.webmc.wlib.devkit.annotation.InternalClass;
 
 import java.lang.StackWalker.StackFrame;
 
-@WInternal
+@InternalClass
 public final class InternalUtil {
   private static final StackWalker STACK_WALKER = WLIB.getStackWalker();
   private static WPlugin plugin;

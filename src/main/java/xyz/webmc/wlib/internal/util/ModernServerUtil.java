@@ -15,9 +15,9 @@ package xyz.webmc.wlib.internal.util;
 
 import xyz.webmc.wlib.api.WLIB;
 
-import xyz.webmc.wlib.internal.iface.WInternal;
+import xyz.webmc.wlib.devkit.annotation.InternalClass;
 
-@WInternal
+@InternalClass
 public interface ModernServerUtil {
   static void requireModernServer() throws IllegalStateException {
     if (!WLIB.getIsModernServer()) {

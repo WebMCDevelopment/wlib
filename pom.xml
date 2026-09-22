@@ -157,6 +157,10 @@
       </resource>
       <resource>
         <filtering>true</filtering>
+        <directory>src/module_devkit/resources</directory>
+      </resource>
+      <resource>
+        <filtering>true</filtering>
         <directory>src/build/resources</directory>
         <targetPath>${project.build.directory}/resources</targetPath>
       </resource>
@@ -266,6 +270,7 @@
               <sources>
                 <source>src/module_agent/java</source>
                 <source>src/module_compat/java</source>
+                <source>src/module_devkit/java</source>
               </sources>
             </configuration>
           </execution>

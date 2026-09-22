@@ -13,8 +13,11 @@
 
 package xyz.webmc.wlib.internal.agent;
 
+import xyz.webmc.wlib.devkit.annotation.InternalClass;
+
 import java.util.logging.Level;
 
+@InternalClass
 final class AgentLogger {
   static void info(String str, Object... params) {
     AgentBridge.log(Level.INFO, str, params);

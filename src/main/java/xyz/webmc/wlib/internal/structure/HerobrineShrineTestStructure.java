@@ -16,11 +16,11 @@ package xyz.webmc.wlib.internal.structure;
 import xyz.webmc.wlib.api.structure.AbstractBaseStructure;
 import xyz.webmc.wlib.api.structure.block.BlockRelative;
 import xyz.webmc.wlib.api.structure.iface.TestStructure;
-import xyz.webmc.wlib.internal.iface.WInternal;
+import xyz.webmc.wlib.devkit.annotation.InternalClass;
 
 import com.cryptomorin.xseries.XMaterial;
 
-@WInternal
+@InternalClass
 public final class HerobrineShrineTestStructure extends AbstractBaseStructure implements TestStructure {
   public HerobrineShrineTestStructure() {
     super("herobrine_shrine");

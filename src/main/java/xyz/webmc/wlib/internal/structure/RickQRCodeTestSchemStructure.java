@@ -15,13 +15,13 @@ package xyz.webmc.wlib.internal.structure;
 
 import xyz.webmc.wlib.api.structure.AbstractBaseSchemStructure;
 import xyz.webmc.wlib.api.structure.iface.TestStructure;
-import xyz.webmc.wlib.internal.iface.WInternal;
+import xyz.webmc.wlib.devkit.annotation.InternalClass;
 
 import java.io.IOException;
 
 import net.sandrohc.schematic4j.exception.ParsingException;
 
-@WInternal
+@InternalClass
 public final class RickQRCodeTestSchemStructure extends AbstractBaseSchemStructure implements TestStructure {
   public RickQRCodeTestSchemStructure() throws IOException, ParsingException {
     super("rick_qr", "/schematics/rick.schem");

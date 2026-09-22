@@ -23,9 +23,10 @@ import xyz.webmc.wlib.api.util.PermissionUtil;
 import xyz.webmc.wlib.api.util.PlaceholderUtil;
 import xyz.webmc.wlib.api.util.SchedulerUtil;
 import xyz.webmc.wlib.api.util.TextUtil;
+import xyz.webmc.wlib.devkit.annotation.InternalClass;
+import xyz.webmc.wlib.devkit.annotation.PluginMeta;
 import xyz.webmc.wlib.internal.command.WLIBBlankCommand;
 import xyz.webmc.wlib.internal.command.WLIBCommand;
-import xyz.webmc.wlib.internal.iface.WInternal;
 import xyz.webmc.wlib.internal.util.InternalAgentUtil;
 import xyz.webmc.wlib.internal.util.InternalUtil;
 import xyz.webmc.wlib.internal.util.MetricsUtil;
@@ -50,8 +51,17 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.event.world.WorldInitEvent;
 
-@WInternal
+@InternalClass
 @WPluginMeta(shutdownOnFailure = true)
+@PluginMeta(
+  name = "${plugin.name}",
+  version = "${plugin.vers}",
+  authors = "${plugin.athr}",
+  website = "${plugin.repo}",
+  load = "STARTUP",
+  softdepend = "${plugin.deps}",
+  foliaSupported = true
+)
 public final class WLIBBukkitPlugin extends WPlugin implements Listener {
   private static final Set<Class<?>> DISABLE_LOGGERS = Set.of(SchematicLoader.class);
 

@@ -13,8 +13,11 @@
 
 package xyz.webmc.wlib.internal.agent;
 
+import xyz.webmc.wlib.devkit.annotation.InternalClass;
+
 import com.sun.tools.attach.VirtualMachine;
 
+@InternalClass
 public final class AgentBootstrap {
   public static void main(String[] args) {
     int code = 0;

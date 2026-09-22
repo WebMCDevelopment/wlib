@@ -14,6 +14,7 @@
 package xyz.webmc.wlib.internal.agent;
 
 import xyz.webmc.wlib.api.WLIB;
+import xyz.webmc.wlib.devkit.annotation.InternalClass;
 import xyz.webmc.wlib.internal.util.InternalAgentUtil;
 
 import java.lang.instrument.ClassFileTransformer;
@@ -32,6 +33,7 @@ import dev.colbster937.reflect.MirrorSafe;
 
 import static xyz.webmc.wlib.internal.agent.AgentMain.inst;
 
+@InternalClass
 @SuppressWarnings({ "unused" })
 public final class AgentBridge {
   private static final List<Runnable> CALLBACKS = Collections.synchronizedList(new ArrayList<>());
@@ -141,7 +143,7 @@ public final class AgentBridge {
       try {
         inst.retransformClasses(classes);
         if (add) {
-          AgentMain._retransformClasses(classes);
+          AgentMain._addRetransformedClasses(classes);
         }
       } catch (Exception ex) {}
     }

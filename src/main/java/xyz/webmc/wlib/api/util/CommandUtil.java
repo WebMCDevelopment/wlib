@@ -72,6 +72,7 @@ public final class CommandUtil {
     final List<Command> commands = new ArrayList<>();
 
     cmd = cmd.trim();
+    ALIASES.put(cmd, aliases);
 
     for (String alias : aliases) {
       commands.add(new AliasCommand(cmd, alias));
@@ -88,8 +89,13 @@ public final class CommandUtil {
     final String[] aliases = ALIASES.get(cmd.trim());
     if (aliases != null) {
       for (String alias : aliases) {
-        unregisterCommand(alias);
+        final Command command = getKnownCommands().remove(alias);
+        if (command != null) {
+          command.unregister(getCommandMap());
+        }
       }
+
+      syncCommands();
     }
   }
 

@@ -15,7 +15,7 @@ package xyz.webmc.wlib.internal.command;
 
 import xyz.webmc.wlib.api.command.WCommand;
 import xyz.webmc.wlib.api.util.CommandUtil;
-import xyz.webmc.wlib.internal.iface.WInternal;
+import xyz.webmc.wlib.devkit.annotation.InternalClass;
 import xyz.webmc.wlib.internal.util.InternalUtil;
 
 import java.util.ArrayDeque;
@@ -25,7 +25,7 @@ import java.util.List;
 import dev.colbster937.reflect.MirrorSafe;
 import org.bukkit.command.CommandSender;
 
-@WInternal
+@InternalClass
 public final class AliasCommand extends WCommand {
   private static final ThreadLocal<Deque<AliasCommand>> CURRENT = ThreadLocal.withInitial(ArrayDeque::new);
   private final String cmd;

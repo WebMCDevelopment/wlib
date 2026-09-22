@@ -11,14 +11,13 @@
  * See the LICENSE file for details.
  */
 
-package xyz.webmc.wlib.internal.iface;
+package xyz.webmc.wlib.devkit.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@WInternal
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface WInternal {}
+@Retention(RetentionPolicy.SOURCE)
+public @interface InternalClass {}

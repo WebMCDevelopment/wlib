@@ -13,13 +13,13 @@
 
 package xyz.webmc.wlib.internal.util;
 
-import xyz.webmc.wlib.internal.iface.WInternal;
+import xyz.webmc.wlib.devkit.annotation.InternalClass;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-@WInternal
+@InternalClass
 public final class BuildUtil {
   private static final Properties PROPERTIES = new Properties();
 

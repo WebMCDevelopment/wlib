@@ -19,7 +19,7 @@ import xyz.webmc.wlib.api.structure.AbstractBaseStructure;
 import xyz.webmc.wlib.api.util.CommandUtil;
 import xyz.webmc.wlib.api.util.SchedulerUtil;
 import xyz.webmc.wlib.api.util.TextUtil;
-import xyz.webmc.wlib.internal.iface.WInternal;
+import xyz.webmc.wlib.devkit.annotation.InternalClass;
 import xyz.webmc.wlib.internal.util.InternalUtil;
 import xyz.webmc.wlib.internal.util.TestStructureUtil;
 
@@ -33,7 +33,7 @@ import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@WInternal
+@InternalClass
 public final class WLIBCommand extends WCommand {
   public WLIBCommand() {
     super("wlib");

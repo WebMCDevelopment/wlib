@@ -16,9 +16,9 @@ package xyz.webmc.wlib.internal.util;
 import xyz.webmc.wlib.api.agent.transformer.WClassTransformer;
 import xyz.webmc.wlib.api.plugin.WPlugin;
 import xyz.webmc.wlib.api.util.LoggerUtil;
+import xyz.webmc.wlib.devkit.annotation.InternalClass;
 import xyz.webmc.wlib.internal.agent.AgentBootstrap;
 import xyz.webmc.wlib.internal.agent.AgentBridge;
-import xyz.webmc.wlib.internal.iface.WInternal;
 
 import java.lang.instrument.ClassFileTransformer;
 import java.nio.file.FileSystems;
@@ -33,7 +33,7 @@ import java.util.function.Function;
 import dev.colbster937.reflect.MirrorSafe;
 import dev.colbster937.util.ExceptionStacker;
 
-@WInternal
+@InternalClass
 public final class InternalAgentUtil {
   private static final List<Runnable> CALLBACKS = Collections.synchronizedList(new ArrayList<>());
   private static WPlugin plugin;

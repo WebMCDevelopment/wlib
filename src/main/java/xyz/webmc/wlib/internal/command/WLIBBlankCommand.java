@@ -14,14 +14,14 @@
 package xyz.webmc.wlib.internal.command;
 
 import xyz.webmc.wlib.api.command.WCommand;
-import xyz.webmc.wlib.internal.iface.WInternal;
+import xyz.webmc.wlib.devkit.annotation.InternalClass;
 import xyz.webmc.wlib.internal.util.InternalUtil;
 
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
-@WInternal
+@InternalClass
 public final class WLIBBlankCommand extends WCommand {
   public WLIBBlankCommand(String name) {
     super(name);

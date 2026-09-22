@@ -13,12 +13,15 @@
 
 package xyz.webmc.wlib.internal.agent;
 
+import xyz.webmc.wlib.devkit.annotation.InternalClass;
+
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.Instrumentation;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+@InternalClass
 public final class AgentMain {
   private static final Set<ClassFileTransformer> TRANSFORMERS = Collections.synchronizedSet(new HashSet<>());
   private static final Set<Class<?>> TRANSFORMED = Collections.synchronizedSet(new HashSet<>());
@@ -53,7 +56,7 @@ public final class AgentMain {
     }
   }
 
-  static void _retransformClasses(Class<?>[] classes) {
+  static void _addRetransformedClasses(Class<?>[] classes) {
     synchronized (TRANSFORMED) {
       TRANSFORMED.addAll(Set.of(classes));
     }
