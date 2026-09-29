@@ -210,12 +210,6 @@
       </resource>
 
       <resource>
-        <filtering>true</filtering>
-        <directory>src/build/resources</directory>
-        <targetPath>${project.build.directory}/resources</targetPath>
-      </resource>
-
-      <resource>
         <filtering>false</filtering>
         <directory>${project.basedir}</directory>
         <includes>
@@ -316,6 +310,32 @@
                   </manifestEntries>
                 </transformer>
               </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.5.0</version>
+
+        <executions>
+          <execution>
+            <id>copy-build-resources</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+
+            <configuration>
+              <outputDirectory>${project.build.directory}/resources</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/build/resources</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
             </configuration>
           </execution>
         </executions>
