@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0">
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>xyz.webmc</groupId>
   <artifactId>wlib</artifactId>
-  <version>1.3.2-SNAPSHOT</version>
+  <version>1.3.3-SNAPSHOT</version>
+
   <distributionManagement>
     <repository>
       <id>github</id>
       <url>https://maven.pkg.github.com/WebMCDevelopment/wlib/</url>
     </repository>
   </distributionManagement>
+
   <properties>
     <plugin.name>WLIB</plugin.name>
     <plugin.vers>${project.version}+${git.commit.id.abbrev}</plugin.vers>
     <plugin.pckg>${project.groupId}.${project.artifactId}</plugin.pckg>
     <plugin.athr>Colbster937</plugin.athr>
-    <plugin.deps>["PlaceholderAPI", "LuckPerms", "Essentials", "EaglercraftXServer"]</plugin.deps>
+    <plugin.deps>["PlaceholderAPI", "LuckPerms", "Essentials", "EaglercraftXServer", "EaglercraftXBackendRPC"]</plugin.deps>
+
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>17</maven.compiler.release>
   </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.bukkit</groupId>
@@ -26,107 +31,147 @@
       <version>1.8-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
+
     <dependency>
       <groupId>dev.colbster937</groupId>
       <artifactId>mirror</artifactId>
       <version>1.0.0-SNAPSHOT</version>
     </dependency>
+
     <dependency>
       <groupId>dev.colbster937</groupId>
       <artifactId>java-util</artifactId>
       <version>1.0.0-SNAPSHOT</version>
     </dependency>
+
     <dependency>
-      <groupId>org.bstats</groupId>
-      <artifactId>bstats-bukkit</artifactId>
-      <version>3.2.1</version>
-    </dependency>
-    <dependency>
-      <groupId>com.tcoded</groupId>
-      <artifactId>FoliaLib</artifactId>
-      <version>0.5.2</version>
-    </dependency>
-    <dependency>
-      <groupId>com.github.cryptomorin</groupId>
-      <artifactId>XSeries</artifactId>
-      <version>13.7.1</version>
-    </dependency>
-    <dependency>
-        <groupId>net.sandrohc</groupId>
-        <artifactId>schematic4j</artifactId>
-        <version>1.1.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.json</groupId>
-      <artifactId>json</artifactId>
-      <version>20260522</version>
-    </dependency>
-    <dependency>
-      <groupId>org.semver4j</groupId>
-      <artifactId>semver4j</artifactId>
-      <version>6.0.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.javassist</groupId>
-      <artifactId>javassist</artifactId>
-      <version>3.33.0-GA</version>
-    </dependency>
-    <dependency>
-      <groupId>me.clip</groupId>
-      <artifactId>placeholderapi</artifactId>
-      <version>2.12.3</version>
+      <groupId>org.meteordev</groupId>
+      <artifactId>starscript</artifactId>
+      <version>0.2.5</version>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>net.luckperms</groupId>
-      <artifactId>api</artifactId>
-      <version>5.5</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>net.lax1dude.eaglercraft.backend</groupId>
-      <artifactId>api-bukkit</artifactId>
-      <version>1.1.0</version>
-      <scope>provided</scope>
-    </dependency>
+
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
       <version>2.26.1</version>
       <scope>provided</scope>
     </dependency>
+
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
       <version>2.26.1</version>
       <scope>provided</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.bstats</groupId>
+      <artifactId>bstats-bukkit</artifactId>
+      <version>3.2.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.tcoded</groupId>
+      <artifactId>FoliaLib</artifactId>
+      <version>0.5.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.cryptomorin</groupId>
+      <artifactId>XSeries</artifactId>
+      <version>13.7.1</version>
+    </dependency>
+
+    <dependency>
+        <groupId>net.sandrohc</groupId>
+        <artifactId>schematic4j</artifactId>
+        <version>1.1.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20260522</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.semver4j</groupId>
+      <artifactId>semver4j</artifactId>
+      <version>6.0.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.javassist</groupId>
+      <artifactId>javassist</artifactId>
+      <version>3.33.0-GA</version>
+    </dependency>
+
+    <dependency>
+      <groupId>me.clip</groupId>
+      <artifactId>placeholderapi</artifactId>
+      <version>2.12.3</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>net.luckperms</groupId>
+      <artifactId>api</artifactId>
+      <version>5.5</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>net.lax1dude.eaglercraft.backend</groupId>
+      <artifactId>api-bukkit</artifactId>
+      <version>1.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>net.lax1dude.eaglercraft.backend</groupId>
+      <artifactId>backend-rpc-api-bukkit</artifactId>
+      <version>1.1.0</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
+
   <repositories>
     <repository>
       <id>spigotmc</id>
       <url>https://hub.spigotmc.org/nexus/content/repositories/public/</url>
     </repository>
+
     <repository>
       <id>java-mirror</id>
       <url>https://maven.colbster937.dev/colbster937/java-mirror/</url>
     </repository>
+
     <repository>
       <id>java-util</id>
       <url>https://maven.colbster937.dev/colbster937/java-util/</url>
     </repository>
-    <repository>
-      <id>schematic4j</id>
-      <url>https://maven.colbster937.dev/colbster937/schematic4j/</url>
-    </repository>
+
     <repository>
       <id>tcoded</id>
       <url>https://repo.tcoded.com/releases/</url>
     </repository>
+
+    <repository>
+      <id>schematic4j</id>
+      <url>https://maven.colbster937.dev/colbster937/schematic4j/</url>
+    </repository>
+
     <repository>
       <id>placeholderapi</id>
       <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
     </repository>
+
+    <repository>
+      <id>meteor</id>
+      <url>https://maven.meteordev.org/releases/</url>
+    </repository>
+
     <repository>
       <id>lax1dude</id>
       <url>https://repo.lax1dude.net/repository/releases/</url>
@@ -138,8 +183,10 @@
       </snapshots>
     </repository>
   </repositories>
+
   <build>
     <finalName>${project.artifactId}-${project.version}</finalName>
+
     <resources>
       <resource>
         <filtering>true</filtering>
@@ -148,6 +195,7 @@
           <include>**/*.yml</include>
         </includes>
       </resource>
+
       <resource>
         <filtering>false</filtering>
         <directory>src/main/resources</directory>
@@ -155,15 +203,18 @@
           <exclude>**/*.yml</exclude>
         </excludes>
       </resource>
+
       <resource>
         <filtering>true</filtering>
         <directory>src/module_devkit/resources</directory>
       </resource>
+
       <resource>
         <filtering>true</filtering>
         <directory>src/build/resources</directory>
         <targetPath>${project.build.directory}/resources</targetPath>
       </resource>
+
       <resource>
         <filtering>false</filtering>
         <directory>${project.basedir}</directory>
@@ -172,6 +223,7 @@
         </includes>
       </resource>
     </resources>
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -186,48 +238,59 @@
             <configuration>
               <shadedArtifactAttached>false</shadedArtifactAttached>
               <createDependencyReducedPom>true</createDependencyReducedPom>
+
               <relocations>
                 <relocation>
                   <pattern>dev.colbster937.reflect</pattern>
                   <shadedPattern>${plugin.pckg}.lib.mirror</shadedPattern>
                 </relocation>
+
                 <relocation>
                   <pattern>dev.colbster937.util</pattern>
                   <shadedPattern>${plugin.pckg}.lib.jutil</shadedPattern>
                 </relocation>
+
                 <relocation>
                   <pattern>org.bstats</pattern>
                   <shadedPattern>${plugin.pckg}.lib.bstats</shadedPattern>
                 </relocation>
+
                 <relocation>
                   <pattern>com.tcoded.folialib</pattern>
                   <shadedPattern>${plugin.pckg}.lib.folialib</shadedPattern>
                 </relocation>
+
                 <relocation>
                   <pattern>com.cryptomorin.xseries</pattern>
                   <shadedPattern>${plugin.pckg}.lib.xseries</shadedPattern>
                 </relocation>
+
                 <relocation>
                   <pattern>net.sandrohc.schematic4j</pattern>
                   <shadedPattern>${plugin.pckg}.lib.schematic4j</shadedPattern>
                 </relocation>
+
                 <relocation>
                   <pattern>org.json</pattern>
                   <shadedPattern>${plugin.pckg}.lib.json</shadedPattern>
                 </relocation>
+
                 <relocation>
                   <pattern>org.semver4j</pattern>
                   <shadedPattern>${plugin.pckg}.lib.semver4j</shadedPattern>
                 </relocation>
-                <relocation>
-                  <pattern>org.jspecify</pattern>
-                  <shadedPattern>${plugin.pckg}.lib.jspecify</shadedPattern>
-                </relocation>
+
                 <relocation>
                   <pattern>javassist</pattern>
                   <shadedPattern>${plugin.pckg}.lib.javassist</shadedPattern>
                 </relocation>
+
+                <relocation>
+                  <pattern>org.jspecify</pattern>
+                  <shadedPattern>${plugin.pckg}.lib.jspecify</shadedPattern>
+                </relocation>
               </relocations>
+
               <filters>
                 <filter>
                   <artifact>*:*</artifact>
@@ -238,12 +301,14 @@
                   </excludes>
                 </filter>
               </filters>
+
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <manifestEntries>
                     <Implementation-Title>${plugin.name}</Implementation-Title>
                     <Implementation-Version>${plugin.vers}</Implementation-Version>
                     <Implementation-Vendor>${plugin.athr}</Implementation-Vendor>
+                    <Main-Class>${plugin.pckg}.internal.launcher.LauncherMain</Main-Class>
                     <Premain-Class>${plugin.pckg}.internal.agent.AgentMain</Premain-Class>
                     <Agent-Class>${plugin.pckg}.internal.agent.AgentMain</Agent-Class>
                     <Can-Redefine-Classes>true</Can-Redefine-Classes>
@@ -255,6 +320,7 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
@@ -266,20 +332,24 @@
             <goals>
               <goal>add-source</goal>
             </goals>
+
             <configuration>
               <sources>
                 <source>src/module_agent/java</source>
                 <source>src/module_compat/java</source>
                 <source>src/module_devkit/java</source>
+                <source>src/module_launcher/java</source>
               </sources>
             </configuration>
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>com.github.wvengen</groupId>
         <artifactId>proguard-maven-plugin</artifactId>
         <version>2.7.0</version>
+
         <executions>
           <execution>
             <phase>package</phase>
@@ -288,6 +358,7 @@
             </goals>
           </execution>
         </executions>
+
         <configuration>
           <maxMemory>1024m</maxMemory>
           <includeDependency>true</includeDependency>
@@ -300,10 +371,12 @@
           </libs>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>io.github.git-commit-id</groupId>
         <artifactId>git-commit-id-maven-plugin</artifactId>
         <version>10.0.1</version>
+
         <executions>
           <execution>
             <goals>
@@ -311,35 +384,37 @@
             </goals>
           </execution>
         </executions>
+
         <configuration>
           <generateGitPropertiesFile>false</generateGitPropertiesFile>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>com.mycila</groupId>
         <artifactId>license-maven-plugin</artifactId>
         <version>5.1.2</version>
+
         <executions>
           <execution>
-            <phase>process-sources</phase>
+            <phase>process-resources</phase>
             <goals>
               <goal>format</goal>
             </goals>
           </execution>
         </executions>
+
         <configuration>
-          <properties>
-            <owner>${plugin.athr}</owner>
-          </properties>
           <licenseSets>
             <licenseSet>
-              <header>src/build/resources/licenseHeader.txt</header>
+              <header>${project.build.directory}/resources/licenseHeader.txt</header>
               <includes>
                 <include>src/**/*.java</include>
               </includes>
             </licenseSet>
           </licenseSets>
         </configuration>
+
         <dependencies>
           <dependency>
             <groupId>com.mycila</groupId>
@@ -348,31 +423,12 @@
           </dependency>
         </dependencies>
       </plugin>
+
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
         <version>3.10.2</version>
-        <configuration>
-          <java>
-            <includes>
-              <include>src/**/*.java</include>
-            </includes>
-            <cleanthat>
-              <sourceJdk>${maven.compiler.release}</sourceJdk>
-            </cleanthat>
-            <removeUnusedImports />
-            <importOrder>
-              <order>${plugin.pckg},java,javax,,\#${plugin.pckg},\#java,\#javax,\#</order>
-            </importOrder>
-            <trimTrailingWhitespace />
-            <endWithNewline />
-            <replaceRegex>
-              <name>newline after license header</name>
-              <searchRegex>\*/\R*package</searchRegex>
-              <replacement>*/&#10;&#10;package</replacement>
-            </replaceRegex>
-          </java>
-        </configuration>
+
         <executions>
           <execution>
             <phase>process-sources</phase>
@@ -381,22 +437,53 @@
             </goals>
           </execution>
         </executions>
+
+        <configuration>
+          <java>
+            <includes>
+              <include>src/**/*.java</include>
+            </includes>
+
+            <cleanthat>
+              <sourceJdk>${maven.compiler.release}</sourceJdk>
+            </cleanthat>
+
+            <removeUnusedImports />
+
+            <importOrder>
+              <order>${plugin.pckg},java,javax,,\#${plugin.pckg},\#java,\#javax,\#</order>
+            </importOrder>
+
+            <trimTrailingWhitespace />
+
+            <endWithNewline />
+
+            <replaceRegex>
+              <name>newline after license header</name>
+              <searchRegex>\*/\R*package</searchRegex>
+              <replacement>*/&#10;&#10;package</replacement>
+            </replaceRegex>
+          </java>
+        </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>3.6.0</version>
+        
         <executions>
           <execution>
             <id>checkstyle</id>
-            <phase>process-sources</phase>
+            <phase>process-resources</phase>
             <goals>
               <goal>check</goal>
             </goals>
           </execution>
         </executions>
+
         <configuration>
-          <configLocation>src/build/resources/checkstyle.xml</configLocation>
+          <configLocation>${project.build.directory}/resources/checkstyle.xml</configLocation>
           <includeTestSourceDirectory>false</includeTestSourceDirectory>
           <failOnViolation>true</failOnViolation>
           <consoleOutput>true</consoleOutput>

@@ -30,4 +30,6 @@ public @interface WPluginMeta {
   boolean requireModernServer() default false;
 
   boolean shutdownOnFailure() default false;
+
+  int bStats() default -1;
 }

@@ -18,6 +18,10 @@ import xyz.webmc.wlib.api.plugin.WPlugin;
 import xyz.webmc.wlib.devkit.annotation.InternalClass;
 
 import java.lang.StackWalker.StackFrame;
+import java.lang.reflect.Method;
+
+import dev.colbster937.reflect.Mirror;
+import dev.colbster937.reflect.MirrorSafe;
 
 @InternalClass
 public final class InternalUtil {
@@ -41,6 +45,15 @@ public final class InternalUtil {
           throw new IllegalCallerException();
         }
       }
+    }
+  }
+
+  public static boolean getClassOwnsMethod(Class<?> clazz, String name, Object... params) {
+    final Method method = MirrorSafe.getMethod(clazz, name, Mirror.getTypes(params));
+    if (method != null) {
+      return method.getDeclaringClass().equals(clazz);
+    } else {
+      return false;
     }
   }
 }

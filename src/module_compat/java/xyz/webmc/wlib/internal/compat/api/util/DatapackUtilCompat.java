@@ -11,21 +11,20 @@
  * See the LICENSE file for details.
  */
 
-package xyz.webmc.wlib.internal.compat.api.agent.transformer;
+package xyz.webmc.wlib.internal.compat.api.util;
 
-import xyz.webmc.wlib.api.agent.transformer.WClassTransformer;
+import xyz.webmc.wlib.api.util.DatapackUtil;
 import xyz.webmc.wlib.internal.compat.WCompat;
 
-import java.util.HashSet;
-import java.util.Set;
-
-@WCompat(WClassTransformer.class)
-public abstract class WClassTransformerCompat {
+@WCompat(DatapackUtil.class)
+public abstract class DatapackUtilCompat {
   @Deprecated(forRemoval = true)
-  protected final Set<Class<?>> classes = new HashSet<>();
+  public static void enable(String datapack) {
+    DatapackUtil.enableDatapack(datapack);
+  }
 
   @Deprecated(forRemoval = true)
-  public final Set<Class<?>> getTransformClasses() {
-    return Set.copyOf(this.classes);
+  public static void disable(String datapack) {
+    DatapackUtil.disableDatapack(datapack);
   }
 }

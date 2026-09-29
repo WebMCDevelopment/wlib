@@ -16,6 +16,7 @@ package xyz.webmc.wlib.api.agent.transformer;
 import xyz.webmc.wlib.api.util.AgentUtil;
 import xyz.webmc.wlib.internal.compat.api.agent.transformer.WClassTransformerCompat;
 import xyz.webmc.wlib.internal.util.InternalAgentUtil;
+import xyz.webmc.wlib.internal.util.InternalUtil;
 
 import java.lang.instrument.ClassFileTransformer;
 import java.nio.file.Path;
@@ -24,7 +25,7 @@ import java.security.ProtectionDomain;
 import java.util.HashSet;
 import java.util.Set;
 
-@SuppressWarnings({ "deprecation" })
+@SuppressWarnings({ "removal" })
 public abstract class WClassTransformer extends WClassTransformerCompat implements ClassFileTransformer {
   protected abstract Set<String> getTransformList();
   protected abstract byte[] transform(ClassLoader loader, String name, Class<?> clazz, byte[] bytes) throws Exception;
@@ -33,7 +34,10 @@ public abstract class WClassTransformer extends WClassTransformerCompat implemen
   private final Set<PathMatcher> matchers = this.getTransformMatchers();
 
   public final void _ready() {
-    this.ready();
+    if (InternalUtil.getClassOwnsMethod(this.getClass(), "ready")) {
+      this.ready();
+    }
+
     AgentUtil.retransformAllClassesStr(this.transformList);
   }
 

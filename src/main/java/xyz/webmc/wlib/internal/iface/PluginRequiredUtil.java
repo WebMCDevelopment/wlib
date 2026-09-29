@@ -11,17 +11,25 @@
  * See the LICENSE file for details.
  */
 
-package xyz.webmc.wlib.internal.util;
+package xyz.webmc.wlib.internal.iface;
 
-import xyz.webmc.wlib.api.WLIB;
-
+import xyz.webmc.wlib.api.util.PluginUtil;
 import xyz.webmc.wlib.devkit.annotation.InternalClass;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @InternalClass
-public interface ModernServerUtil {
-  static void requireModernServer() throws IllegalStateException {
-    if (!WLIB.getIsModernServer()) {
-      throw new IllegalStateException();
+public interface PluginRequiredUtil {
+  static boolean checkPlugins(String... plugins) {
+    final List<String> missing = new ArrayList<>();
+
+    for (String plugin : plugins) {
+      if (!PluginUtil.isPluginEnabled(plugin)) {
+        missing.add(plugin);
+      }
     }
+
+    return missing.isEmpty();
   }
 }

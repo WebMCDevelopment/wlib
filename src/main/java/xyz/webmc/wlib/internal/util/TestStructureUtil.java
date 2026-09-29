@@ -23,6 +23,8 @@ import java.util.Set;
 
 import dev.colbster937.reflect.MirrorSafe;
 
+import static xyz.webmc.wlib.internal.util.InternalUtil.checkInternalCaller;
+
 @InternalClass
 public final class TestStructureUtil {
   private static final Set<Class<? extends AbstractBaseStructure>> WLIB_TEST_STRUCTURES = Set.of(
@@ -33,29 +35,35 @@ public final class TestStructureUtil {
   private static final Set<AbstractBaseStructure> STRUCTURES = new HashSet<>();
 
   public static void _init() {
-    InternalUtil.checkInternalCaller();
+    checkInternalCaller();
     for (Class<? extends AbstractBaseStructure> clazz : WLIB_TEST_STRUCTURES) {
       AbstractBaseStructure.getInstance(clazz);
     }
   }
 
   public static void register(AbstractBaseStructure structure) {
+    checkInternalCaller();
     STRUCTURES.add(structure);
   }
 
   public static AbstractBaseStructure getTestStructure(String name) {
+    checkInternalCaller();
     return getTestStructure(name, "getName");
   }
 
   public static AbstractBaseStructure getTestStructure(Class<?> clazz) {
+    checkInternalCaller();
     return getTestStructure(clazz, "getClass");
   }
 
   public static Set<AbstractBaseStructure> getStructures() {
+    checkInternalCaller();
     return STRUCTURES;
   }
 
   public static Set<String> getStructureNames() {
+    checkInternalCaller();
+
     final Set<String> names = new HashSet<>();
 
     for (AbstractBaseStructure structure : getStructures()) {

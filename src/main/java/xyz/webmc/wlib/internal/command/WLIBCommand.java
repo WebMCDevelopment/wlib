@@ -35,8 +35,8 @@ import org.bukkit.entity.Player;
 
 @InternalClass
 public final class WLIBCommand extends WCommand {
-  public WLIBCommand() {
-    super("wlib");
+  public WLIBCommand(String name) {
+    super(name);
     InternalUtil.checkInternalCaller();
   }
 

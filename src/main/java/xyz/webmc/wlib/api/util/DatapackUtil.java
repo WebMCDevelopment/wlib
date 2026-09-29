@@ -14,8 +14,8 @@
 package xyz.webmc.wlib.api.util;
 
 import xyz.webmc.wlib.api.plugin.WPlugin;
-import xyz.webmc.wlib.internal.util.InternalUtil;
-import xyz.webmc.wlib.internal.util.ModernServerUtil;
+import xyz.webmc.wlib.internal.compat.api.util.DatapackUtilCompat;
+import xyz.webmc.wlib.internal.iface.ModernServerRequiredUtil;
 
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -30,14 +30,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
-import static xyz.webmc.wlib.internal.util.ModernServerUtil.requireModernServer;
+import static xyz.webmc.wlib.internal.iface.ModernServerRequiredUtil.requireModernServer;
+import static xyz.webmc.wlib.internal.util.InternalUtil.checkInternalCaller;
 
-public final class DatapackUtil implements ModernServerUtil {
+public final class DatapackUtil extends DatapackUtilCompat implements ModernServerRequiredUtil {
   private static final List<Plugin> INIT_QUEUE = new ArrayList<>();
   private static Path DATAPACK_FOLDER;
 
   public static void _init(Plugin plugin) {
-    InternalUtil.checkInternalCaller();
+    checkInternalCaller();
     final Class<?> clazz = MirrorSafe.getClass("org.bukkit.event.server.ServerLoadEvent");
     if (clazz != null) {
       EventUtil.registerEvent(
@@ -51,6 +52,7 @@ public final class DatapackUtil implements ModernServerUtil {
   }
 
   public static void _initWorld(World world) {
+    checkInternalCaller();
     requireModernServer();
 
     if (DATAPACK_FOLDER == null) {
@@ -61,6 +63,7 @@ public final class DatapackUtil implements ModernServerUtil {
   }
 
   public static void _initPlugin(Plugin plugin) {
+    checkInternalCaller();
     requireModernServer();
 
     if (DATAPACK_FOLDER != null) {
@@ -73,19 +76,20 @@ public final class DatapackUtil implements ModernServerUtil {
   }
 
   public static void _shutdownPlugin(Plugin plugin) {
+    checkInternalCaller();
     requireModernServer();
 
     CommandUtil.dispatchConsole("minecraft:datapack disable " + getPluginDatapackString(plugin));
   }
 
-  public static void enable(String datapack) {
+  public static void enableDatapack(String datapack) {
     requireModernServer();
 
     CommandUtil.dispatchConsole("minecraft:datapack list available");
     CommandUtil.dispatchConsole("minecraft:datapack enable " + datapackString(datapack));
   }
 
-  public static void disable(String datapack) {
+  public static void disableDatapack(String datapack) {
     requireModernServer();
 
     CommandUtil.dispatchConsole("minecraft:datapack disable " + datapackString(datapack));
@@ -133,15 +137,15 @@ public final class DatapackUtil implements ModernServerUtil {
 
         if (!exists || HashUtil.hash64(pack) != HashUtil.hash64(Files.readAllBytes(out))) {
           if (exists) {
-            disable(name);
+            enableDatapack(name);
           }
 
           Files.write(out, pack);
         }
 
-        enable(name);
+        enableDatapack(name);
       } else if (exists) {
-        disable(name);
+        enableDatapack(name);
         Files.delete(out);
       }
     } catch (Exception ex) {}

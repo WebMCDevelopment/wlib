@@ -13,15 +13,15 @@
 
 package xyz.webmc.wlib.api.util;
 
+import xyz.webmc.wlib.internal.iface.PluginRequiredUtil;
 import xyz.webmc.wlib.internal.util.InternalUtil;
-import xyz.webmc.wlib.internal.util.RequiredPluginUtil;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 
-import static xyz.webmc.wlib.internal.util.RequiredPluginUtil.checkPlugins;
+import static xyz.webmc.wlib.internal.iface.PluginRequiredUtil.checkPlugins;
 
-public final class PlaceholderUtil implements RequiredPluginUtil {
+public final class PlaceholderUtil implements PluginRequiredUtil {
   private static boolean bool = false;
 
   public static void _init() {

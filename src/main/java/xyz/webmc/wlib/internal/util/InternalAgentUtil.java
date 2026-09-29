@@ -33,6 +33,8 @@ import java.util.function.Function;
 import dev.colbster937.reflect.MirrorSafe;
 import dev.colbster937.util.ExceptionStacker;
 
+import static xyz.webmc.wlib.internal.util.InternalUtil.checkInternalCaller;
+
 @InternalClass
 public final class InternalAgentUtil {
   private static final List<Runnable> CALLBACKS = Collections.synchronizedList(new ArrayList<>());
@@ -41,7 +43,7 @@ public final class InternalAgentUtil {
   private static boolean ready;
 
   public static void _init(WPlugin _plugin) {
-    InternalUtil.checkInternalCaller();
+    checkInternalCaller();
     plugin = _plugin;
     try {
       bridge = getBridgeClass();
@@ -75,11 +77,12 @@ public final class InternalAgentUtil {
   }
 
   public static void _shutdown() {
-    InternalUtil.checkInternalCaller();
+    checkInternalCaller();
     invokeBridge("_shutdown");
   }
 
   public static void onReady(Runnable callback) {
+    checkInternalCaller();
     if (!ready) {
       synchronized (CALLBACKS) {
         CALLBACKS.add(callback);
@@ -90,14 +93,17 @@ public final class InternalAgentUtil {
   }
 
   public static boolean getIsReady() {
+    checkInternalCaller();
     return ready;
   }
 
   public static Class<?>[] getLoadedClasses() {
+    checkInternalCaller();
     return invokeBridge("getLoadedClasses");
   }
 
   public static void addClassTransformer(ClassFileTransformer transformer) {
+    checkInternalCaller();
     invokeBridge("addClassTransformer", transformer);
     if (transformer instanceof WClassTransformer wtransformer) {
       onReady(wtransformer::_ready);
@@ -105,30 +111,37 @@ public final class InternalAgentUtil {
   }
 
   public static void retransformClasses(Class<?>... classes) {
+    checkInternalCaller();
     invokeBridge("retransformClasses", (Object) classes);
   }
 
   public static void retransformAllClasses(Class<?>... classes) {
+    checkInternalCaller();
     invokeBridge("retransformAllClasses", (Object) classes);
   }
 
   public static void retransformAllClasses(String... classes) {
+    checkInternalCaller();
     invokeBridge("retransformAllClasses", (Object) classes);
   }
 
   public static void retransformAllClasses() {
+    checkInternalCaller();
     invokeBridge("retransformAllClasses");
   }
 
   public static String getPackageFS(String pckg) {
+    checkInternalCaller();
     return pckg.replaceAll("\\.", "/").trim();
   }
 
   public static Path getPackageFSPath(String pckg) {
+    checkInternalCaller();
     return Path.of(getPackageFS(pckg));
   }
 
   public static PathMatcher getClassMatcher(String glob) {
+    checkInternalCaller();
     return FileSystems.getDefault().getPathMatcher("glob:" + getPackageFS(glob));
   }
 

@@ -23,9 +23,13 @@ import net.luckperms.api.model.group.GroupManager;
 import net.luckperms.api.model.user.UserManager;
 import net.luckperms.api.node.Node;
 
+import static xyz.webmc.wlib.internal.util.InternalUtil.checkInternalCaller;
+
 @InternalClass
 public final class LPUtil {
   public static boolean hasPermission(UUID uuid, String node) {
+    checkInternalCaller();
+
     return getUserManager().loadUser(uuid).thenApply(user -> {
       if (user != null) {
         return user.getCachedData().getPermissionData().checkPermission(node).asBoolean();
@@ -36,6 +40,8 @@ public final class LPUtil {
   }
 
   public static boolean setUserPermission(UUID uuid, String node, boolean value) {
+    checkInternalCaller();
+
     final UserManager um = getUserManager();
     return um.loadUser(uuid).thenApply(user -> {
       if (user != null) {
@@ -50,6 +56,8 @@ public final class LPUtil {
   }
 
   public static boolean unsetUserPermission(UUID uuid, String node) {
+    checkInternalCaller();
+
     final UserManager um = getUserManager();
     return um.loadUser(uuid).thenApply(user -> {
       if (user != null) {
@@ -63,8 +71,9 @@ public final class LPUtil {
   }
 
   public static boolean hasGroupPermission(String name, String node) {
-    final GroupManager gm = getGroupManager();
+    checkInternalCaller();
 
+    final GroupManager gm = getGroupManager();
     return gm.loadGroup(name).thenApply(optional -> {
       if (optional.isPresent()) {
         final Group group = optional.get();
@@ -76,6 +85,8 @@ public final class LPUtil {
   }
 
   public static boolean setGroupPermission(String name, String node, boolean value) {
+    checkInternalCaller();
+
     final GroupManager gm = getGroupManager();
     return gm.loadGroup(name).thenApply(optional -> {
       if (optional.isPresent()) {
@@ -91,6 +102,8 @@ public final class LPUtil {
   }
 
   public static boolean unsetGroupPermission(String name, String node) {
+    checkInternalCaller();
+
     final GroupManager gm = getGroupManager();
     return gm.loadGroup(name).thenApply(optional -> {
       if (optional.isPresent()) {

@@ -65,12 +65,16 @@ public final class WLIB extends WLIBCompat {
     return getWLIBVersion().getVersion();
   }
 
+  public static String getWLIBKeyString() {
+    return plugin.getName().toLowerCase();
+  }
+
   public static String getBlankCommandName() {
     return BLANK_COMMAND;
   }
 
   public static String getBlankCommandKey() {
-    return plugin.getName().toLowerCase() + ":" + getBlankCommandName();
+    return getWLIBKeyString() + ":" + getBlankCommandName();
   }
 
   public static StackWalker getStackWalker() {
@@ -267,7 +271,7 @@ public final class WLIB extends WLIBCompat {
   }
 
   public static String getWLIBProperty(String name) {
-    return System.getProperty(plugin.getName().toLowerCase() + "." + name);
+    return System.getProperty(getWLIBKeyString() + "." + name);
   }
 
   public static boolean getWLIBPropertyExists(String name) {

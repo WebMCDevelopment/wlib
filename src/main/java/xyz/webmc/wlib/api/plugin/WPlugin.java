@@ -14,14 +14,17 @@
 package xyz.webmc.wlib.api.plugin;
 
 import xyz.webmc.wlib.api.WLIB;
+import xyz.webmc.wlib.api.util.AgentUtil;
 import xyz.webmc.wlib.api.util.EventUtil;
 import xyz.webmc.wlib.api.util.PluginUtil;
 import xyz.webmc.wlib.api.util.SchedulerUtil;
 import xyz.webmc.wlib.internal.WLIBBukkitPlugin;
+import xyz.webmc.wlib.internal.util.InternalUtil;
 
 import java.io.File;
 
 import dev.colbster937.util.ExceptionStacker;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,12 +32,20 @@ import org.bukkit.plugin.java.JavaPlugin;
 @WPluginMeta
 public abstract class WPlugin extends JavaPlugin {
   private WPluginMeta meta;
+  private Metrics metrics;
 
   @Override
   public final void onLoad() {
     try {
       this.meta = this.getWPluginMeta();
-      this.load();
+
+      if (getMethodOverwritten("agentReady")) {
+        AgentUtil.onReady(this::agentReady);
+      }
+
+      if (getMethodOverwritten("load")) {
+        this.load();
+      }
     } catch (Throwable t) {
       this.handleThrowable("load", t);
     }
@@ -57,10 +68,18 @@ public abstract class WPlugin extends JavaPlugin {
       }
 
       if (error == null || error.isBlank()) {
-        this.enable();
+        if (getMethodOverwritten("enable")) {
+          this.enable();
+        }
+
         WLIB.initPlugin(this);
         if (this instanceof Listener listener) {
           EventUtil.registerEvents(listener, this);
+        }
+
+        final int bStats = this.meta.bStats();
+        if (bStats > 0) {
+          this.metrics = new Metrics(this, bStats);
         }
       } else {
         throw new IllegalStateException(error);
@@ -73,11 +92,18 @@ public abstract class WPlugin extends JavaPlugin {
   @Override
   public final void onDisable() {
     try {
-      this.disable();
+      if (getMethodOverwritten("disable")) {
+        this.disable();
+      }
+
+      if (this.metrics != null) {
+        this.metrics.shutdown();
+      }
+
       WLIB.shutdownPlugin(this);
       SchedulerUtil.cancelPluginTasks(this);
     } catch (Throwable t) {
-      this.handleThrowable("disable", t);
+      this.handleThrowable("disable", t, false);
     }
   }
 
@@ -98,12 +124,17 @@ public abstract class WPlugin extends JavaPlugin {
     return this.getClass().getAnnotation(WPluginMeta.class);
   }
 
+  public final Metrics getMetrics() {
+    return this.metrics;
+  }
+
   protected void load() throws Throwable {}
   protected void enable() throws Throwable {}
   protected void disable() throws Throwable {}
+  protected void agentReady() {}
 
-  private void handleThrowable(String stage, Throwable t) {
-    final boolean shutdown = this.meta.shutdownOnFailure() && !stage.equals("disable");
+  private void handleThrowable(String stage, Throwable t, boolean shutdown) {
+    shutdown = shutdown && this.meta.shutdownOnFailure();
     String message = "";
 
     if (shutdown) {
@@ -119,5 +150,13 @@ public abstract class WPlugin extends JavaPlugin {
       PluginUtil.disablePlugin(this);
       this.getServer().shutdown();
     }
+  }
+
+  private void handleThrowable(String stage, Throwable t) {
+    this.handleThrowable(stage, t, true);
+  }
+
+  private static boolean getMethodOverwritten(String name) {
+    return InternalUtil.getClassOwnsMethod(WPlugin.class, name);
   }
 }

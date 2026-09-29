@@ -18,17 +18,22 @@ import xyz.webmc.wlib.internal.compat.WCompat;
 
 import dev.colbster937.reflect.MirrorSafe;
 
+import static xyz.webmc.wlib.internal.util.InternalUtil.checkInternalCaller;
+
 @InternalClass
 public final class CompatUtil {
   public static WCompat getWCompat(Class<?> clazz) {
+    checkInternalCaller();
     return clazz.getAnnotation(WCompat.class);
   }
 
-  public static Class<?> getOriginalClass(Class<?> clazz) {
+  public static Class<?> getCompatClass(Class<?> clazz) {
+    checkInternalCaller();
     return getCompatValue(clazz, "value");
   }
 
   public static boolean getIsCompatClass(Class<?> clazz) {
+    checkInternalCaller();
     return getWCompat(clazz) != null;
   }
 
