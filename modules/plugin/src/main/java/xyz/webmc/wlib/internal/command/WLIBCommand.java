@@ -272,7 +272,7 @@ public final class WLIBCommand extends WCommand {
 
   private static String[] getASCII(CommandSender sender) {
     return ImageUtil.convertToMinecraftASCII(
-      ImageUtil.removeAlpha(ImageUtil.scaleImage(ImageUtil.getWLIBImage(), .75f)),
+      ImageUtil.removeAlpha(ImageUtil.scaleImage(ImageUtil.getWLIBImage(), 0.75F)),
       PixelFormatter.getFromCommandSender(sender)
     );
   }
