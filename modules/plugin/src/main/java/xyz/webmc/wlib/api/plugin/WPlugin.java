@@ -86,7 +86,7 @@ public abstract class WPlugin extends JavaPlugin {
         }
 
         if (getMethodOverwritten("serverStartup")) {
-          if (!MirrorSafe.getClassExists("org.bukkit.event.server.ServerLoadEvent")) {
+          if (MirrorSafe.getClassExists("org.bukkit.event.server.ServerLoadEvent")) {
             WLIBEventListener._onServerStartup(this::onServerStartup);
           } else {
             SchedulerUtil.runNextTick(this::onServerStartup);
