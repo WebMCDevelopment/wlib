@@ -1,7 +1,7 @@
 on:
   push:
     paths:
-      - 'src/**'
+      - '**/src/**'
       - '.github/workflows/publish.yml'
   workflow_dispatch:
 
@@ -36,9 +36,9 @@ jobs:
       - id: vars
         run: |
           echo "HASH=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
-          echo "VERS=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> "$GITHUB_OUTPUT"
+          echo "VERS=$(mvn help:evaluate -Dexpression=proj.vers -q -DforceStdout)" >> "$GITHUB_OUTPUT"
           echo "JAVA=$(mvn help:evaluate -Dexpression=maven.compiler.release -q -DforceStdout)" >> "$GITHUB_OUTPUT"
-          echo "AFCT=$(mvn help:evaluate -Dexpression=project.build.finalName -q -DforceStdout)" >> "$GITHUB_OUTPUT"
+          echo "AFCT=$(mvn -pl :wlib-plugin help:evaluate -Dexpression=project.build.finalName -q -DforceStdout)" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-java@v5
         with:
           distribution: liberica
@@ -56,10 +56,10 @@ jobs:
           echo "JAR_NAME=${{ format('{0}+{1}.jar', steps.vars.outputs.AFCT, steps.vars.outputs.HASH) }}" >> "$GITHUB_OUTPUT"
       - run: |
           mkdir -p dist
-          cp target/${{ steps.vars.outputs.AFCT }}.jar dist/${{ steps.dist.outputs.JAR_NAME }}
+          cp modules/plugin/target/${{ steps.vars.outputs.AFCT }}.jar dist/${{ steps.dist.outputs.JAR_NAME }}
       - uses: actions/upload-artifact@v7
         with:
-          path: target/${{ steps.vars.outputs.AFCT }}.jar
+          path: dist/${{ steps.dist.outputs.JAR_NAME }}
           name: ${{ steps.vars.outputs.AFCT }}
           if-no-files-found: error
       - id: mrtoken

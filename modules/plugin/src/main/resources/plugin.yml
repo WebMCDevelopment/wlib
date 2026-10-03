@@ -1,0 +1,9 @@
+name: ${proj.name}
+version: ${proj.vers}
+main: ${plugin.main}
+authors: ["${proj.athr}"]
+folia-supported: true
+api-version: 1.13
+load: STARTUP
+
+softdepend: ${plugin.deps}

@@ -1,6 +1,9 @@
 /.vscode/**
 /target/**
+/dist/**
 /run/**
+
+!/modules/build
 
 **/.DS_Store
 
