@@ -18,6 +18,7 @@ import xyz.webmc.wlib.api.agent.transformer.WClassTransformer;
 import xyz.webmc.wlib.api.util.LoggerUtil;
 
 import java.lang.instrument.ClassFileTransformer;
+import java.lang.management.ManagementFactory;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.concurrent.CompletionException;
 import java.util.function.Function;
 
+import com.sun.management.HotSpotDiagnosticMXBean;
 import dev.colbster937.reflect.MirrorSafe;
 import dev.colbster937.util.ExceptionStacker;
 import org.bukkit.plugin.Plugin;
@@ -83,6 +85,13 @@ public final class InternalAgentUtil {
   public static void shutdown() {
     checkInternalCaller();
     invokeBridge("shutdown");
+  }
+
+  public static boolean getIsDynamicAttachmentSupported() {
+    return Boolean.parseBoolean(
+      ManagementFactory.getPlatformMXBean(HotSpotDiagnosticMXBean.class)
+      .getVMOption("EnableDynamicAgentLoading").getValue()
+    );
   }
 
   public static void onReady(Runnable callback) {
@@ -162,7 +171,11 @@ public final class InternalAgentUtil {
   }
 
   private static <T> T invokeBridge(String method, Object... params) {
-    return MirrorSafe.invokeMethod(bridge, method, params);
+    if (bridge != null) {
+      return MirrorSafe.invokeMethod(bridge, method, params);
+    } else {
+      return null;
+    }
   }
 
   private static void ready() {

@@ -8,8 +8,9 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>modules/plugin</module>
     <module>modules/agent</module>
+    <module>modules/launcher</module>
+    <module>modules/plugin</module>
   </modules>
 
   <distributionManagement>
@@ -177,5 +178,20 @@
         </configuration>
       </plugin>
     </plugins>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.5.1</version>
+          <configuration>
+            <archive>
+              <addMavenDescriptor>false</addMavenDescriptor>
+            </archive>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 </project>

@@ -74,6 +74,12 @@
     </dependency>
 
     <dependency>
+      <groupId>${proj.pckg}</groupId>
+      <artifactId>${proj.afct}-launcher</artifactId>
+      <version>${proj.vers}</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.bukkit</groupId>
       <artifactId>bukkit</artifactId>
       <version>1.8-R0.1-SNAPSHOT</version>
@@ -296,6 +302,10 @@
                 </relocation>
               </relocations>
 
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer" />
+              </transformers>
+
               <filters>
                 <filter>
                   <artifact>*:*</artifact>
@@ -365,36 +375,14 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>3.2.0</version>
-
-        <executions>
-          <execution>
-            <id>generate-properties</id>
-            <phase>generate-resources</phase>
-
-            <goals>
-              <goal>run</goal>
-            </goals>
-
-            <configuration>
-              <target>
-                <mkdir dir="${project.build.directory}/resources" />
-                <echoproperties destfile="${project.build.directory}/resources/build.properties">
-                  <propertyset>
-                    <propertyref prefix="agent." />
-                  </propertyset>
-                </echoproperties>
-                <replaceregexp
-                  file="${project.build.directory}/resources/build.properties"
-                  match="^#.*\r?\n?"
-                  replace=""
-                  flags="gm"
-                />
-              </target>
-            </configuration>
-          </execution>
-        </executions>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>${launcher.main}</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
       </plugin>
 
       <plugin>
@@ -423,6 +411,71 @@
             <lib>${java.home}/jmods/java.base.jmod</lib>
           </libs>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.2.0</version>
+
+        <executions>
+          <execution>
+            <id>generate-properties</id>
+            <phase>generate-resources</phase>
+
+            <goals>
+              <goal>run</goal>
+            </goals>
+
+            <configuration>
+              <target>
+                <mkdir dir="${project.build.directory}/resources/generated" />
+
+                <echoproperties destfile="${project.build.directory}/resources/generated/build.properties">
+                  <propertyset>
+                    <propertyref prefix="agent." />
+                  </propertyset>
+                </echoproperties>
+
+                <replaceregexp
+                  file="${project.build.directory}/resources/generated/build.properties"
+                  match="^#.*\r?\n?"
+                  replace=""
+                  flags="gm"
+                />
+              </target>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>add-proguard-map</id>
+            <phase>package</phase>
+
+            <goals>
+              <goal>run</goal>
+            </goals>
+
+            <configuration>
+              <target xmlns:if="ant:if">
+                <condition property="proguard">
+                  <and>
+                    <available file="${project.build.directory}/proguard_map.txt"/>
+                    <not>
+                      <equals arg1="${proguard.skip}" arg2="true"/>
+                    </not>
+                  </and>
+                </condition>
+
+                <zip if:set="proguard" destfile="${project.build.directory}/${project.build.finalName}.jar" update="true">
+                  <zipfileset
+                    file="${project.build.directory}/proguard_map.txt"
+                    fullpath="resources/generated/proguard_map.txt"
+                  />
+                </zip>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

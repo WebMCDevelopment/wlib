@@ -25,6 +25,7 @@ import xyz.webmc.wlib.api.util.SchedulerUtil;
 import xyz.webmc.wlib.internal.command.WLIBBlankCommand;
 import xyz.webmc.wlib.internal.command.WLIBCommand;
 import xyz.webmc.wlib.internal.misc.WInfoFetcher;
+import xyz.webmc.wlib.internal.util.BuildPropUtil;
 import xyz.webmc.wlib.internal.util.InternalAgentUtil;
 import xyz.webmc.wlib.internal.util.InternalUtil;
 import xyz.webmc.wlib.internal.util.TestStructureUtil;
@@ -42,34 +43,39 @@ public final class WLIBBukkitPlugin extends WPlugin implements Listener {
 
   @Override
   protected void enable() throws Exception {
-    WLIB._init(this);
+    if (InternalAgentUtil.getIsDynamicAttachmentSupported()) {
+      WLIB._init(this);
 
-    InternalAgentUtil.init(this);
-    InternalUtil.init(this);
-    TestStructureUtil.init();
+      BuildPropUtil._init(this);
+      InternalAgentUtil.init(this);
+      InternalUtil.init(this);
+      TestStructureUtil.init();
 
-    WInfoFetcher.init(this);
+      WInfoFetcher.init(this);
 
-    CommandUtil._init(this);
-    EventUtil._init(this);
-    ImageUtil._init(this);
-    PermissionUtil._init();
-    PlaceholderUtil._init();
-    SchedulerUtil._init(this);
+      CommandUtil._init(this);
+      EventUtil._init(this);
+      ImageUtil._init(this);
+      PermissionUtil._init();
+      PlaceholderUtil._init();
+      SchedulerUtil._init(this);
 
-    EventUtil.registerEvents(new WLIBEventListener(this));
+      EventUtil.registerEvents(new WLIBEventListener(this));
 
-    CommandUtil.registerCommand(new WLIBCommand(WLIB.getWLIBKeyString()));
-    CommandUtil.registerCommand(new WLIBBlankCommand(WLIB.getBlankCommandName()));
-    CommandUtil.registerCommandAliases("wlib:wlib plugins", "wplugins", "wpl");
-    CommandUtil.registerCommandAliases("wlib:wlib ascii", "wascii");
-    CommandUtil.registerCommandAliases("wlib:wlib fetch", "wfetch", "neofetch");
-    CommandUtil.registerCommandAliases("wlib:wlib debug", "wdebug", "wdbg");
-    // CommandUtil.registerCommandAliases("wlib:wlib alerts", "walerts");
-    CommandUtil.registerCommandAliases("wlib:wlib debug alert", "walert");
-    CommandUtil.registerCommandAliases("wlib:wlib version", "wversion", "wver");
+      CommandUtil.registerCommand(new WLIBCommand(WLIB.getWLIBKeyString()));
+      CommandUtil.registerCommand(new WLIBBlankCommand(WLIB.getBlankCommandName()));
+      CommandUtil.registerCommandAliases("wlib:wlib plugins", "wplugins", "wpl");
+      CommandUtil.registerCommandAliases("wlib:wlib ascii", "wascii");
+      CommandUtil.registerCommandAliases("wlib:wlib fetch", "wfetch", "neofetch");
+      CommandUtil.registerCommandAliases("wlib:wlib debug", "wdebug", "wdbg");
+      // CommandUtil.registerCommandAliases("wlib:wlib alerts", "walerts");
+      CommandUtil.registerCommandAliases("wlib:wlib debug alert", "walert");
+      CommandUtil.registerCommandAliases("wlib:wlib version", "wversion", "wver");
 
-    // PermissionUtil.setGroupPermission("default", "wlib.alerts.muted.*", false);
+      // PermissionUtil.setGroupPermission("default", "wlib.alerts.muted.*", false);
+    } else {
+      throw new IllegalStateException();
+    }
   }
 
   @Override

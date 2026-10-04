@@ -18,16 +18,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.bukkit.plugin.Plugin;
+
 public final class BuildPropUtil {
   private static final Properties PROPERTIES = new Properties();
 
-  public static String getProperty(String key) {
-    return PROPERTIES.getProperty(key).trim();
+  public static void _init(Plugin plugin) throws IOException {
+    try (InputStream is = plugin.getResource("resources/generated/build.properties")) {
+      PROPERTIES.load(is);
+    }
   }
 
-  static {
-    try (InputStream is = BuildPropUtil.class.getResourceAsStream("/resources/build.properties")) {
-      PROPERTIES.load(is);
-    } catch (IOException ex) {}
+  public static String getProperty(String key) {
+    return PROPERTIES.getProperty(key).trim();
   }
 }

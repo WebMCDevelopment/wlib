@@ -55,7 +55,7 @@ public final class PixelFormatter {
   });
 
   public static final PixelFormatter MINECRAFT_LEGACY = new PixelFormatter((int rgb) -> {
-    final int[] _rgb = getARGB(rgb);
+    final int[] argb = getARGB(rgb);
 
     ChatColor color = ChatColor.WHITE;
     int d = Integer.MAX_VALUE;
@@ -67,9 +67,9 @@ public final class PixelFormatter {
       final int cg = (value >> 8) & 0xFF;
       final int cb = value & 0xFF;
 
-      final int dr = _rgb[1] - cr;
-      final int dg = _rgb[2] - cg;
-      final int db = _rgb[3] - cb;
+      final int dr = argb[1] - cr;
+      final int dg = argb[2] - cg;
+      final int db = argb[3] - cb;
 
       final int cd = dr * dr + dg * dg + db * db;
       if (cd < d) {

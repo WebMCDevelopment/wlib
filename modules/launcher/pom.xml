@@ -10,7 +10,7 @@
   </parent>
 
   <groupId>${proj.pckg}</groupId>
-  <artifactId>${proj.afct}-agent</artifactId>
+  <artifactId>${proj.afct}-launcher</artifactId>
   <version>${proj.vers}</version>
 
   <build>
@@ -20,12 +20,9 @@
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
           <archive>
-            <addMavenDescriptor>false</addMavenDescriptor>
-            <manifestEntries>
-              <Agent-Class>${agent.main}</Agent-Class>
-              <Can-Redefine-Classes>true</Can-Redefine-Classes>
-              <Can-Retransform-Classes>true</Can-Retransform-Classes>
-            </manifestEntries>
+            <manifest>
+              <mainClass>${launcher.main}</mainClass>
+            </manifest>
           </archive>
         </configuration>
       </plugin>
