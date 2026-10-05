@@ -22,7 +22,7 @@
   </distributionManagement>
 
   <properties>
-    <java.version>17</java.version>
+    <proj.java.version>17</proj.java.version>
 
     <proj.name>WLIB</proj.name>
     <proj.afct>wlib</proj.afct>
@@ -38,7 +38,7 @@
     <launcher.main>${proj.pckg}.internal.launcher.LauncherMain</launcher.main>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.release>${java.version}</maven.compiler.release>
+    <maven.compiler.release>${proj.java.version}</maven.compiler.release>
     <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
 

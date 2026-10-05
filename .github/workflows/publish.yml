@@ -37,7 +37,7 @@ jobs:
         run: |
           echo "HASH=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
           echo "VERS=$(mvn help:evaluate -Dexpression=proj.vers -q -DforceStdout)" >> "$GITHUB_OUTPUT"
-          echo "JAVA=$(mvn help:evaluate -Dexpression=java.version -q -DforceStdout)" >> "$GITHUB_OUTPUT"
+          echo "JAVA=$(mvn help:evaluate -Dexpression=proj.java.version -q -DforceStdout)" >> "$GITHUB_OUTPUT"
           echo "AFCT=$(mvn -pl :wlib-plugin help:evaluate -Dexpression=project.build.finalName -q -DforceStdout)" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-java@v5
         with:
