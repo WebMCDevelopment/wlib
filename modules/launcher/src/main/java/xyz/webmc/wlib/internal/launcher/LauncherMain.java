@@ -27,6 +27,7 @@ import java.util.Properties;
 
 public final class LauncherMain {
   private static final List<String> JVM_ARGS = List.of(
+    "-XX:+IgnoreUnrecognizedVMOptions",
     "-XX:+EnableDynamicAgentLoading",
     "-DPaper.IgnoreJavaVersion=true",
     "-DPaper.skipServerPropertiesComments=true",
@@ -59,6 +60,9 @@ public final class LauncherMain {
     properties.setProperty("addPlugin", Boolean.toString(addPlugin));
     properties.setProperty("acceptEula", Boolean.toString(acceptEula));
 
+    final String qJvmArgs = unquote(jvmArgs);
+    final String qProgramArgs = unquote(programArgs);
+
     try (BufferedWriter writer = Files.newBufferedWriter(propertiesPath)) {
       for (Map.Entry<Object, Object> entry : properties.entrySet()) {
         writer.write(entry.getKey() + " = " + entry.getValue());
@@ -75,8 +79,8 @@ public final class LauncherMain {
     cmd.addAll(ManagementFactory.getRuntimeMXBean().getInputArguments());
     cmd.addAll(JVM_ARGS);
 
-    if (!jvmArgs.isBlank()) {
-      cmd.addAll(List.of(unquote(jvmArgs).split(" ")));
+    if (!qJvmArgs.isBlank()) {
+      cmd.addAll(List.of(qJvmArgs.split(" ")));
     }
 
     if (acceptEula) {
@@ -89,8 +93,8 @@ public final class LauncherMain {
     cmd.addAll(Arrays.asList(args));
     cmd.addAll(PROGRAM_ARGS);
 
-    if (!programArgs.isBlank()) {
-      cmd.addAll(List.of(unquote(programArgs).split(" ")));
+    if (!qProgramArgs.isBlank()) {
+      cmd.addAll(List.of(qProgramArgs.split(" ")));
     }
 
     if (addPlugin) {

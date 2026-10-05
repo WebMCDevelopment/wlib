@@ -88,10 +88,14 @@ public final class InternalAgentUtil {
   }
 
   public static boolean getIsDynamicAttachmentSupported() {
-    return Boolean.parseBoolean(
-      ManagementFactory.getPlatformMXBean(HotSpotDiagnosticMXBean.class)
-      .getVMOption("EnableDynamicAgentLoading").getValue()
-    );
+    if (Runtime.version().feature() >= 21) {
+      return Boolean.parseBoolean(
+        ManagementFactory.getPlatformMXBean(HotSpotDiagnosticMXBean.class)
+        .getVMOption("EnableDynamicAgentLoading").getValue()
+      );
+    } else {
+      return true;
+    }
   }
 
   public static void onReady(Runnable callback) {

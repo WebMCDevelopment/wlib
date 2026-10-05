@@ -74,6 +74,12 @@
     </dependency>
 
     <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>wlib-devkit</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>${proj.pckg}</groupId>
       <artifactId>${proj.afct}-launcher</artifactId>
       <version>${proj.vers}</version>
@@ -234,6 +240,24 @@
     </resources>
 
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <compilerArgs>
+            <arg>-Adevkit.propertiesFile=${project.build.directory}/resources/generated/build.properties</arg>
+          </compilerArgs>
+
+          <annotationProcessorPaths>
+            <path>
+              <groupId>${project.groupId}</groupId>
+              <artifactId>wlib-devkit</artifactId>
+              <version>${project.version}</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
@@ -433,7 +457,9 @@
 
                 <echoproperties destfile="${project.build.directory}/resources/generated/build.properties">
                   <propertyset>
+                    <propertyref prefix="proj." />
                     <propertyref prefix="agent." />
+                    <propertyref prefix="plugin." />
                   </propertyset>
                 </echoproperties>
 

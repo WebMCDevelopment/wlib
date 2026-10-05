@@ -22,6 +22,7 @@ import xyz.webmc.wlib.api.util.ImageUtil;
 import xyz.webmc.wlib.api.util.PermissionUtil;
 import xyz.webmc.wlib.api.util.PlaceholderUtil;
 import xyz.webmc.wlib.api.util.SchedulerUtil;
+import xyz.webmc.wlib.devkit.annotation.PluginMeta;
 import xyz.webmc.wlib.internal.command.WLIBBlankCommand;
 import xyz.webmc.wlib.internal.command.WLIBCommand;
 import xyz.webmc.wlib.internal.misc.WInfoFetcher;
@@ -38,6 +39,21 @@ import org.apache.logging.log4j.core.config.Configurator;
 import org.bukkit.event.Listener;
 
 @WPluginMeta(shutdownOnFailure = true, bStats = 33913)
+@PluginMeta(
+  name = "${proj.name}",
+  version = "${proj.vers}",
+  authors = "${proj.athr}",
+  website = "${proj.repo}",
+  load = "STARTUP",
+  softDepend = {
+    "PlaceholderAPI",
+    "LuckPerms",
+    "Essentials",
+    "EaglercraftXServer",
+    "EaglercraftXBackendRPC"
+  },
+  foliaSupported = true
+)
 public final class WLIBBukkitPlugin extends WPlugin implements Listener {
   private static final Set<Class<?>> DISABLE_LOGGERS = Set.of(SchematicLoader.class);
 

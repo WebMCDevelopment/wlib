@@ -9,6 +9,7 @@
 
   <modules>
     <module>modules/agent</module>
+    <module>modules/devkit</module>
     <module>modules/launcher</module>
     <module>modules/plugin</module>
   </modules>
@@ -21,14 +22,14 @@
   </distributionManagement>
 
   <properties>
+    <java.version>17</java.version>
+
     <proj.name>WLIB</proj.name>
     <proj.afct>wlib</proj.afct>
     <proj.pckg>xyz.webmc.${proj.afct}</proj.pckg>
     <proj.vers>1.3.4-SNAPSHOT</proj.vers>
     <proj.athr>Colbster937</proj.athr>
-
-    <plugin.main>${proj.pckg}.internal.${proj.name}BukkitPlugin</plugin.main>
-    <plugin.deps>["PlaceholderAPI", "LuckPerms", "Essentials", "EaglercraftXServer", "EaglercraftXBackendRPC"]</plugin.deps>
+    <proj.repo>https://github.com/WebMCDevelopment/wlib</proj.repo>
 
     <agent.main>${proj.pckg}.internal.agent.AgentMain</agent.main>
     <agent.bdge>${proj.pckg}.internal.agent.AgentBridge</agent.bdge>
@@ -37,7 +38,7 @@
     <launcher.main>${proj.pckg}.internal.launcher.LauncherMain</launcher.main>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.release>${java.version}</maven.compiler.release>
     <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
 
@@ -159,7 +160,7 @@
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>3.6.0</version>
         <inherited>false</inherited>
-        
+
         <executions>
           <execution>
             <id>checkstyle</id>
