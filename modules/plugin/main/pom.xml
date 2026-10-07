@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>parent</groupId>
+    <artifactId>parent</artifactId>
+    <version>parent</version>
+    <relativePath>../../../pom.xml</relativePath>
+  </parent>
+
+  <groupId>${proj.pckg}</groupId>
+  <artifactId>${proj.afct}-plugin</artifactId>
+  <version>${proj.vers}</version>
+
+  <properties>
+    <maven.deploy.skip>false</maven.deploy.skip>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>spigotmc</id>
+      <url>https://hub.spigotmc.org/nexus/content/repositories/public/</url>
+    </repository>
+
+    <repository>
+      <id>tcoded</id>
+      <url>https://repo.tcoded.com/releases/</url>
+    </repository>
+
+    <repository>
+      <id>schematic4j</id>
+      <url>https://maven.colbster937.dev/colbster937/schematic4j/</url>
+    </repository>
+
+    <repository>
+      <id>placeholderapi</id>
+      <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+    </repository>
+
+    <repository>
+      <id>meteor</id>
+      <url>https://maven.meteordev.org/releases/</url>
+    </repository>
+
+    <repository>
+      <id>lax1dude</id>
+      <url>https://repo.lax1dude.net/repository/releases/</url>
+      <releases>
+        <checksumPolicy>ignore</checksumPolicy>
+      </releases>
+      <snapshots>
+        <checksumPolicy>ignore</checksumPolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>${proj.pckg}</groupId>
+      <artifactId>${proj.afct}-agent</artifactId>
+      <version>${proj.vers}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>${proj.pckg}</groupId>
+      <artifactId>${proj.afct}-common</artifactId>
+      <version>${proj.vers}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>${proj.pckg}</groupId>
+      <artifactId>${proj.afct}-devkit</artifactId>
+      <version>${proj.vers}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>${proj.pckg}</groupId>
+      <artifactId>${proj.afct}-launcher</artifactId>
+      <version>${proj.vers}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.bukkit</groupId>
+      <artifactId>bukkit</artifactId>
+      <version>1.8-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.meteordev</groupId>
+      <artifactId>starscript</artifactId>
+      <version>0.2.5</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.26.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.26.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.bstats</groupId>
+      <artifactId>bstats-bukkit</artifactId>
+      <version>3.2.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.tcoded</groupId>
+      <artifactId>FoliaLib</artifactId>
+      <version>0.5.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.cryptomorin</groupId>
+      <artifactId>XSeries</artifactId>
+      <version>13.7.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>net.sandrohc</groupId>
+      <artifactId>schematic4j</artifactId>
+      <version>1.1.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20260522</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.semver4j</groupId>
+      <artifactId>semver4j</artifactId>
+      <version>6.0.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.javassist</groupId>
+      <artifactId>javassist</artifactId>
+      <version>3.33.0-GA</version>
+    </dependency>
+
+    <dependency>
+      <groupId>me.clip</groupId>
+      <artifactId>placeholderapi</artifactId>
+      <version>2.12.3</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>net.luckperms</groupId>
+      <artifactId>api</artifactId>
+      <version>5.5</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>net.lax1dude.eaglercraft.backend</groupId>
+      <artifactId>api-bukkit</artifactId>
+      <version>1.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>net.lax1dude.eaglercraft.backend</groupId>
+      <artifactId>backend-rpc-api-bukkit</artifactId>
+      <version>1.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <resources>
+      <resource>
+        <filtering>true</filtering>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*.yml</include>
+        </includes>
+      </resource>
+
+      <resource>
+        <filtering>false</filtering>
+        <directory>src/main/resources</directory>
+        <targetPath>resources</targetPath>
+        <excludes>
+          <exclude>**/*.yml</exclude>
+        </excludes>
+      </resource>
+
+      <resource>
+        <filtering>true</filtering>
+        <directory>${project.build.directory}/resources</directory>
+        <targetPath>resources</targetPath>
+      </resource>
+
+      <resource>
+        <filtering>false</filtering>
+        <directory>${maven.multiModuleProjectDirectory}</directory>
+        <includes>
+          <include>LICENSE.md</include>
+        </includes>
+      </resource>
+
+      <resource>
+        <filtering>false</filtering>
+        <directory>${maven.multiModuleProjectDirectory}</directory>
+        <targetPath>resources</targetPath>
+        <includes>
+          <include>img/**</include>
+        </includes>
+      </resource>
+    </resources>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+
+        <configuration>
+          <compilerArgs>
+            <arg>-Adevkit.propertiesFile=${project.build.directory}/resources/generated/build.properties</arg>
+          </compilerArgs>
+
+          <annotationProcessorPaths>
+            <path>
+              <groupId>${proj.pckg}</groupId>
+              <artifactId>${proj.afct}-devkit</artifactId>
+              <version>${proj.vers}</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+
+        <executions>
+          <execution>
+            <phase>package</phase>
+
+            <goals>
+              <goal>shade</goal>
+            </goals>
+
+            <configuration>
+              <shadedArtifactAttached>false</shadedArtifactAttached>
+              <createDependencyReducedPom>true</createDependencyReducedPom>
+
+              <relocations>
+                <relocation>
+                  <pattern>dev.colbster937.reflect</pattern>
+                  <shadedPattern>${proj.pckg}.lib.mirror</shadedPattern>
+                </relocation>
+
+                <relocation>
+                  <pattern>dev.colbster937.util</pattern>
+                  <shadedPattern>${proj.pckg}.lib.jutil</shadedPattern>
+                </relocation>
+
+                <relocation>
+                  <pattern>org.bstats</pattern>
+                  <shadedPattern>${proj.pckg}.lib.bstats</shadedPattern>
+                </relocation>
+
+                <relocation>
+                  <pattern>com.tcoded.folialib</pattern>
+                  <shadedPattern>${proj.pckg}.lib.folialib</shadedPattern>
+                </relocation>
+
+                <relocation>
+                  <pattern>com.cryptomorin.xseries</pattern>
+                  <shadedPattern>${proj.pckg}.lib.xseries</shadedPattern>
+                </relocation>
+
+                <relocation>
+                  <pattern>net.sandrohc.schematic4j</pattern>
+                  <shadedPattern>${proj.pckg}.lib.schematic4j</shadedPattern>
+                </relocation>
+
+                <relocation>
+                  <pattern>org.json</pattern>
+                  <shadedPattern>${proj.pckg}.lib.json</shadedPattern>
+                </relocation>
+
+                <relocation>
+                  <pattern>org.semver4j</pattern>
+                  <shadedPattern>${proj.pckg}.lib.semver4j</shadedPattern>
+                </relocation>
+
+                <relocation>
+                  <pattern>javassist</pattern>
+                  <shadedPattern>${proj.pckg}.lib.javassist</shadedPattern>
+                </relocation>
+
+                <relocation>
+                  <pattern>org.jspecify</pattern>
+                  <shadedPattern>${proj.pckg}.lib.jspecify</shadedPattern>
+                </relocation>
+              </relocations>
+
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>org/checkerframework/**</exclude>
+                    <exclude>org/slf4j/**</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.6.2</version>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+
+            <configuration>
+              <sources>
+                <source>src/compat/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.11.0</version>
+
+        <executions>
+          <execution>
+            <id>copy-agent</id>
+            <phase>prepare-package</phase>
+
+            <goals>
+              <goal>copy</goal>
+            </goals>
+
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>${proj.pckg}</groupId>
+                  <artifactId>${proj.afct}-agent</artifactId>
+                  <version>${proj.vers}</version>
+                  <type>jar</type>
+                  <outputDirectory>${project.build.outputDirectory}/resources</outputDirectory>
+                  <destFileName>agent.jar</destFileName>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>${launcher.main}</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>com.github.wvengen</groupId>
+        <artifactId>proguard-maven-plugin</artifactId>
+        <version>2.7.0</version>
+
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>proguard</goal>
+            </goals>
+          </execution>
+        </executions>
+
+        <configuration>
+          <maxMemory>1024m</maxMemory>
+          <includeDependency>true</includeDependency>
+          <injar>${project.build.finalName}.jar</injar>
+          <outjar>${project.build.finalName}.jar</outjar>
+          <outputDirectory>${project.build.directory}</outputDirectory>
+          <proguardInclude>${project.parent.build.directory}/resources/proguardRules.conf</proguardInclude>
+
+          <libs>
+            <lib>${java.home}/jmods/java.base.jmod</lib>
+          </libs>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.2.0</version>
+
+        <executions>
+          <execution>
+            <id>generate-properties</id>
+            <phase>generate-resources</phase>
+
+            <goals>
+              <goal>run</goal>
+            </goals>
+
+            <configuration>
+              <target>
+                <mkdir dir="${project.build.directory}/resources/generated" />
+
+                <echoproperties destfile="${project.build.directory}/resources/generated/build.properties">
+                  <propertyset>
+                    <propertyref prefix="proj." />
+                    <propertyref prefix="agent." />
+                    <propertyref prefix="plugin." />
+                  </propertyset>
+                </echoproperties>
+
+                <replaceregexp
+                  file="${project.build.directory}/resources/generated/build.properties"
+                  match="^#.*\r?\n?"
+                  replace=""
+                  flags="gm"
+                />
+              </target>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>add-proguard-map</id>
+            <phase>package</phase>
+
+            <goals>
+              <goal>run</goal>
+            </goals>
+
+            <configuration>
+              <target xmlns:if="ant:if">
+                <condition property="proguard">
+                  <and>
+                    <available file="${project.build.directory}/proguard_map.txt"/>
+                    <not>
+                      <equals arg1="${proguard.skip}" arg2="true"/>
+                    </not>
+                  </and>
+                </condition>
+
+                <zip if:set="proguard" destfile="${project.build.directory}/${project.build.finalName}.jar" update="true">
+                  <zipfileset
+                    file="${project.build.directory}/proguard_map.txt"
+                    fullpath="resources/generated/proguard_map.txt"
+                  />
+                </zip>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

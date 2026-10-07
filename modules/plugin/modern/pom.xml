@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>parent</groupId>
+    <artifactId>parent</artifactId>
+    <version>parent</version>
+    <relativePath>../../../pom.xml</relativePath>
+  </parent>
+
+  <groupId>${proj.pckg}</groupId>
+  <artifactId>${proj.afct}-modern</artifactId>
+  <version>${proj.vers}</version>
+
+  <properties>
+    <paper.vers>1.20.6-R0.1-SNAPSHOT</paper.vers>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>papermc</id>
+      <url>https://repo.papermc.io/repository/maven-public/</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>bytecode.space</id>
+      <url>https://repo.bytecode.space/repository/maven-public/</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>${proj.pckg}</groupId>
+      <artifactId>${proj.afct}-common</artifactId>
+      <version>${proj.vers}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.papermc.paper</groupId>
+      <artifactId>paper-api</artifactId>
+      <version>${paper.vers}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ca.bkaw</groupId>
+      <artifactId>paper-nms</artifactId>
+      <version>${paper.vers}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>ca.bkaw</groupId>
+        <artifactId>paper-nms-maven-plugin</artifactId>
+        <version>1.5</version>
+      </plugin>
+    </plugins>
+  </build>
+</project>

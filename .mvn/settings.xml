@@ -1,0 +1,17 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0">
+  <profiles>
+    <profile>
+      <id>nms-core-ext</id>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>nms-core-ext</id>
+          <url>https://maven.colbster937.dev/colbster937/maven-nms-core-ext/</url>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
+
+  <activeProfiles>
+    <activeProfile>nms-core-ext</activeProfile>
+  </activeProfiles>
+</settings>

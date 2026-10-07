@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>parent</groupId>
+    <artifactId>parent</artifactId>
+    <version>parent</version>
+    <relativePath>../../../pom.xml</relativePath>
+  </parent>
+
+  <groupId>${proj.pckg}</groupId>
+  <artifactId>${proj.afct}-common</artifactId>
+  <version>${proj.vers}</version>
+
+  <repositories>
+    <repository>
+      <id>java-mirror</id>
+      <url>https://maven.colbster937.dev/colbster937/java-mirror/</url>
+    </repository>
+
+    <repository>
+      <id>java-util</id>
+      <url>https://maven.colbster937.dev/colbster937/java-util/</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>dev.colbster937</groupId>
+      <artifactId>mirror</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>dev.colbster937</groupId>
+      <artifactId>java-util</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+</project>

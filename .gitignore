@@ -1,9 +1,10 @@
+/.paper-nms/**
 /.vscode/**
 /target/**
 /dist/**
 /run/**
 
-!/modules/build
+!/modules/build/
 
 **/.DS_Store
 **/dependency-reduced-pom.xml

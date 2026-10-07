@@ -1,0 +1,211 @@
+/*
+ * Copyright (C) 2026 Colbster937
+ *
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * See the LICENSE file for details.
+ */
+
+package xyz.webmc.wlib.api.util;
+
+import xyz.webmc.wlib.api.misc.ScheduledTask;
+import xyz.webmc.wlib.internal.compat.api.util.SchedulerUtilCompat;
+import xyz.webmc.wlib.internal.util.InternalUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+
+import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.enums.EntityTaskResult;
+import com.tcoded.folialib.impl.PlatformScheduler;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.plugin.Plugin;
+
+public final class SchedulerUtil extends SchedulerUtilCompat {
+  private static final Map<Plugin, List<ScheduledTask>> TASKS = new ConcurrentHashMap<>();
+  private static Plugin plugin;
+  private static FoliaLib lib;
+  private static PlatformScheduler sch;
+
+  public static void _init(Plugin _plugin) {
+    InternalUtil.checkInternalCaller();
+    plugin = _plugin;
+    lib = new FoliaLib(plugin);
+    sch = lib.getScheduler();
+  }
+
+  public static void _cancelAllTasks() {
+    InternalUtil.checkInternalCaller();
+    sch.cancelAllTasks();
+  }
+
+  public static boolean isFolia() {
+    return lib.isFolia();
+  }
+
+  public static void cancelPluginTasks(Plugin plugin) {
+    final List<ScheduledTask> tasks = TASKS.get(plugin);
+    if (tasks != null) {
+      tasks.forEach(ScheduledTask::cancel);
+      TASKS.remove(plugin);
+    }
+  }
+
+  public static CompletableFuture<Void> runNextTick(Runnable task) {
+    return sch.runNextTick(t -> task.run());
+  }
+
+  public static ScheduledTask runLater(Plugin plugin, Runnable task, long delayTicks) {
+    return task(plugin, sch.runLater(task, delayTicks));
+  }
+
+  public static ScheduledTask runLater(Runnable task, long delayTicks) {
+    return runLater(plugin, task, delayTicks);
+  }
+
+  public static ScheduledTask runTimer(Plugin plugin, Runnable task, long delayTicks, long periodTicks) {
+    return task(plugin, sch.runTimer(task, delayTicks, periodTicks));
+  }
+
+  public static ScheduledTask runTimer(Runnable task, long delayTicks, long periodTicks) {
+    return runTimer(plugin, task, delayTicks, periodTicks);
+  }
+
+  public static CompletableFuture<Void> runAsync(Runnable task) {
+    return sch.runAsync(t -> task.run());
+  }
+
+  public static ScheduledTask runLaterAsync(Plugin plugin, Runnable task, long delayTicks) {
+    return task(plugin, sch.runLaterAsync(task, delayTicks));
+  }
+
+  public static ScheduledTask runLaterAsync(Runnable task, long delayTicks) {
+    return runLaterAsync(plugin, task, delayTicks);
+  }
+
+  public static ScheduledTask runLaterAsync(Plugin plugin, Runnable task, long delay, TimeUnit unit) {
+    return task(plugin, sch.runLaterAsync(task, delay, unit));
+  }
+
+  public static ScheduledTask runLaterAsync(Runnable task, long delay, TimeUnit unit) {
+    return runLaterAsync(plugin, task, delay, unit);
+  }
+
+  public static ScheduledTask runTimerAsync(Plugin plugin, Runnable task, long delayTicks, long periodTicks) {
+    return task(plugin, sch.runTimerAsync(task, delayTicks, periodTicks));
+  }
+
+  public static ScheduledTask runTimerAsync(Runnable task, long delayTicks, long periodTicks) {
+    return runTimerAsync(plugin, task, delayTicks, periodTicks);
+  }
+
+  public static ScheduledTask runTimerAsync(Plugin plugin, Runnable task, long delay, long period, TimeUnit unit) {
+    return task(plugin, sch.runTimerAsync(task, delay, period, unit));
+  }
+
+  public static ScheduledTask runTimerAsync(Runnable task, long delay, long period, TimeUnit unit) {
+    return runTimerAsync(plugin, task, delay, period, unit);
+  }
+
+  public static CompletableFuture<Void> runAtLocation(Location loc, Runnable task) {
+    return sch.runAtLocation(loc, t -> task.run());
+  }
+
+  public static ScheduledTask runAtLocationLater(Plugin plugin, Location loc, Runnable task, long delayTicks) {
+    return task(plugin, sch.runAtLocationLater(loc, task, delayTicks));
+  }
+
+  public static ScheduledTask runAtLocationLater(Location loc, Runnable task, long delayTicks) {
+    return runAtLocationLater(plugin, loc, task, delayTicks);
+  }
+
+  public static CompletableFuture<Void> runAtLocationNextTick(Location loc, Runnable task) {
+    final CompletableFuture<Void> future = new CompletableFuture<>();
+
+    runAtLocationLater(loc, () -> {
+      try {
+        task.run();
+        future.complete(null);
+      } catch (Exception ex) {
+        future.completeExceptionally(ex);
+      }
+    }, 1L);
+
+    return future;
+  }
+
+  public static ScheduledTask runAtLocationTimer(Plugin plugin, Location loc, Runnable task, long delayTicks, long periodTicks) {
+    return task(plugin, sch.runAtLocationTimer(loc, task, delayTicks, periodTicks));
+  }
+
+  public static ScheduledTask runAtLocationTimer(Location loc, Runnable task, long delayTicks, long periodTicks) {
+    return runAtLocationTimer(plugin, loc, task, delayTicks, periodTicks);
+  }
+
+  public static CompletableFuture<EntityTaskResult> runAtEntity(Entity ent, Runnable task) {
+    return sch.runAtEntity(ent, t -> task.run());
+  }
+
+  public static ScheduledTask runAtEntityLater(Plugin plugin, Entity ent, Runnable task, long delayTicks) {
+    return task(plugin, sch.runAtEntityLater(ent, task, delayTicks));
+  }
+
+  public static ScheduledTask runAtEntityLater(Entity ent, Runnable task, long delayTicks) {
+    return runAtEntityLater(plugin, ent, task, delayTicks);
+  }
+
+  public static CompletableFuture<Void> runAtEntityNextTick(Entity ent, Runnable task) {
+    final CompletableFuture<Void> future = new CompletableFuture<>();
+
+    runAtEntityLater(ent, () -> {
+      try {
+        task.run();
+        future.complete(null);
+      } catch (Exception ex) {
+        future.completeExceptionally(ex);
+      }
+    }, 1L);
+
+    return future;
+  }
+
+  public static ScheduledTask runAtEntityTimer(Plugin plugin, Entity ent, Runnable task, long delayTicks, long periodTicks) {
+    return task(plugin, sch.runAtEntityTimer(ent, task, delayTicks, periodTicks));
+  }
+
+  public static ScheduledTask runAtEntityTimer(Entity ent, Runnable task, long delayTicks, long periodTicks) {
+    return runAtEntityTimer(plugin, ent, task, delayTicks, periodTicks);
+  }
+
+  public static void teleportAsync(Entity ent, Location loc) {
+    sch.teleportAsync(ent, loc);
+  }
+
+  public static void teleportAsync(Entity ent, Entity tent) {
+    teleportAsync(ent, tent.getLocation());
+  }
+
+  private static ScheduledTask task(Plugin plugin, WrappedTask task) {
+    final ScheduledTask scheduled = new ScheduledTask(task, plugin);
+
+    final List<ScheduledTask> tasks = TASKS.get(plugin);
+    if (tasks != null) {
+      tasks.add(scheduled);
+    } else {
+      TASKS.put(plugin, new ArrayList<>(List.of(scheduled)));
+    }
+
+    return scheduled;
+  }
+}

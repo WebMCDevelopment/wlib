@@ -8,10 +8,13 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>modules/agent</module>
-    <module>modules/devkit</module>
-    <module>modules/launcher</module>
-    <module>modules/plugin</module>
+    <module>modules/plugin/common</module>
+    <module>modules/plugin/main</module>
+    <module>modules/plugin/modern</module>
+
+    <module>modules/misc/agent</module>
+    <module>modules/misc/devkit</module>
+    <module>modules/misc/launcher</module>
   </modules>
 
   <distributionManagement>
@@ -22,7 +25,7 @@
   </distributionManagement>
 
   <properties>
-    <proj.java.version>17</proj.java.version>
+    <proj.java.vers>17</proj.java.vers>
 
     <proj.name>WLIB</proj.name>
     <proj.afct>wlib</proj.afct>
@@ -38,7 +41,7 @@
     <launcher.main>${proj.pckg}.internal.launcher.LauncherMain</launcher.main>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.release>${proj.java.version}</maven.compiler.release>
+    <maven.compiler.release>${proj.java.vers}</maven.compiler.release>
     <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
 
@@ -65,7 +68,7 @@
               <outputDirectory>${project.build.directory}/resources</outputDirectory>
               <resources>
                 <resource>
-                  <directory>modules/_build/resources</directory>
+                  <directory>modules/build/resources</directory>
                   <filtering>true</filtering>
                 </resource>
               </resources>
@@ -216,10 +219,44 @@
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.5.1</version>
           <configuration>
-            <archive>
+            <archive combine.children="append">
               <addMavenDescriptor>false</addMavenDescriptor>
             </archive>
           </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>3.6.2</version>
+
+          <executions>
+            <execution>
+              <phase>package</phase>
+
+              <goals>
+                <goal>shade</goal>
+              </goals>
+
+              <configuration>
+                <shadedArtifactAttached>false</shadedArtifactAttached>
+                <createDependencyReducedPom>true</createDependencyReducedPom>
+
+                <transformers>
+                  <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer" />
+                </transformers>
+
+                <filters>
+                  <filter>
+                    <artifact>*:*</artifact>
+                    <excludes combine.children="append">
+                      <exclude>META-INF/**</exclude>
+                    </excludes>
+                  </filter>
+                </filters>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>

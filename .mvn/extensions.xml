@@ -1,0 +1,7 @@
+<extensions>
+  <extension>
+    <groupId>dev.colbster937</groupId>
+    <artifactId>maven-nms-core-ext</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </extension>
+</extensions>
