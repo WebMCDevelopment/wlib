@@ -20,10 +20,13 @@ jobs:
       - id: vars
         run: |
           echo "JAVA=$(mvn help:evaluate -Dexpression=proj.java.vers -q -DforceStdout)" >> "$GITHUB_OUTPUT"
+
       - uses: actions/setup-java@v5
         with:
           distribution: liberica
           java-version: ${{ steps.vars.outputs.JAVA }}
+          cache: 'maven'
+
       - run: |
           ./modules/build/scripts/FormatCode.sh
           git config user.name "github-actions[bot]"

@@ -39,6 +39,7 @@ jobs:
           echo "VERS=$(mvn help:evaluate -Dexpression=proj.vers -q -DforceStdout)" >> "$GITHUB_OUTPUT"
           echo "JAVA=$(mvn help:evaluate -Dexpression=proj.java.vers -q -DforceStdout)" >> "$GITHUB_OUTPUT"
           echo "AFCT=$(mvn -pl :wlib-plugin help:evaluate -Dexpression=project.build.finalName -q -DforceStdout)" >> "$GITHUB_OUTPUT"
+
       - uses: actions/setup-java@v5
         with:
           distribution: liberica
@@ -46,29 +47,37 @@ jobs:
           server-id: github
           server-username: GITHUB_ACTOR
           server-password: GITHUB_TOKEN
+          cache: 'maven'
+
       - run: mvn -B -DskipTests deploy
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - id: dist
         run: |
           echo "REL_NAME=${{ format('v{0}+{1}', steps.vars.outputs.VERS, steps.vars.outputs.HASH) }}" >> "$GITHUB_OUTPUT"
           echo "JAR_NAME=${{ format('{0}+{1}.jar', steps.vars.outputs.AFCT, steps.vars.outputs.HASH) }}" >> "$GITHUB_OUTPUT"
+
       - run: |
           mkdir -p dist
           cp modules/plugin/target/${{ steps.vars.outputs.AFCT }}.jar dist/${{ steps.dist.outputs.JAR_NAME }}
+
       - uses: actions/upload-artifact@v7
         with:
           path: dist/${{ steps.dist.outputs.JAR_NAME }}
           name: ${{ steps.vars.outputs.AFCT }}
           if-no-files-found: error
+
       - id: mrtoken
         run: |
           echo "STATUS=$([ -n "${{ secrets.MODRINTH_TOKEN }}" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
       - id: mrinfo
         if: ${{ steps.mrtoken.outputs.STATUS == 'true' }}
         run: |
           echo "PROJECT_ID=$(curl -s "https://api.modrinth.com/v2/project/wlib" -H "Authorization: Bearer ${{ secrets.MODRINTH_TOKEN }}" | jq -r '.id')" >> "$GITHUB_OUTPUT"
+
       - if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.mrtoken.outputs.STATUS == 'true'
         uses: cloudnode-pro/modrinth-publish@v2
         with:
