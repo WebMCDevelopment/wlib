@@ -13,8 +13,7 @@
 
 package xyz.webmc.wlib.internal.util;
 
-import xyz.webmc.wlib.api.WLIB;
-import xyz.webmc.wlib.api.plugin.WPlugin;
+import xyz.webmc.wlib.internal.iface.IWPlugin;
 
 import java.lang.StackWalker.StackFrame;
 import java.lang.reflect.Method;
@@ -23,20 +22,26 @@ import dev.colbster937.reflect.Mirror;
 import dev.colbster937.reflect.MirrorSafe;
 
 public final class InternalUtil {
-  private static final StackWalker STACK_WALKER = WLIB.getStackWalker();
-  private static WPlugin plugin;
+  private static IWPlugin plugin;
+  private static StackWalker stackWalker;
 
-  public static void init(WPlugin _plugin) {
+  public static void init(IWPlugin _plugin, StackWalker _stackWalker) {
     if (plugin == null) {
       plugin = _plugin;
-    } else {
+    }
+
+    if (stackWalker == null) {
+      stackWalker = _stackWalker;
+    }
+
+    if (plugin != null && stackWalker != null) {
       checkInternalCaller();
     }
   }
 
   public static void checkInternalCaller() {
     if (plugin != null) {
-      final StackFrame[] frames = STACK_WALKER.walk(s -> s.skip(1).toArray(StackFrame[]::new));
+      final StackFrame[] frames = stackWalker.walk(s -> s.skip(1).toArray(StackFrame[]::new));
       if (frames.length > 0) {
         final StackFrame frame = frames[1];
         if (!plugin.getOwnsClass(frame.getDeclaringClass())) {

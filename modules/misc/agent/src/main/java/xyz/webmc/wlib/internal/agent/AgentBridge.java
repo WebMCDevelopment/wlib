@@ -13,7 +13,6 @@
 
 package xyz.webmc.wlib.internal.agent;
 
-
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
@@ -107,7 +106,7 @@ public final class AgentBridge {
       }
     }
 
-    retransformClasses(transform.toArray(new Class<?>[0]));
+    retransformClasses(transform.toArray(Class<?>[]::new));
   }
 
   public static void retransformAllClasses(String... classes) {
@@ -130,7 +129,7 @@ public final class AgentBridge {
       }
     }
 
-    retransformClasses(transform.toArray(new Class<?>[0]));
+    retransformClasses(transform.toArray(Class<?>[]::new));
   }
 
   public static void retransformAllClasses() {

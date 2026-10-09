@@ -13,7 +13,6 @@
 
 package xyz.webmc.wlib.internal.agent;
 
-
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.Instrumentation;
 import java.util.Collections;
@@ -40,7 +39,7 @@ public final class AgentMain {
     }
 
     synchronized (TRANSFORMED) {
-      AgentBridge.retransformClasses(false, TRANSFORMED.toArray(new Class<?>[0]));
+      AgentBridge.retransformClasses(false, TRANSFORMED.toArray(Class<?>[]::new));
       TRANSFORMED.clear();
     }
   }

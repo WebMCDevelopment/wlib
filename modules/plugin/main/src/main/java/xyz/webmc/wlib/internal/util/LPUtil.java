@@ -13,7 +13,6 @@
 
 package xyz.webmc.wlib.internal.util;
 
-
 import java.util.UUID;
 
 import net.luckperms.api.LuckPermsProvider;

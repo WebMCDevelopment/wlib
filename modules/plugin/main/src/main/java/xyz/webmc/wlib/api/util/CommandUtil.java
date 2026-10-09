@@ -129,6 +129,14 @@ public final class CommandUtil {
     return tabComplete(Bukkit.getConsoleSender(), cmd);
   }
 
+  public static void sendConsole(String msg) {
+    Bukkit.getConsoleSender().sendMessage(msg);
+  }
+
+  public static void sendConsole(String[] msg) {
+    Bukkit.getConsoleSender().sendMessage(msg);
+  }
+
   public static Command getCommand(String cmd) {
     return getCommandMap().getCommand(cmd);
   }

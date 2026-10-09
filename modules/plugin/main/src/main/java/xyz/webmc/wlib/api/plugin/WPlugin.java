@@ -19,12 +19,12 @@ import xyz.webmc.wlib.api.util.EventUtil;
 import xyz.webmc.wlib.api.util.PluginUtil;
 import xyz.webmc.wlib.api.util.SchedulerUtil;
 import xyz.webmc.wlib.internal.WLIBBukkitPlugin;
-import xyz.webmc.wlib.internal.WLIBEventListener;
+import xyz.webmc.wlib.internal.iface.IWPlugin;
 import xyz.webmc.wlib.internal.util.InternalUtil;
 
 import java.io.File;
 
-import dev.colbster937.reflect.MirrorSafe;
+import dev.colbster937.reflect.Mirror;
 import dev.colbster937.util.ExceptionStacker;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -32,7 +32,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @WPluginMeta
-public abstract class WPlugin extends JavaPlugin {
+public abstract class WPlugin extends JavaPlugin implements IWPlugin {
+  private final boolean modern = WLIB.getIsModernServer();
   private WPluginMeta meta;
   private Metrics metrics;
 
@@ -51,8 +52,10 @@ public abstract class WPlugin extends JavaPlugin {
         });
       }
 
-      if (getMethodOverwritten("load")) {
-        this.load();
+      this.execStage("load");
+
+      if (modern) {
+        this.execStage("loadModern");
       }
     } catch (Throwable t) {
       this.handleThrowable("load", t);
@@ -76,8 +79,10 @@ public abstract class WPlugin extends JavaPlugin {
       }
 
       if (error == null || error.isBlank()) {
-        if (getMethodOverwritten("enable")) {
-          this.enable();
+        this.execStage("enable");
+
+        if (modern) {
+          this.execStage("enableModern");
         }
 
         WLIB.initPlugin(this);
@@ -86,11 +91,7 @@ public abstract class WPlugin extends JavaPlugin {
         }
 
         if (getMethodOverwritten("serverStartup")) {
-          if (MirrorSafe.getClassExists("org.bukkit.event.server.ServerLoadEvent")) {
-            WLIBEventListener._onServerStartup(this::onServerStartup);
-          } else {
-            SchedulerUtil.runNextTick(this::onServerStartup);
-          }
+          WLIB.onServerStartup(this::onServerStartup);
         }
 
         final int bStats = this.meta.bStats();
@@ -108,8 +109,10 @@ public abstract class WPlugin extends JavaPlugin {
   @Override
   public final void onDisable() {
     try {
-      if (getMethodOverwritten("disable")) {
-        this.disable();
+      this.execStage("disable");
+
+      if (modern) {
+        this.execStage("disableModern");
       }
 
       if (this.metrics != null) {
@@ -128,16 +131,18 @@ public abstract class WPlugin extends JavaPlugin {
     return super.getFile();
   }
 
-  public final String getVersion() {
-    return this.getDescription().getVersion();
+  @Override
+  public final WPluginMeta getWPluginMeta() {
+    return this.getClass().getAnnotation(WPluginMeta.class);
   }
 
+  @Override
   public final boolean getOwnsClass(Class<?> clazz) {
     return PluginUtil.getOwnsClass(this, clazz);
   }
 
-  public final WPluginMeta getWPluginMeta() {
-    return this.getClass().getAnnotation(WPluginMeta.class);
+  public final String getVersion() {
+    return this.getDescription().getVersion();
   }
 
   public final Metrics getMetrics() {
@@ -145,8 +150,11 @@ public abstract class WPlugin extends JavaPlugin {
   }
 
   protected void load() throws Throwable {}
+  protected void loadModern() throws Throwable {}
   protected void enable() throws Throwable {}
+  protected void enableModern() throws Throwable {}
   protected void disable() throws Throwable {}
+  protected void disableModern() throws Throwable {}
   protected void agentReady() throws Throwable {}
   protected void serverStartup() throws Throwable {}
 
@@ -179,6 +187,12 @@ public abstract class WPlugin extends JavaPlugin {
 
   private void handleThrowable(String stage, Throwable t) {
     this.handleThrowable(stage, t, true);
+  }
+
+  private void execStage(String name) throws Exception {
+    if (getMethodOverwritten(name)) {
+      Mirror.invokeMethod(this, name);
+    }
   }
 
   private static boolean getMethodOverwritten(String name) {

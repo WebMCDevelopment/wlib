@@ -11,34 +11,39 @@
  * See the LICENSE file for details.
  */
 
-package xyz.webmc.wlib.api.util;
+package xyz.webmc.wlib.modern.api.util;
 
-import xyz.webmc.wlib.api.plugin.WPlugin;
-import xyz.webmc.wlib.internal.compat.api.util.DatapackUtilCompat;
-import xyz.webmc.wlib.internal.iface.ModernServerRequiredUtil;
+import xyz.webmc.wlib.api.util.HashUtil;
+import xyz.webmc.wlib.internal.iface.IWPlugin;
 
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 
-import static xyz.webmc.wlib.internal.iface.ModernServerRequiredUtil.requireModernServer;
 import static xyz.webmc.wlib.internal.util.InternalUtil.checkInternalCaller;
 
-public final class DatapackUtil extends DatapackUtilCompat implements ModernServerRequiredUtil {
+public class DatapackUtil {
   private static final List<Plugin> INIT_QUEUE = new ArrayList<>();
-  private static Path DATAPACK_FOLDER;
+  private static Consumer<String> dispatchConsole;
+  private static Path datapackFolder;
+
+  public static void _init(Consumer<String> _dispatchConsole) {
+    checkInternalCaller();
+
+    dispatchConsole = _dispatchConsole;
+  }
 
   public static void _initWorld(World world) {
     checkInternalCaller();
-    requireModernServer();
 
-    if (DATAPACK_FOLDER == null) {
-      DATAPACK_FOLDER = world.getWorldFolder().toPath()
+    if (datapackFolder == null) {
+      datapackFolder = world.getWorldFolder().toPath()
         .resolve("datapacks")
         .toAbsolutePath();
     }
@@ -46,9 +51,8 @@ public final class DatapackUtil extends DatapackUtilCompat implements ModernServ
 
   public static void _initPlugin(Plugin plugin) {
     checkInternalCaller();
-    requireModernServer();
 
-    if (DATAPACK_FOLDER != null) {
+    if (datapackFolder != null) {
       __initPlugin(plugin);
     } else {
       synchronized (INIT_QUEUE) {
@@ -59,22 +63,17 @@ public final class DatapackUtil extends DatapackUtilCompat implements ModernServ
 
   public static void _shutdownPlugin(Plugin plugin) {
     checkInternalCaller();
-    requireModernServer();
 
-    CommandUtil.dispatchConsole("minecraft:datapack disable " + getPluginDatapackString(plugin));
+    dispatchConsole.accept("minecraft:datapack disable " + getPluginDatapackString(plugin));
   }
 
   public static void enableDatapack(String datapack) {
-    requireModernServer();
-
-    CommandUtil.dispatchConsole("minecraft:datapack list available");
-    CommandUtil.dispatchConsole("minecraft:datapack enable " + datapackString(datapack));
+    dispatchConsole.accept("minecraft:datapack list available");
+    dispatchConsole.accept("minecraft:datapack enable " + datapackString(datapack));
   }
 
   public static void disableDatapack(String datapack) {
-    requireModernServer();
-
-    CommandUtil.dispatchConsole("minecraft:datapack disable " + datapackString(datapack));
+    dispatchConsole.accept("minecraft:datapack disable " + datapackString(datapack));
   }
 
   public static void _processQueue() {
@@ -95,10 +94,8 @@ public final class DatapackUtil extends DatapackUtilCompat implements ModernServ
   }
 
   private static void __initPlugin(Plugin plugin) {
-    final WPlugin wPlugin = PluginUtil.getWPlugin(plugin);
-
     String resource = "datapack.zip";
-    if (wPlugin != null) {
+    if (plugin instanceof IWPlugin wPlugin) {
       final String path = wPlugin.getWPluginMeta().datapackPath();
       if (path != null && !path.isBlank()) {
         resource = path;
@@ -106,7 +103,7 @@ public final class DatapackUtil extends DatapackUtilCompat implements ModernServ
     }
 
     final String name = getPluginDatapackString(plugin);
-    final Path out = DATAPACK_FOLDER.resolve(name).toAbsolutePath();
+    final Path out = datapackFolder.resolve(name).toAbsolutePath();
     final boolean exists = Files.exists(out);
 
     try (InputStream is = plugin.getResource(resource)) {

@@ -13,14 +13,17 @@
 
 package xyz.webmc.wlib.api;
 
-import xyz.webmc.wlib.api.util.DatapackUtil;
 import xyz.webmc.wlib.api.util.PluginUtil;
 import xyz.webmc.wlib.api.util.RNGUtil;
+import xyz.webmc.wlib.api.util.SchedulerUtil;
 import xyz.webmc.wlib.api.util.TextUtil;
 import xyz.webmc.wlib.internal.command.AliasCommand;
 import xyz.webmc.wlib.internal.compat.WCompat;
 import xyz.webmc.wlib.internal.compat.api.WLIBCompat;
 import xyz.webmc.wlib.internal.util.CompatUtil;
+import xyz.webmc.wlib.modern.api.WLIBModern;
+import xyz.webmc.wlib.modern.api.util.DatapackUtil;
+import xyz.webmc.wlib.modern.internal.WLIBModernEventListener;
 
 import java.lang.StackWalker.Option;
 import java.lang.StackWalker.StackFrame;
@@ -30,12 +33,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 
 import dev.colbster937.reflect.MirrorSafe;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.semver4j.Semver;
 
@@ -127,8 +132,8 @@ public final class WLIB extends WLIBCompat {
         ChatColor.RESET + ChatColor.GRAY +
         String.join(" ", msg);
 
-      Bukkit.getOnlinePlayers().forEach(player -> {
-        if (player.hasPermission("wlib.alerts") && !player.hasPermission("wlib.alerts.muted." + ctx)) {
+      forEachPlayerPerm("wlib.alerts", player -> {
+        if (!player.hasPermission("wlib.alerts.muted." + ctx)) {
           player.sendMessage(str);
         }
       });
@@ -246,14 +251,28 @@ public final class WLIB extends WLIBCompat {
 
         final String[] multiStr = TextUtil.serializeExceptionStackStringMultiline(str);
 
-        Bukkit.getOnlinePlayers().forEach(player -> {
-          if (player.hasPermission("wlib.alerts")) {
-            for (String _str : multiStr) {
-              player.sendMessage(ChatColor.RED + _str);
-            }
+        forEachPlayerPerm("wlib.alerts", player -> {
+          for (String _str : multiStr) {
+            player.sendMessage(ChatColor.RED + _str);
           }
         });
       }
+    }
+  }
+
+  public static void forEachPlayerPerm(String permission, Consumer<Player> consumer) {
+    Bukkit.getOnlinePlayers().forEach(player -> {
+      if (player.hasPermission(permission)) {
+        consumer.accept(player);
+      }
+    });
+  }
+
+  public static void onServerStartup(Runnable callback) {
+    if (getIsModernServer()) {
+      WLIBModernEventListener.onServerStartup(callback);
+    } else {
+      SchedulerUtil.runNextTick(callback);
     }
   }
 

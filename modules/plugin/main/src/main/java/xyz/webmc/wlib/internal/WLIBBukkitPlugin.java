@@ -30,15 +30,16 @@ import xyz.webmc.wlib.internal.util.BuildPropUtil;
 import xyz.webmc.wlib.internal.util.InternalAgentUtil;
 import xyz.webmc.wlib.internal.util.InternalUtil;
 import xyz.webmc.wlib.internal.util.TestStructureUtil;
+import xyz.webmc.wlib.modern.api.util.DatapackUtil;
+import xyz.webmc.wlib.modern.internal.WLIBModernEventListener;
 
 import java.util.Set;
 
 import net.sandrohc.schematic4j.SchematicLoader;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
-import org.bukkit.event.Listener;
 
-@WPluginMeta(shutdownOnFailure = true, bStats = 33913)
+@WPluginMeta(shutdownOnFailure = true, requireAgent = true, bStats = 33913)
 @PluginMeta(
   name = "${proj.name}",
   version = "${proj.vers}",
@@ -54,17 +55,17 @@ import org.bukkit.event.Listener;
   },
   foliaSupported = true
 )
-public final class WLIBBukkitPlugin extends WPlugin implements Listener {
+public final class WLIBBukkitPlugin extends WPlugin {
   private static final Set<Class<?>> DISABLE_LOGGERS = Set.of(SchematicLoader.class);
 
   @Override
-  protected void enable() throws Exception {
+  protected void load() throws Exception {
     if (InternalAgentUtil.getIsDynamicAttachmentSupported()) {
       WLIB._init(this);
 
       BuildPropUtil._init(this);
+      InternalUtil.init(this, WLIB.getStackWalker());
       InternalAgentUtil.init(this);
-      InternalUtil.init(this);
       TestStructureUtil.init();
 
       WInfoFetcher.init(this);
@@ -72,26 +73,42 @@ public final class WLIBBukkitPlugin extends WPlugin implements Listener {
       CommandUtil._init(this);
       EventUtil._init(this);
       ImageUtil._init(this);
-      PermissionUtil._init();
-      PlaceholderUtil._init();
       SchedulerUtil._init(this);
-
-      EventUtil.registerEvents(new WLIBEventListener(this));
-
-      CommandUtil.registerCommand(new WLIBCommand(WLIB.getWLIBKeyString()));
-      CommandUtil.registerCommand(new WLIBBlankCommand(WLIB.getBlankCommandName()));
-      CommandUtil.registerCommandAliases("wlib:wlib plugins", "wplugins", "wpl");
-      CommandUtil.registerCommandAliases("wlib:wlib ascii", "wascii");
-      CommandUtil.registerCommandAliases("wlib:wlib fetch", "wfetch", "neofetch");
-      CommandUtil.registerCommandAliases("wlib:wlib debug", "wdebug", "wdbg");
-      // CommandUtil.registerCommandAliases("wlib:wlib alerts", "walerts");
-      CommandUtil.registerCommandAliases("wlib:wlib debug alert", "walert");
-      CommandUtil.registerCommandAliases("wlib:wlib version", "wversion", "wver");
-
-      // PermissionUtil.setGroupPermission("default", "wlib.alerts.muted.*", false);
     } else {
       throw new IllegalStateException();
     }
+  }
+
+  @Override
+  protected void loadModern() {
+    DatapackUtil._init(CommandUtil::dispatchConsole);
+  }
+
+  @Override
+  protected void enable() {
+    PermissionUtil._init();
+    PlaceholderUtil._init();
+
+    EventUtil.registerEvents(new WLIBEventListener());
+
+    CommandUtil.registerCommand(new WLIBCommand(WLIB.getWLIBKeyString()));
+    CommandUtil.registerCommand(new WLIBBlankCommand(WLIB.getBlankCommandName()));
+    CommandUtil.registerCommandAliases("wlib:wlib plugins", "wplugins", "wpl");
+    CommandUtil.registerCommandAliases("wlib:wlib ascii", "wascii");
+    CommandUtil.registerCommandAliases("wlib:wlib fetch", "wfetch", "neofetch");
+    CommandUtil.registerCommandAliases("wlib:wlib debug", "wdebug", "wdbg");
+    // CommandUtil.registerCommandAliases("wlib:wlib alerts", "walerts");
+    CommandUtil.registerCommandAliases("wlib:wlib debug alert", "walert");
+    CommandUtil.registerCommandAliases("wlib:wlib version", "wversion", "wver");
+
+    // PermissionUtil.setGroupPermission("default", "wlib.alerts.muted.*", false);
+  }
+
+  @Override
+  protected void enableModern() {
+    EventUtil.registerEvents(new WLIBModernEventListener(
+      Set.of(WLIB.getBlankCommandKey(), WLIB.getBlankCommandName())
+    ));
   }
 
   @Override

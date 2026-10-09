@@ -32,7 +32,7 @@ public final class WInfoFetcher {
 
   public static void init(WPlugin _plugin) {
     plugin = _plugin;
-    startup = System.currentTimeMillis();
+    setStartup(System.currentTimeMillis());
   }
 
   public static void setStartup(long _startup) {

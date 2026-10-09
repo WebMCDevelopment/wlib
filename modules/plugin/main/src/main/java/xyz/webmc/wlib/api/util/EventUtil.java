@@ -16,6 +16,7 @@ package xyz.webmc.wlib.api.util;
 import xyz.webmc.wlib.api.misc.iface.EventRunnable;
 import xyz.webmc.wlib.internal.util.InternalUtil;
 
+import dev.colbster937.reflect.MirrorSafe;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
@@ -68,5 +69,12 @@ public final class EventUtil {
 
   public static void callEvent(Event ev) {
     PLUGIN_MANAGER.callEvent(ev);
+  }
+
+  public static void callEvent(Class<? extends Event> clazz, Object... params) {
+    final Event ev = MirrorSafe.invokeConstructor(clazz, params);
+    if (ev != null) {
+      callEvent(ev);
+    }
   }
 }

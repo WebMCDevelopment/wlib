@@ -13,7 +13,6 @@
 
 package xyz.webmc.wlib.internal.util;
 
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -30,6 +29,11 @@ public final class BuildPropUtil {
   }
 
   public static String getProperty(String key) {
-    return PROPERTIES.getProperty(key).trim();
+    final String property = PROPERTIES.getProperty(key);
+    if (property != null) {
+      return property.trim();
+    } else {
+      return null;
+    }
   }
 }

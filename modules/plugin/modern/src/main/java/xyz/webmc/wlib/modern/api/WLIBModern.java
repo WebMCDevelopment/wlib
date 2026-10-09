@@ -11,16 +11,6 @@
  * See the LICENSE file for details.
  */
 
-package xyz.webmc.wlib.internal.compat;
+package xyz.webmc.wlib.modern.api;
 
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface WCompat {
-  Class<?> value();
-}
+public final class WLIBModern {}

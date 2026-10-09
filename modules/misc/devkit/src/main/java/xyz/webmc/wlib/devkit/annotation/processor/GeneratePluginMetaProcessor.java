@@ -100,20 +100,24 @@ final class GeneratePluginMetaProcessor extends AbstractGeneratorProcessor<Plugi
 
           writeYml(writer, "bootstrapper", paper.bootstrapper());
           writeYml(writer, "loader", paper.loader());
-          writeYml(writer, "dependencies");
 
-          final Set<String> categories = new HashSet<>();
+          final PaperPluginDependency[] dependencies = paper.dependencies();
+          if (dependencies.length > 0) {
+            writeYml(writer, "dependencies");
 
-          for (PaperPluginDependency dep : paper.dependencies()) {
-            final String cat = dep.category();
-            if (categories.add(cat)) {
-              writeYml(writer, 1, cat);
+            final Set<String> categories = new HashSet<>();
+
+            for (PaperPluginDependency dep : dependencies) {
+              final String cat = dep.category();
+              if (categories.add(cat)) {
+                writeYml(writer, 1, cat);
+              }
+
+              writeYml(writer, 2, dep.name());
+              writeYml(writer, 3, "load", dep.load());
+              writeYml(writer, 3, "required", dep.required());
+              writeYml(writer, 3, "join-classpath", dep.joinClasspath());
             }
-
-            writeYml(writer, 2, dep.name());
-            writeYml(writer, 3, "load", dep.load());
-            writeYml(writer, 3, "required", dep.required());
-            writeYml(writer, 3, "join-classpath", dep.joinClasspath());
           }
         }
       }

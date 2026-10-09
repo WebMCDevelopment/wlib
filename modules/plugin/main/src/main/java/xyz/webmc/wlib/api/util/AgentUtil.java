@@ -40,7 +40,7 @@ public final class AgentUtil {
   }
 
   public static void retransformClasses(Collection<Class<?>> classes) {
-    retransformClasses(classes.toArray(new Class<?>[0]));
+    retransformClasses(classes.toArray(Class<?>[]::new));
   }
 
   public static void retransformAllClasses(Class<?>... classes) {
@@ -48,7 +48,7 @@ public final class AgentUtil {
   }
 
   public static void retransformAllClasses(Collection<Class<?>> classes) {
-    retransformAllClasses(classes.toArray(new Class<?>[0]));
+    retransformAllClasses(classes.toArray(Class<?>[]::new));
   }
 
   public static void retransformAllClasses(String... classes) {
@@ -56,7 +56,7 @@ public final class AgentUtil {
   }
 
   public static void retransformAllClassesStr(Collection<String> classes) {
-    retransformAllClasses(classes.toArray(new String[0]));
+    retransformAllClasses(classes.toArray(String[]::new));
   }
 
   public static void retransformAllClasses() {

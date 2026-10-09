@@ -13,7 +13,6 @@
 
 package xyz.webmc.wlib.internal.agent;
 
-
 import java.util.logging.Level;
 
 final class AgentLogger {

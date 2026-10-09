@@ -13,7 +13,6 @@
 
 package xyz.webmc.wlib.devkit.annotation.processor;
 
-import java.io.FileNotFoundException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -48,7 +47,7 @@ public final class WAnnotationProcessor extends AbstractProcessor {
         if (propertiesFile != null && !propertiesFile.isBlank()) {
           try (Reader reader = Files.newBufferedReader(Path.of(propertiesFile))) {
             properties.load(reader);
-          } catch (FileNotFoundException ex) {}
+          }
         }
 
         properties.putAll(options);

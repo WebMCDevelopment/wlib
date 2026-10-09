@@ -13,13 +13,9 @@
 
 package xyz.webmc.wlib.internal.iface;
 
-import xyz.webmc.wlib.api.WLIB;
+import xyz.webmc.wlib.api.plugin.WPluginMeta;
 
-
-public interface ModernServerRequiredUtil {
-  static void requireModernServer() throws IllegalStateException {
-    if (!WLIB.getIsModernServer()) {
-      throw new IllegalStateException();
-    }
-  }
+public interface IWPlugin {
+  WPluginMeta getWPluginMeta();
+  boolean getOwnsClass(Class<?> clazz);
 }

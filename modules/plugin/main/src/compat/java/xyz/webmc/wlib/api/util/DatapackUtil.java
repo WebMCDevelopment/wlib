@@ -11,13 +11,10 @@
  * See the LICENSE file for details.
  */
 
-package xyz.webmc.wlib.internal.compat.api.util;
+package xyz.webmc.wlib.api.util;
 
-import xyz.webmc.wlib.api.util.DatapackUtil;
-import xyz.webmc.wlib.internal.compat.WCompat;
-
-@WCompat(DatapackUtil.class)
-public abstract class DatapackUtilCompat {
+@Deprecated(forRemoval = true)
+public final class DatapackUtil extends xyz.webmc.wlib.modern.api.util.DatapackUtil {
   @Deprecated(forRemoval = true)
   public static void enable(String datapack) {
     DatapackUtil.enableDatapack(datapack);

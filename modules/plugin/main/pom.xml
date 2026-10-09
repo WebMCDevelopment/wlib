@@ -71,6 +71,12 @@
 
     <dependency>
       <groupId>${proj.pckg}</groupId>
+      <artifactId>${proj.afct}-modern</artifactId>
+      <version>${proj.vers}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>${proj.pckg}</groupId>
       <artifactId>${proj.afct}-devkit</artifactId>
       <version>${proj.vers}</version>
     </dependency>
@@ -225,12 +231,26 @@
 
     <plugins>
       <plugin>
+        <groupId>${proj.pckg}</groupId>
+        <artifactId>${proj.afct}-devkit</artifactId>
+        <version>${proj.vers}</version>
+
+        <executions>
+          <execution>
+            <goals>
+              <goal>devkit</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
 
         <configuration>
           <compilerArgs>
-            <arg>-Adevkit.propertiesFile=${project.build.directory}/resources/generated/build.properties</arg>
+            <arg>-Adevkit.propertiesFile=${project.build.directory}/devkit.properties</arg>
           </compilerArgs>
 
           <annotationProcessorPaths>
@@ -328,23 +348,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.6.2</version>
-        <executions>
-          <execution>
-            <id>add-source</id>
-            <phase>generate-sources</phase>
-
-            <goals>
-              <goal>add-source</goal>
-            </goals>
-
-            <configuration>
-              <sources>
-                <source>src/compat/java</source>
-              </sources>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>
@@ -380,6 +383,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
+
         <configuration>
           <archive>
             <manifest>
@@ -405,7 +409,7 @@
 
         <configuration>
           <maxMemory>1024m</maxMemory>
-          <includeDependency>true</includeDependency>
+          <includeDependency>false</includeDependency>
           <injar>${project.build.finalName}.jar</injar>
           <outjar>${project.build.finalName}.jar</outjar>
           <outputDirectory>${project.build.directory}</outputDirectory>

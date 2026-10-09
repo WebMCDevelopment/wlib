@@ -29,6 +29,8 @@ public @interface WPluginMeta {
 
   boolean requireModernServer() default false;
 
+  boolean requireAgent() default false;
+
   boolean shutdownOnFailure() default false;
 
   int bStats() default -1;

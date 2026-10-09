@@ -26,8 +26,9 @@ import org.bukkit.entity.Player;
 public final class PlayerUtil {
   private static final Map<UUID, WPlayer> PLAYERS = new HashMap<>();
 
-  public static void _onPlayerLogin(UUID uuid, String host) {
-    PLAYERS.putIfAbsent(uuid, new WPlayer(uuid, host, host));
+  public static void _onPlayerLogin(UUID uuid, String name, String host) {
+    final WPlayer player = PLAYERS.computeIfAbsent(uuid, k -> new WPlayer(k, name, host));
+    LoggerUtil.debug(player.name() + " joined via hostname " + player.host());
   }
 
   public static void _onPlayerQuit(Player player) {

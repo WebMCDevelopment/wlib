@@ -30,18 +30,18 @@ import org.bukkit.plugin.Plugin;
 import static xyz.webmc.wlib.internal.util.InternalUtil.checkInternalCaller;
 
 public final class ImageUtil {
-  private static BufferedImage WLIB;
+  private static BufferedImage WLIB_IMG;
 
   public static void _init(Plugin plugin) throws IOException {
     checkInternalCaller();
 
     try (InputStream is = plugin.getResource("resources/img/wlib.png")) {
-      WLIB = resizeImage(is, 16, 16);
+      WLIB_IMG = resizeImage(is, 16, 16);
     }
   }
 
   public static BufferedImage getWLIBImage() {
-    return WLIB;
+    return WLIB_IMG;
   }
 
   public static BufferedImage resizeImage(BufferedImage img, int width, int height) {
