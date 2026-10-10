@@ -153,12 +153,10 @@ public final class InternalAgentUtil {
   }
 
   public static Path _getPackageFSPath(String pckg) {
-    checkInternalCaller();
     return Path.of(getPackageFS(pckg));
   }
 
   public static PathMatcher _getClassMatcher(String glob) {
-    checkInternalCaller();
     return FileSystems.getDefault().getPathMatcher("glob:" + getPackageFS(glob));
   }
 

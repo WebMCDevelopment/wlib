@@ -176,7 +176,7 @@ public final class AgentBridge {
   private static <T> T getPluginBridge(String name, Object param) {
     if (pluginBridge != null) {
       try {
-        final Method method = pluginBridge.getMethod("_" + name, param.getClass());
+        final Method method = pluginBridge.getMethod("_get" + name, param.getClass());
         method.setAccessible(true);
         return (T) method.invoke(null, param);
       } catch (ReflectiveOperationException ex) {
