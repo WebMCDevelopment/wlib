@@ -61,7 +61,7 @@ jobs:
 
       - run: |
           mkdir -p dist
-          cp modules/plugin/target/${{ steps.vars.outputs.AFCT }}.jar dist/${{ steps.dist.outputs.JAR_NAME }}
+          cp modules/plugin/main/target/${{ steps.vars.outputs.AFCT }}.jar dist/${{ steps.dist.outputs.JAR_NAME }}
 
       - uses: actions/upload-artifact@v7
         with:
