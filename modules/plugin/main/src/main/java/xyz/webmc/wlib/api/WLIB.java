@@ -21,7 +21,6 @@ import xyz.webmc.wlib.internal.command.AliasCommand;
 import xyz.webmc.wlib.internal.compat.WCompat;
 import xyz.webmc.wlib.internal.compat.api.WLIBCompat;
 import xyz.webmc.wlib.internal.util.CompatUtil;
-import xyz.webmc.wlib.modern.api.WLIBModern;
 import xyz.webmc.wlib.modern.api.util.DatapackUtil;
 import xyz.webmc.wlib.modern.internal.WLIBModernEventListener;
 
