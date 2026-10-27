@@ -12,40 +12,40 @@
   <br>
 
   <a href="https://www.java.com/">
-    <img src="https://raw.githubusercontent.com/intergrav/devins-badges/v3/assets/cozy/built-with/java17_vector.svg">
+    <img src=".github/readme/badges/built-with/java17.svg">
   </a>
   <a href="https://maven.apache.org/">
-    <img src="https://raw.githubusercontent.com/intergrav/devins-badges/v3/assets/cozy/built-with/maven_vector.svg">
+    <img src=".github/readme/badges/built-with/maven.svg">
   </a>
 
   <br>
 
   <a href="https://github.com/WebMCDevelopment/wlib">
-    <img src="https://raw.githubusercontent.com/intergrav/devins-badges/v3/assets/cozy/available/github_vector.svg">
+    <img src=".github/readme/badges/available/github.svg">
   </a>
   <a href="https://modrinth.com/plugin/wlib/">
-    <img src="https://raw.githubusercontent.com/intergrav/devins-badges/v3/assets/cozy/available/modrinth_vector.svg">
+    <img src=".github/readme/badges/available/modrinth.svg">
   </a>
   <a href="https://hangar.papermc.io/WebMC/wlib/">
-    <img src="https://raw.githubusercontent.com/intergrav/devins-badges/v3/assets/cozy/available/hangar_vector.svg">
+    <img src=".github/readme/badges/available/hangar.svg">
   </a>
 
   <br>
 
-  <a>
-    <img src="https://raw.githubusercontent.com/intergrav/devins-badges/v3/assets/cozy/supported/bukkit_vector.svg">
+  <a href="https://dev.bukkit.org/">
+    <img src=".github/readme/badges/supported/bukkit.svg">
   </a>
   <a href="https://www.spigotmc.org/">
-    <img src="https://raw.githubusercontent.com/intergrav/devins-badges/v3/assets/cozy/supported/spigot_vector.svg">
+    <img src=".github/readme/badges/supported/spigot.svg">
   </a>
   <a href="https://papermc.io/software/paper/">
-    <img src="https://raw.githubusercontent.com/intergrav/devins-badges/v3/assets/cozy/supported/paper_vector.svg">
+    <img src=".github/readme/badges/supported/paper.svg">
   </a>
   <!-- <a href="https://purpurmc.org/">
-    <img src="https://raw.githubusercontent.com/intergrav/devins-badges/v3/assets/cozy/supported/purpur_vector.svg">
+    <img src=".github/readme/badges/supported/purpur.svg">
   </a> -->
   <a href="https://papermc.io/software/folia/">
-    <img src=".github/readme/badges/folia.svg">
+    <img src=".github/readme/badges/supported/folia.svg">
   </a>
 
   <br>
